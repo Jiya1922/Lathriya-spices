@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout | Lathriya Spices{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= HEADER ================= -->
+
+<section class="checkout-header">
+    <div class="container text-center">
+        <h1>Checkout</h1>
+        <p>Please enter your delivery details.</p>
+    </div>
+</section>
+
+<!-- ================= CHECKOUT ================= -->
+
+<section class="checkout-section">
+
+    <div class="container">
+
+        <div class="row">
+
+            <!-- LEFT -->
+
+            <div class="col-lg-7">
+
+                <div class="checkout-form">
+
+                    <h3>Customer Details</h3>
+
+                    <form>
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+                                <label>First Name</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="firstName"
+                                       placeholder="Enter your first name"
+                                       required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label>Last Name</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="lastName"
+                                       placeholder="Enter your last name"
+                                       required>
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>Phone Number</label>
+
+                            <input type="tel"
+                                   class="form-control"
+                                   id="phone"
+                                   placeholder="10-digit mobile number"
+                                   pattern="[0-9]{10}"
+                                   maxlength="10"
+                                   required>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>Email</label>
+
+                            <input type="email"
+                                   class="form-control"
+                                   id="email"
+                                   placeholder="example@gmail.com"
+                                   required>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>Address</label>
+
+                            <textarea class="form-control"
+                                      rows="4"
+                                      placeholder="House name, Street, Landmark"
+                                      required></textarea>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-4 mb-3">
+
+                                <label>District</label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       id="district"
+                                       placeholder="District"
+                                       required>
+
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+
+                                <label>State</label>
+
+                                <select class="form-select"
+                                        id="state"
+                                        required>
+
+                                    <option value="">Select State</option>
+                                    <option>Kerala</option>
+                                    <option>Tamil Nadu</option>
+                                    <option>Karnataka</option>
+                                    <option>Andhra Pradesh</option>
+                                    <option>Telangana</option>
+                                    <option>Goa</option>
+                                    <option>Maharashtra</option>
+                                    <option>Odisha</option>
+                                    <option>Chhattisgarh</option>
+                                    <option>Madhya Pradesh</option>
+                                    <option>Gujarat</option>
+                                    <option>West Bengal</option>
+                                    <option>Jharkhand</option>
+                                    <option>Bihar</option>
+                                    <option>Rajasthan</option>
+                                    <option>Haryana</option>
+                                    <option>Chandigarh</option>
+                                    <option>Delhi</option>
+                                    <option>Punjab</option>
+                                    <option>Uttar Pradesh</option>
+                                    <option>Uttarakhand</option>
+                                    <option>Himachal Pradesh</option>
+                                    <option>Jammu and Kashmir</option>
+                                    <option>Ladakh</option>
+                                    <option>Sikkim</option>
+                                    <option>Assam</option>
+                                    <option>Arunachal Pradesh</option>
+                                    <option>Nagaland</option>
+                                    <option>Manipur</option>
+                                    <option>Mizoram</option>
+                                    <option>Tripura</option>
+                                    <option>Meghalaya</option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+
+                                <label>Pincode</label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       id="pincode"
+                                       placeholder="6-digit pincode"
+                                       pattern="[0-9]{6}"
+                                       maxlength="6"
+                                       required>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT -->
+
+            <div class="col-lg-5">
+
+                <div class="order-summary">
+
+                    <h3>Order Summary</h3>
+
+                    <hr>
+
+                    <div class="summary-item">
+                        <span>Cardamom Powder (50g)</span>
+                        <span>₹250</span>
+                    </div>
+
+                    <div class="summary-item">
+                        <span>Delivery</span>
+                        <span class="text-success">FREE</span>
+                    </div>
+
+                    <hr>
+
+                    <div class="summary-total">
+                        <span>Total</span>
+                        <span>₹250</span>
+                    </div>
+
+                    <button class="payment-btn">
+                        Proceed to Payment
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
+{% endblock %}

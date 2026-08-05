@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Lathriya Spices{% endblock %}</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    {% block css %}{% endblock %}
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top">
+
+<div class="container">
+
+<a class="navbar-brand fw-bold"
+href="{{ url_for('home') }}">
+
+Lathriya <span>Spices</span>
+
+</a>
+
+<button class="navbar-toggler"
+type="button"
+data-bs-toggle="collapse"
+data-bs-target="#navbarMenu">
+
+<span class="navbar-toggler-icon"></span>
+
+</button>
+
+<div class="collapse navbar-collapse"
+id="navbarMenu">
+
+<ul class="navbar-nav mx-auto">
+
+<li class="nav-item">
+<a class="nav-link"
+href="{{ url_for('home') }}">Home</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link"
+href="{{ url_for('shop') }}">Shop</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link"
+href="{{ url_for('about') }}">About</a>
+</li>
+
+<li class="nav-item">
+<a class="nav-link"
+href="{{ url_for('contact') }}">Contact</a>
+</li>
+
+</ul>
+
+<div class="d-flex align-items-center">
+
+<a href="#" class="icon-btn">
+<i class="fa-solid fa-magnifying-glass"></i>
+</a>
+
+<a href="#" class="icon-btn">
+<i class="fa-regular fa-user"></i>
+</a>
+
+<a href="{{ url_for('cart') }}"
+class="icon-btn position-relative">
+
+<i class="fa-solid fa-cart-shopping"></i>
+
+<span class="cart-count">0</span>
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</nav>
+
+<!-- PAGE CONTENT -->
+
+{% block content %}
+
+{% endblock %}
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="footer">
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-lg-4">
+
+<h3>Lathriya <span>Spices</span></h3>
+
+<p>
+Bringing premium Kerala spices directly
+from our plantations to your kitchen.
+</p>
+
+</div>
+
+<div class="col-lg-2">
+
+<h5>Quick Links</h5>
+
+<ul>
+
+<li><a href="{{ url_for('home') }}">Home</a></li>
+
+<li><a href="{{ url_for('shop') }}">Shop</a></li>
+
+<li><a href="{{ url_for('about') }}">About</a></li>
+
+<li><a href="{{ url_for('contact') }}">Contact</a></li>
+
+</ul>
+
+</div>
+
+<div class="col-lg-3">
+
+<h5>Products</h5>
+
+<ul>
+
+<li>Cardamom Powder</li>
+
+<li>Black Pepper Powder</li>
+
+<li>Nutmeg Powder</li>
+
+</ul>
+
+</div>
+
+<div class="col-lg-3">
+
+<h5>Customer Support</h5>
+
+<ul>
+
+<li><a href="{{ url_for('shipping') }}">Shipping Policy</a></li>
+
+<li><a href="{{ url_for('privacy') }}">Privacy Policy</a></li>
+
+</ul>
+
+<div class="social-icons mt-3">
+
+<a href="#"><i class="fab fa-facebook-f"></i></a>
+
+<a href="#"><i class="fab fa-instagram"></i></a>
+
+<a href="#"><i class="fab fa-whatsapp"></i></a>
+
+</div>
+
+</div>
+
+</div>
+
+<hr>
+
+<p class="copyright text-center">
+
+© 2026 Lathriya Spices. All Rights Reserved.
+
+</p>
+
+</div>
+
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+{% block js %}
+
+{% endblock %}
+
+</body>
+
+</html>

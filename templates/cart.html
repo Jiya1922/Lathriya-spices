@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block css %}
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/cart.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- ================= PAGE TITLE ================= -->
+<section class="cart-header">
+    <div class="container">
+        <h1>Shopping Cart</h1>
+        <p>Review your selected products before checkout.</p>
+    </div>
+</section>
+<!-- ================= CART ================= -->
+<section class="cart-section">
+    <div class="container">
+        <div class="row">
+            <!-- LEFT -->
+            <div class="col-lg-8">
+                <div class="cart-item">
+                    <img src="{{ url_for('static', filename='images/products/cardmom-100g.jpg') }}"
+     alt="Cardamom Powder">
+                    <div class="cart-details">
+                        <h3>Cardamom Powder</h3>
+                        <p>Weight : <strong>50g</strong></p>
+                        <h4>₹250</h4>
+                        <div class="quantity">
+                            <button id="minus">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
+                            <input
+                                id="qty"
+                                type="text"
+                                value="1"
+                                readonly>
+                            <button id="plus">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="remove-btn">
+
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- RIGHT -->
+            <div class="col-lg-4">
+                <div class="cart-summary">
+                    <h3>Order Summary</h3>
+                    <hr>
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="subtotal">₹250</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Delivery</span>
+                        <span class="text-success">FREE</span>
+                    </div>
+                    <hr>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span id="total">₹250</span>
+                    </div>
+                    <a href="{{ url_for('shop') }}" class="continue-btn">Continue Shopping</a>
+                    <a href="{{ url_for('checkout') }}" class="checkout-btn">Proceed to Checkout</a>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+{% endblock %}

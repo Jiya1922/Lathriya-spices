@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/shop.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- =========================
+        SHOP HEADER
+========================= -->
+
+<section class="shop-header">
+    <div class="container text-center">
+        <h1>Our Products</h1>
+
+        <p>
+            Discover our premium spice powders, carefully prepared from
+            the finest ingredients to bring authentic flavour to your kitchen.
+        </p>
+
+        <h4 class="price">₹250 onwards</h4>
+    </div>
+</section>
+
+<!-- SEARCH -->
+
+<section class="search-section">
+    <div class="container">
+
+        <div class="search-box">
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search products...">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+
+    </div>
+</section>
+
+<!-- =========================
+        SHOP PRODUCTS
+========================= -->
+
+<section class="shop-products">
+
+    <div class="container">
+
+        <div class="row g-4 justify-content-center">
+
+            <!-- Cardamom -->
+
+            <div class="col-lg-4 col-md-6">
+
+                <div class="product-card">
+
+                    <img src="{{ url_for('static', filename='images/products/cardmom-100g.jpg') }}"
+                         alt="Cardamom Powder">
+
+                    <h3>Cardamom Powder</h3>
+
+                    <div class="rating">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star-half-stroke"></i>
+
+                        <span>4.9 (126 Reviews)</span>
+                    </div>
+
+                    <p class="weight">
+                        Available in 50g & 100g
+                    </p>
+
+                    <p class="description">
+                        Finely ground premium Kerala cardamom with a rich aroma.
+                    </p>
+
+                    <a href="{{ url_for('product') }}?id=cardamom"
+                       class="product-btn">
+                        View Details
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- Pepper -->
+
+            <div class="col-lg-4 col-md-6">
+
+                <div class="product-card">
+
+                    <img src="{{ url_for('static', filename='images/products/pepper-100g.jpg') }}"
+                         alt="Black Pepper Powder">
+
+                    <h3>Black Pepper Powder</h3>
+
+                    <div class="rating">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star-half-stroke"></i>
+
+                        <span>4.8 (92 Reviews)</span>
+                    </div>
+
+                    <p class="weight">
+                        Available in 50g & 100g
+                    </p>
+
+                    <p class="description">
+                        Freshly ground black pepper with bold flavour and aroma.
+                    </p>
+
+                    <a href="{{ url_for('product') }}?id=pepper"
+                       class="product-btn">
+                        View Details
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- Nutmeg -->
+
+            <div class="col-lg-4 col-md-6">
+
+                <div class="product-card">
+
+                    <img src="{{ url_for('static', filename='images/products/nutmeg-100.jpg') }}"
+                         alt="Nutmeg Powder">
+
+                    <h3>Nutmeg Powder</h3>
+
+                    <div class="rating">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+
+                        <span>4.6 (54 Reviews)</span>
+                    </div>
+
+                    <p class="weight">
+                        Available in 50g & 100g
+                    </p>
+
+                    <p class="description">
+                        Premium nutmeg powder made from carefully selected nutmeg.
+                    </p>
+
+                    <a href="{{ url_for('product') }}?id=nutmeg"
+                       class="product-btn">
+                        View Details
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/shop.js') }}"></script>
+{% endblock %}

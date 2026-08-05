@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Shipping Policy | Lathriya Spices{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/shipping.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="policy-header">
+
+    <div class="container">
+
+        <h1>Shipping Policy</h1>
+
+        <p>Fast, Safe & Reliable Delivery Across India</p>
+
+    </div>
+
+</section>
+
+<section class="policy-content">
+
+    <div class="container">
+
+        <div class="policy-box">
+
+            <h3>Processing Time</h3>
+
+            <p>
+                Orders are processed within 1–2 business days after successful payment confirmation.
+            </p>
+
+            <h3>Delivery Time</h3>
+
+            <p>
+                Orders are usually delivered within 3–7 business days depending on your location.
+            </p>
+
+            <h3>Shipping Charges</h3>
+
+            <p>
+                Shipping charges are calculated during checkout. Free shipping may be available during promotional offers.
+            </p>
+
+            <h3>Order Tracking</h3>
+
+            <p>
+                Once your order is shipped, you will receive an email or WhatsApp message with tracking details.
+            </p>
+
+            <h3>Delayed Delivery</h3>
+
+            <p>
+                Delivery may be delayed due to weather conditions, public holidays, or courier service issues.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}Home | Lathriya Spices{% endblock %}
+
+{% block content %}
+
+<!-- ==========================
+     WELCOME SECTION
+========================== -->
+
+<section class="welcome">
+
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <!-- Left Side -->
+            <div class="col-lg-6">
+
+                <span class="sub-heading">
+                    PREMIUM SPICES
+                </span>
+
+                <h1>
+                    Experience the Rich Aroma of
+                    <span>Authentic Spices</span>
+                </h1>
+
+                <p>
+                    At <strong>Lathriya Spices</strong>,
+                    we deliver handpicked cardamom,
+                    black pepper, cloves, cinnamon,
+                    nutmeg and many more premium spices
+                    directly from our farms to your kitchen.
+                </p>
+
+                <div class="features">
+
+                    <div>
+                        <i class="fa-solid fa-circle-check"></i>
+                        Farm Fresh
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-circle-check"></i>
+                        Premium Quality
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-circle-check"></i>
+                        Naturally Processed
+                    </div>
+
+                </div>
+
+                <div class="hero-buttons">
+
+                    <a href="{{ url_for('shop') }}" class="btn btn-success">
+                        Shop Now
+                    </a>
+
+                    <a href="{{ url_for('shop') }}" class="btn btn-outline-light">
+                        View Products
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- Right Side -->
+
+            <div class="col-lg-6 text-center">
+
+                <img src="{{ url_for('static', filename='images/home/welcome.png') }}"
+                     alt="Lathriya Spices"
+                     class="img-fluid welcome-image">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ==========================================
+                SHOP BY CATEGORY
+=========================================== -->
+
+<section class="categories">
+
+    <div class="container">
+
+        <div class="section-heading text-center">
+
+            <h2>Shop by Category</h2>
+
+            <p>
+                Discover our carefully selected premium spices,
+                sourced directly from trusted farms.
+            </p>
+
+        </div>
+
+        <div class="row justify-content-center g-4">
+
+            <!-- Cardamom -->
+            <div class="col-lg-3 col-md-6">
+
+                <div class="category-card"
+                     onclick="window.location.href='{{ url_for('shop') }}?category=cardamom'">
+
+                    <img src="{{ url_for('static', filename='images/categries/cardmom.jpg') }}"
+                         alt="Cardamom">
+
+                    <h4>Cardamom</h4>
+
+                    <p>Premium handpicked green cardamom.</p>
+
+                </div>
+
+            </div>
+
+            <!-- Pepper -->
+            <div class="col-lg-3 col-md-6">
+
+                <div class="category-card"
+                     onclick="window.location.href='{{ url_for('shop') }}?category=pepper'">
+
+                    <img src="{{ url_for('static', filename='images/categries/pepper.jpg') }}"
+                         alt="Black Pepper">
+
+                    <h4>Black Pepper</h4>
+
+                    <p>Fresh Kerala black pepper.</p>
+
+                </div>
+
+            </div>
+
+            <!-- Cloves -->
+            <div class="col-lg-3 col-md-6">
+
+                <div class="category-card"
+                     onclick="window.location.href='{{ url_for('shop') }}?category=cloves'">
+
+                    <img src="{{ url_for('static', filename='images/categries/cloves.jpg') }}"
+                         alt="Cloves">
+
+                    <h4>Cloves</h4>
+
+                    <p>Premium aromatic cloves.</p>
+
+                </div>
+
+            </div>
+
+            <!-- Nutmeg -->
+            <div class="col-lg-3 col-md-6">
+
+                <div class="category-card"
+                     onclick="window.location.href='{{ url_for('shop') }}?category=nutmeg'">
+
+                    <img src="{{ url_for('static', filename='images/categries/nutmeg.jpg') }}"
+                         alt="Nutmeg">
+
+                    <h4>Nutmeg</h4>
+
+                    <p>Fresh whole nutmeg.</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

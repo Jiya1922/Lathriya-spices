@@ -1,0 +1,370 @@
+{% extends "base.html" %}
+
+{% block title %}Cardamom Powder | Lathriya Spices{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/product.css') }}">
+{% endblock %}
+
+{% block content %}
+    <!-- =========================
+            BREADCRUMB
+    ========================== -->
+
+    <section class="breadcrumb-section">
+        <div class="container">
+            <p>
+                <a href="{{ url_for('home') }}">Home</a>
+                <span>/</span>
+               <a href="{{ url_for('shop') }}">Shop</a>
+                <span>/</span>
+                <strong>Cardamom Powder</strong>
+            </p>
+        </div>
+    </section>
+    <!-- =========================
+            PRODUCT DETAILS
+    ========================== -->
+    <section class="product-details">
+        <div class="container">
+            <div class="row align-items-start">
+                <!-- Product Image -->
+                <div class="col-lg-6">
+                    <div class="product-gallery">
+
+    <!-- Main Image -->
+    <div class="product-image">
+            <img
+    id="mainImage"
+    src="{{ url_for('static', filename='images/products/cardmom-100g.jpg') }}"
+    alt="Cardamom Powder">
+    </div>
+    <!-- Thumbnail Images -->
+    <div class="thumbnail-gallery">
+      <img
+    class="thumb active-thumb"
+    src="{{ url_for('static', filename='images/products/cardmom-100g.jpg') }}"
+    onclick="changeImage(this)"
+    alt="Cardamom 100g">
+<!--Thumbnail 2-->
+        <img
+    class="thumb"
+    src="{{ url_for('static', filename='images/products/cardmom-50g.jpg') }}"
+    onclick="changeImage(this)"
+    alt="Cardamom 50g">
+
+        <img
+            class="thumb"
+            src="{{ url_for('static', filename='images/products/cardmom-side.jpg') }}"
+            onclick="changeImage(this)"
+            alt="Side View">
+
+        <img
+            class="thumb"
+            src="{{ url_for('static', filename='images/products/cardmom-pack.jpg') }}"
+            onclick="changeImage(this)"
+            alt="Package">      
+    </div>
+</div>
+                </div>
+                <!-- Product Info -->
+                <div class="col-lg-6">
+                    <h1 class="product-title">
+                        Cardamom Powder
+                    </h1>
+                    <div class="rating">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star-half-stroke"></i>
+                        <span>4.9 (126 Reviews)</span>
+                    </div>
+
+                    <h2 id="price">₹250</h2>
+
+                    <p class="tax-text">
+                        Inclusive of all taxes
+                    </p>
+
+                    <hr>
+
+                    <h5>Select Weight</h5>
+
+                    <div class="weight-options">
+
+                        <button
+                            class="weight-btn active"
+                            data-weight="50g"
+                            data-price="250">
+
+                            50g
+
+                        </button>
+
+                        <button
+                            class="weight-btn"
+                            data-weight="100g"
+                            data-price="450">
+
+                            100g
+
+                        </button>
+                    </div>
+                    <hr>
+                    <h5>Quantity</h5>
+                    <div class="quantity-box">
+                        <button id="minus">
+                            <i class="fa-solid fa-minus"></i>
+                        </button>
+                        <input
+                            type="text"
+                            id="quantity"
+                            value="1"
+                            readonly>
+
+                        <button id="plus">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+
+                    </div>
+                    <div class="product-features">
+
+        <p class="stock">
+        <i class="fa-solid fa-circle-check"></i>
+        In Stock
+         </p>
+    <p>
+        <i class="fa-solid fa-truck-fast"></i>
+        Free Delivery Across India
+    </p>
+    <p>
+        <i class="fa-solid fa-shield-halved"></i>
+        Secure Razorpay Payment
+    </p>
+    <p>
+        <i class="fa-solid fa-leaf"></i>
+        100% Natural & No Preservatives
+    </p>
+    <p>
+        <i class="fa-solid fa-award"></i>
+        Premium Kerala Quality
+    </p>
+</div>
+                    <div class="buttons">
+
+    <button id="cartBtn" class="cart-btn">
+        <i class="fa-solid fa-cart-shopping"></i>
+        Add to Cart
+    </button>
+
+    <button id="buyBtn" class="buy-btn">
+        <i class="fa-solid fa-bolt"></i>
+        Buy Now
+    </button>
+</div>
+                    <div class="delivery-box">
+    <h5>Delivery Information</h5>
+    <p>
+        <i class="fa-solid fa-location-dot"></i>
+        Delivery available across India
+    </p>
+    <p>
+        <i class="fa-solid fa-box"></i>
+        Packed fresh after your order
+    </p>
+    <p>
+        <i class="fa-solid fa-clock"></i>
+        Estimated delivery: 3–7 Business Days
+    </p>
+</div>
+                </div>
+            </div>
+        </div>
+    </section>
+<!-- =========================
+      PRODUCT INFORMATION
+========================= -->
+<section class="product-info">
+    <div class="container">
+        <h2 class="section-title text-center">
+            Product Information
+        </h2>
+        <!-- Tabs -->
+        <div class="info-tabs">
+            <button class="tab-btn active"
+                    onclick="showTab('description', this)">
+                Description
+            </button>
+            <button class="tab-btn"
+                    onclick="showTab('benefits', this)">
+                Benefits
+            </button>
+            <button class="tab-btn"
+                    onclick="showTab('ingredients', this)">
+                Ingredients
+            </button>
+            <button class="tab-btn"
+                    onclick="showTab('storage', this)">
+                Storage
+            </button>
+            <button class="tab-btn"
+                    onclick="showTab('shipping', this)">
+                Shipping
+            </button>
+        </div>
+        <!-- Description -->
+
+        <div id="description" class="tab-content active-content">
+            <h4>Premium Cardamom Powder</h4>
+            <p>
+                Lathriya Spices Cardamom Powder is produced from carefully
+                selected premium Kerala green cardamom.
+
+                Freshly ground to preserve its natural aroma and flavour,
+                making it perfect for tea, coffee, desserts,
+                biryanis and everyday cooking.
+            </p>
+        </div>
+        <!-- Benefits -->
+
+        <div id="benefits" class="tab-content">
+            <ul>
+                <li>✔ Rich Natural Aroma</li>
+                <li>✔ 100% Pure Kerala Cardamom</li>
+                <li>✔ No Artificial Colours</li>
+                <li>✔ No Preservatives</li>
+                <li>✔ Suitable for Tea, Coffee & Desserts</li>
+            </ul>
+        </div>
+        <!-- Ingredients -->
+        <div id="ingredients" class="tab-content">
+
+            <p>
+
+                100% Premium Kerala Green Cardamom.
+
+                No preservatives.
+
+                No added colours.
+
+                No artificial flavours.
+            </p>
+        </div>
+        <!-- Storage -->
+        <div id="storage" class="tab-content">
+            <p>
+                Store in a cool and dry place.
+
+                Keep the lid tightly closed after use.
+
+                Avoid direct sunlight.
+            </p>
+        </div>
+        <!-- Shipping -->
+        <div id="shipping" class="tab-content">
+            <ul>
+                <li>Ships within 24 Hours</li>
+                <li>Secure Packaging</li>
+                <li>Delivery Across India</li>
+                <li>Estimated Delivery : 3–7 Days</li>
+            </ul>
+        </div>
+    </div>
+</section>
+    <!-- =========================
+        LOGIN / REGISTER MODAL
+    ========================== -->
+    <div class="modal fade" id="authModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modalTitle">
+                        Login
+                    </h4>
+                    <button class="btn-close"
+                            data-bs-dismiss="modal">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Login -->
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label>Email</label>
+                            <input
+                                type="email"
+                                class="form-control"
+                                placeholder="Enter your email"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Password</label>
+                            <input
+                                type="password"
+                                class="form-control"
+                                placeholder="Enter your password"
+                                required>
+
+                        </div>
+                        <button
+                            type="submit"
+                            class="btn btn-success w-100">
+                            Login
+                        </button>
+                        <p class="text-center mt-3">
+                            Don't have an account?
+                            <a href="#" id="showRegister">
+                                Register
+                            </a>
+                        </p>
+                    </form>
+                    <!-- Register -->
+                    <form id="registerForm" style="display:none;">
+                        <div class="mb-3">
+                            <label>Full Name</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                placeholder="Enter your full name">
+                        </div>
+                        <div class="mb-3">
+                            <label>Email</label>
+                            <input
+                                type="email"
+                                class="form-control"
+                                placeholder="Enter your email">
+                        </div>
+                        <div class="mb-3">
+                            <label>Phone Number</label>
+                            <input
+                                type="tel"
+                                class="form-control"
+                                placeholder="Enter your phone number">
+                        </div>
+                        <div class="mb-3">
+                            <label>Password</label>
+                            <input
+                                type="password"
+                                class="form-control"
+                                placeholder="Create password">
+                        </div>
+                        <button
+                            type="submit"
+                            class="btn btn-warning w-100">
+                            Register
+                        </button>
+                        <p class="text-center mt-3">
+                            Already have an account?
+                            <a href="#" id="showLogin">
+                                Login
+                            </a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    {% block js %}
+<script src="{{ url_for('static', filename='js/product.js') }}"></script>
+{% endblock %}
