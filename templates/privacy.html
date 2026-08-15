@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy | Lathriya Spices{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/policy.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="policy-header">
+    <div class="container text-center">
+        <h1>Privacy Policy</h1>
+        <p>Your privacy is important to us.</p>
+    </div>
+</section>
+<section class="policy-content">
+    <div class="container">
+        <div class="policy-box">
+            <h3>Introduction</h3>
+            <p>
+                At <strong>Lathriya Spices</strong>, we respect your privacy and are committed to protecting the personal information you share with us.
+            </p>
+            <h3>Information We Collect</h3>
+            <ul>
+                <li>Name</li>
+                <li>Email Address</li>
+                <li>Phone Number</li>
+                <li>Shipping Address</li>
+                <li>Order Details</li>
+            </ul>
+            <h3>How We Use Your Information</h3>
+            <ul>
+                <li>To process and deliver your orders.</li>
+                <li>To communicate order updates.</li>
+                <li>To improve our products and services.</li>
+                <li>To provide customer support.</li>
+            </ul>
+            <h3>Payment Information</h3>
+            <p>
+                Online payments are processed securely through trusted payment gateways such as Razorpay. We do not store your debit or credit card details on our servers.
+            </p>
+            <h3>Cookies</h3>
+            <p>
+                Our website may use cookies to improve your browsing experience and analyze website traffic.
+            </p>
+            <h3>Data Security</h3>
+            <p>
+                We take appropriate security measures to protect your personal information against unauthorized access, misuse, or disclosure.
+            </p>
+            <h3>Your Rights</h3>
+
+            <p>
+                You may request access, correction, or deletion of your personal information by contacting us.
+            </p>
+            <h3>Contact Us</h3>
+            <p>
+                If you have any questions regarding this Privacy Policy, please contact us through our Contact Us page.
+            </p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

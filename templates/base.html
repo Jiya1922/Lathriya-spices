@@ -140,7 +140,7 @@ from our plantations to your kitchen.
 
 <li><a href="{{ url_for('about') }}">About</a></li>
 
-<li><a href="{{ url_for('contact') }}">Contact</a></li>
+
 
 </ul>
 
@@ -167,12 +167,17 @@ from our plantations to your kitchen.
 <h5>Customer Support</h5>
 
 <ul>
+      <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
 
-<li><a href="{{ url_for('shipping') }}">Shipping Policy</a></li>
+      <li><a href="{{ url_for('shipping') }}">Shipping Policy</a></li>
 
-<li><a href="{{ url_for('privacy') }}">Privacy Policy</a></li>
+      <li><a href="{{ url_for('privacy') }}">Privacy Policy</a></li>
 
-</ul>
+      <li><a href="{{ url_for('refund') }}">Refund & Cancellation Policy</a></li>
+
+      <li> <a href="{{ url_for('terms') }}">Terms & Conditions</a></li>
+     
+ </ul>
 
 <div class="social-icons mt-3">
 
@@ -209,5 +214,3 @@ from our plantations to your kitchen.
 {% endblock %}
 
 </body>
-
-</html>

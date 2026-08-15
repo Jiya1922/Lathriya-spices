@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Refund & Cancellation Policy | Lathriya Spices{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/policy.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="policy-header">
+    <div class="container text-center">
+        <h1>Refund & Cancellation Policy</h1>
+        <p>Your satisfaction is our priority.</p>
+    </div>
+</section>
+<section class="policy-content">
+    <div class="container">
+        <div class="policy-box">
+            <h3>Order Cancellation</h3>
+            <p>
+                Orders can be cancelled only before they are packed or dispatched. Once an order has been shipped, cancellation requests cannot be accepted.
+            </p>
+            <h3>Return Policy</h3>
+            <p>
+                Since our products are food items and spices, we do not accept returns of delivered products for hygiene and safety reasons unless the product is damaged, defective, or the wrong item was delivered.
+            </p>
+            <h3>Damaged or Incorrect Products</h3>
+            <p>
+                If you receive a damaged package or an incorrect product, please contact us within <strong>24 hours</strong> of delivery. Kindly share your order number along with clear photographs of the package and product for verification.
+            </p>
+            <h3>Refund Process</h3>
+            <p>
+                After verifying your request, eligible refunds will be processed to your original payment method. Refunds are initiated only after approval of the claim.
+            </p>
+            <h3>Refund Timeline</h3>
+            <p>
+                Once approved, refunds are generally credited within <strong>5–7 business days</strong>. The exact time may vary depending on your bank or payment provider.
+            </p>
+            <h3>Non-Refundable Situations</h3>
+            <ul>
+
+                <li>Products returned after opening or use.</li>
+
+                <li>Requests made after the specified reporting period.</li>
+
+                <li>Damage caused due to improper storage after delivery.</li>
+
+                <li>Orders with incorrect shipping details provided by the customer.</li>
+
+            </ul>
+
+            <h3>Need Assistance?</h3>
+
+            <p>
+                If you have any questions regarding cancellations or refunds, please contact our customer support through the Contact Us page. We are always happy to assist you.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

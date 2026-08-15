@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us | Lathriya Spices{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="contact-header">
+    <div class="container text-center">
+        <h1>Contact Us</h1>
+        <p>We're always happy to hear from you.</p>
+    </div>
+</section>
+<!-- Contact -->
+<section class="contact-section">
+    <div class="container">
+        <div class="row g-5">
+            <!-- Left -->
+            <div class="col-lg-5">
+                <div class="contact-info">
+                    <h3>Lathriya Spices</h3>
+                    <p>
+                        Bringing premium Kerala spices directly from our farms to your kitchen.
+                    </p>
+                    <div class="info-item">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <div>
+                            <h5>Address</h5>
+                            <p>
+                                Chottupara,K.P Colony, Idukki,<br>
+                                Kerala, India
+                            </p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fa-solid fa-phone"></i>
+                        <div>
+                            <h5>Phone</h5>
+                            <p>+91 90749 13271</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <div>
+                            <h5>Email</h5>
+                            <p>lathriyaspices@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fa-solid fa-clock"></i>
+                        <div>
+                            <h5>Business Hours</h5>
+                            <p>
+                                Monday - Saturday<br>
+                                9:00 AM - 6:00 PM
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Right -->
+            <div class="col-lg-7">
+                <div class="contact-form">
+                    <h3>Send us a Message</h3>
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Your Name"
+                                    required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    placeholder="Your Email"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input
+                                type="tel"
+                                class="form-control"
+                                placeholder="Phone Number">
+                        </div>
+                        <div class="mb-3">
+                            <textarea
+                                class="form-control"
+                                rows="6"
+                                placeholder="Your Message"
+                                required></textarea>
+
+                        </div>
+                        <button class="contact-btn">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
