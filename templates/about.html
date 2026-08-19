@@ -1,80 +1,198 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block title %}About Us | Lathriya Spices{% endblock %}
 
 {% block css %}
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/about.css') }}">
+<style>
+    /* ABOUT PAGE STYLES */
+    :root {
+        --primary: #1B5E20;
+        --secondary: #6D4C41;
+        --accent: #D4A017;
+        --light: #FAF7F2;
+        --dark: #222;
+        --white: #fff;
+    }
+    .about-hero {
+        background: linear-gradient(rgba(43, 140, 49, 0.85), rgba(27,94,32,.85)),
+                    url("{% static 'images/about/plantation.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 120px 0;
+    }
+    .about-hero h1 {
+        font-size: 55px;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+    .about-hero p {
+        font-size: 22px;
+        opacity: .95;
+    }
+    .about-section {
+        padding: 90px 0;
+        background: white;
+    }
+    .about-section img {
+        border-radius: 20px;
+        transition: .5s;
+        box-shadow: 0 15px 40px rgba(0,0,0,.15);
+    }
+    .about-section img:hover {
+        transform: scale(1.03);
+    }
+    .about-section h2 {
+        color: var(--primary);
+        font-size: 40px;
+        font-weight: 700;
+        margin-bottom: 25px;
+    }
+    .about-section p {
+        color: #555;
+        line-height: 1.9;
+        font-size: 17px;
+    }
+    .why-us {
+        background: var(--light);
+        padding: 90px 0;
+    }
+    .why-us h2 {
+        color: var(--primary);
+        font-size: 42px;
+        font-weight: 700;
+    }
+    .why-card {
+        background: white;
+        border-radius: 20px;
+        padding: 35px 25px;
+        margin-bottom: 30px;
+        transition: .4s;
+        box-shadow: 0 10px 30px rgba(0,0,0,.08);
+        height: 100%;
+    }
+    .why-card:hover {
+        transform: translateY(-12px);
+        box-shadow: 0 20px 40px rgba(0,0,0,.15);
+    }
+    .why-card i {
+        color: var(--accent);
+        margin-bottom: 25px;
+    }
+    .why-card h4 {
+        color: var(--primary);
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+    .why-card p {
+        color: #666;
+        margin: 0;
+    }
+    .mission {
+        background: white;
+        padding: 90px 0;
+    }
+    .mission h2 {
+        color: var(--primary);
+        font-size: 42px;
+        font-weight: 700;
+        margin-bottom: 25px;
+    }
+    .mission p {
+        max-width: 850px;
+        margin: auto;
+        color: #555;
+        line-height: 2;
+        font-size: 18px;
+    }
+    @media(max-width:992px){
+        .about-hero { padding: 90px 0; }
+        .about-hero h1 { font-size: 42px; }
+        .about-section { text-align: center; }
+        .about-section img { margin-bottom: 40px; }
+    }
+    @media(max-width:768px){
+        .about-hero h1 { font-size: 34px; }
+        .about-section h2, .why-us h2, .mission h2 { font-size: 32px; }
+        .about-section, .why-us, .mission { padding: 60px 0; }
+    }
+</style>
 {% endblock %}
-{% block content %}
-<!-- ================= HERO ================= -->
-<section class="about-hero">
-<div class="container text-center">
-<h1>About Lathriya Spices</h1>
-<p>
-Pure spices from our plantation to your kitchen.
-</p>
-</div>
 
+{% block content %}
+<!-- HERO -->
+<section class="about-hero">
+    <div class="container text-center">
+        <h1>About Lathriya Spices</h1>
+        <p>Pure spices from our plantation to your kitchen.</p>
+    </div>
 </section>
-<!-- ================= OUR STORY ================= -->
+
+<!-- OUR STORY -->
 <section class="about-section">
-<div class="container">
-<div class="row align-items-center">
-<div class="col-lg-6">
- <img src="{{ url_for('static', filename='images/about/plantation.jpg') }}">
-            
-</div>
-<div class="col-lg-6">
-<h2>Our Story</h2>
-<p>
-Lathriya Spices was founded with a simple goal:
-to deliver authentic, premium-quality spices directly from Kerala ,our plantations to homes across India.
-</p>
-<p>We carefully source, process, and pack our spices while preserving their natural aroma, flavour, and freshness.
-</p>
-</div>
-</div>
-</div>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <img src="{% static 'images/about/plantation.jpg' %}" alt="Our Plantation" class="img-fluid">
+            </div>
+            <div class="col-lg-6">
+                <h2>Our Story</h2>
+                <p>
+                    Lathriya Spices was founded with a simple goal: to deliver authentic, premium-quality spices directly from Kerala plantations to homes across India.
+                </p>
+                <p>
+                    We carefully source, process, and pack our spices while preserving their natural aroma, flavour, and freshness.
+                </p>
+            </div>
+        </div>
+    </div>
 </section>
-<!-- ================= WHY CHOOSE US ================= -->
+
+<!-- WHY CHOOSE US -->
 <section class="why-us">
-<div class="container">
-<h2 class="text-center mb-5">
-Why Choose Lathriya Spices?
-</h2>
-<div class="row text-center">
-<div class="col-md-3">
-<i class="fa-solid fa-seedling fa-3x"></i>
-<h4>Farm Fresh</h4>
-<p>Directly sourced from plantations.</p>
-</div>
-<div class="col-md-3">
-<i class="fa-solid fa-leaf fa-3x"></i>
-<h4>100% Natural</h4>
-<p>No artificial colours or preservatives.</p>
-</div>
-<div class="col-md-3">
-<i class="fa-solid fa-award fa-3x"></i>
-<h4>Premium Quality</h4>
-<p>Handpicked and hygienically packed.</p>
-</div>
-<div class="col-md-3">
-<i class="fa-solid fa-truck fa-3x"></i>
-<h4>Fast Delivery</h4>
-<p>Secure delivery across India.</p>
-</div>
-</div>
-</div>
+    <div class="container">
+        <h2 class="text-center mb-5">Why Choose Lathriya Spices?</h2>
+        <div class="row text-center g-4">
+            <div class="col-md-3">
+                <div class="why-card">
+                    <i class="fa-solid fa-seedling fa-3x"></i>
+                    <h4>Farm Fresh</h4>
+                    <p>Directly sourced from plantations.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="why-card">
+                    <i class="fa-solid fa-leaf fa-3x"></i>
+                    <h4>100% Natural</h4>
+                    <p>No artificial colours or preservatives.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="why-card">
+                    <i class="fa-solid fa-award fa-3x"></i>
+                    <h4>Premium Quality</h4>
+                    <p>Handpicked and hygienically packed.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="why-card">
+                    <i class="fa-solid fa-truck fa-3x"></i>
+                    <h4>Fast Delivery</h4>
+                    <p>Secure delivery across India.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
-<!-- ================= MISSION ================= -->
+
+<!-- MISSION -->
 <section class="mission">
-<div class="container text-center">
-<h2>Our Mission</h2>
-<p>
-To bring the authentic taste of Kerala spices to every household while supporting sustainable farming and maintaining the highest quality standards.
-</p>
-</div>
+    <div class="container text-center">
+        <h2>Our Mission</h2>
+        <p>
+            To bring the authentic taste of Kerala spices to every household while supporting sustainable farming and maintaining the highest quality standards.
+        </p>
+    </div>
 </section>
 {% endblock %}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Sign Out - Lathriya Spices{% endblock %}
+
+{% block css %}
+<style>
+    .logout-section {
+        min-height: 80vh;
+        background: linear-gradient(135deg, #022d11 0%, #0d401e 50%, #1B5E20 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+    }
+
+    .logout-card {
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(212, 160, 23, 0.3);
+        border-radius: 24px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
+        padding: 45px 40px;
+        max-width: 460px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .logout-icon {
+        width: 70px;
+        height: 70px;
+        background: rgba(212, 160, 23, 0.15);
+        color: #D4A017;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        margin: 0 auto 25px;
+        border: 1px solid rgba(212, 160, 23, 0.3);
+    }
+
+    .logout-card h2 {
+        color: #022d11;
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .logout-card p {
+        color: #666;
+        font-size: 15px;
+        margin-bottom: 30px;
+    }
+
+    .btn-logout-confirm {
+        width: 100%;
+        padding: 14px;
+        background: #1B5E20;
+        color: white;
+        border: none;
+        border-radius: 40px;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        margin-bottom: 12px;
+        cursor: pointer;
+    }
+
+    .btn-logout-confirm:hover {
+        background: #D4A017;
+        color: #022d11;
+        box-shadow: 0 8px 20px rgba(212, 160, 23, 0.3);
+    }
+
+    .btn-cancel {
+        display: inline-block;
+        color: #666;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .btn-cancel:hover {
+        color: #022d11;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="logout-section">
+    <div class="logout-card">
+        <div class="logout-icon">
+            <i class="fa-solid fa-right-from-bracket"></i>
+        </div>
+        <h2>Sign Out Confirmation</h2>
+        <p>Are you sure you want to sign out of your Lathriya Spices account?</p>
+
+        <form method="post" action="{% url 'account_logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn-logout-confirm">Yes, Sign Out</button>
+        </form>
+
+        <a href="{% url 'home' %}" class="btn-cancel">Return to Store</a>
+    </div>
+</section>
+{% endblock %}

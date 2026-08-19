@@ -1,13 +1,65 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Privacy Policy | Lathriya Spices{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/policy.css') }}">
+<style>
+    .policy-header {
+        background: #1B5E20;
+        color: white;
+        padding: 80px 0;
+        text-align: center;
+    }
+    .policy-header h1 {
+        font-size: 48px;
+        font-weight: 700;
+    }
+    .policy-header p {
+        font-size: 18px;
+        margin-top: 15px;
+    }
+    .policy-content {
+        background: #f8f8f8;
+        padding: 80px 0;
+    }
+    .policy-box {
+        background: white;
+        padding: 50px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
+    .policy-box h3 {
+        color: #1B5E20;
+        margin-top: 35px;
+        margin-bottom: 15px;
+        font-weight: 700;
+    }
+    .policy-box h3:first-child {
+        margin-top: 0;
+    }
+    .policy-box p {
+        color: #555;
+        line-height: 1.8;
+        font-size: 16px;
+    }
+    .policy-box ul {
+        padding-left: 20px;
+        margin-bottom: 20px;
+    }
+    .policy-box li {
+        margin-bottom: 10px;
+        color: #555;
+        list-style: disc;
+    }
+    @media(max-width:768px){
+        .policy-box { padding: 30px; }
+        .policy-header h1 { font-size: 36px; }
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-
 <section class="policy-header">
     <div class="container text-center">
         <h1>Privacy Policy</h1>
@@ -49,16 +101,14 @@
                 We take appropriate security measures to protect your personal information against unauthorized access, misuse, or disclosure.
             </p>
             <h3>Your Rights</h3>
-
             <p>
                 You may request access, correction, or deletion of your personal information by contacting us.
             </p>
             <h3>Contact Us</h3>
             <p>
-                If you have any questions regarding this Privacy Policy, please contact us through our Contact Us page.
+                If you have any questions regarding this Privacy Policy, please contact us through our <a href="{% url 'contact' %}">Contact Us</a> page.
             </p>
         </div>
     </div>
 </section>
-
 {% endblock %}

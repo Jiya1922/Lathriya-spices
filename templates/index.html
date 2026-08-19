@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Home | Lathriya Spices{% endblock %}
 
@@ -55,11 +56,11 @@
 
                 <div class="hero-buttons">
 
-                    <a href="{{ url_for('shop') }}" class="btn btn-success">
+                    <a href="{% url 'shop' %}" class="btn btn-success">
                         Shop Now
                     </a>
 
-                    <a href="{{ url_for('shop') }}" class="btn btn-outline-light">
+                    <a href="{% url 'shop' %}" class="btn btn-outline-light">
                         View Products
                     </a>
 
@@ -71,7 +72,7 @@
 
             <div class="col-lg-6 text-center">
 
-                <img src="{{ url_for('static', filename='images/home/welcome.png') }}"
+                <img src="{% static 'images/home/welcome.png' %}"
                      alt="Lathriya Spices"
                      class="img-fluid welcome-image">
 
@@ -108,9 +109,9 @@
             <div class="col-lg-3 col-md-6">
 
                 <div class="category-card"
-                     onclick="window.location.href='{{ url_for('shop') }}?category=cardamom'">
+                     onclick="window.location.href='{% url 'shop' %}?category=cardamom'">
 
-                    <img src="{{ url_for('static', filename='images/categries/cardmom.jpg') }}"
+                    <img src="{% static 'images/categries/cardmom.jpg' %}"
                          alt="Cardamom">
 
                     <h4>Cardamom</h4>
@@ -125,9 +126,9 @@
             <div class="col-lg-3 col-md-6">
 
                 <div class="category-card"
-                     onclick="window.location.href='{{ url_for('shop') }}?category=pepper'">
+                     onclick="window.location.href='{% url 'shop' %}?category=pepper'">
 
-                    <img src="{{ url_for('static', filename='images/categries/pepper.jpg') }}"
+                    <img src="{% static 'images/categries/pepper.jpg' %}"
                          alt="Black Pepper">
 
                     <h4>Black Pepper</h4>
@@ -142,9 +143,9 @@
             <div class="col-lg-3 col-md-6">
 
                 <div class="category-card"
-                     onclick="window.location.href='{{ url_for('shop') }}?category=cloves'">
+                     onclick="window.location.href='{% url 'shop' %}?category=cloves'">
 
-                    <img src="{{ url_for('static', filename='images/categries/cloves.jpg') }}"
+                    <img src="{% static 'images/categries/cloves.jpg' %}"
                          alt="Cloves">
 
                     <h4>Cloves</h4>
@@ -159,9 +160,9 @@
             <div class="col-lg-3 col-md-6">
 
                 <div class="category-card"
-                     onclick="window.location.href='{{ url_for('shop') }}?category=nutmeg'">
+                     onclick="window.location.href='{% url 'shop' %}?category=nutmeg'">
 
-                    <img src="{{ url_for('static', filename='images/categries/nutmeg.jpg') }}"
+                    <img src="{% static 'images/categries/nutmeg.jpg' %}"
                          alt="Nutmeg">
 
                     <h4>Nutmeg</h4>

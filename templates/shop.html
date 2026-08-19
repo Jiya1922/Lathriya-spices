@@ -1,7 +1,156 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block title %}Shop | Lathriya Spices{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/shop.css') }}">
+<style>
+    /* ===================================
+                SHOP HEADER
+    =================================== */
+    .shop-header {
+        background: linear-gradient(135deg,#1B5E20,#2E7D32);
+        color: white;
+        padding: 70px 0;
+    }
+    .shop-header h1 {
+        font-size: 48px;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+    .shop-header p {
+        max-width: 700px;
+        margin: auto;
+        font-size: 18px;
+        line-height: 1.8;
+        opacity: .9;
+    }
+    .shop-header h4 {
+        font-size: 30px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #f8f8f8;
+    }
+
+    /* SEARCH SECTION */
+    .search-section {
+        background: #f8f8f8;
+        padding: 40px 0;
+    }
+    .search-box {
+        max-width: 600px;
+        margin: auto;
+        position: relative;
+    }
+    .search-box input {
+        width: 100%;
+        height: 55px;
+        border: none;
+        outline: none;
+        border-radius: 50px;
+        padding: 0 55px 0 25px;
+        font-size: 16px;
+        background: white;
+        box-shadow: 0 8px 25px rgba(0,0,0,.08);
+    }
+    .search-box i {
+        position: absolute;
+        right: 22px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #1B5E20;
+        font-size: 18px;
+    }
+
+    /* PRODUCTS */
+    .shop-products {
+        background: #f8f8f8;
+        padding-bottom: 80px;
+    }
+    .product-card {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        text-align: center;
+        transition: .35s;
+        box-shadow: 0 12px 30px rgba(0,0,0,.08);
+        height: 100%;
+    }
+    .product-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 18px 40px rgba(0,0,0,.15);
+    }
+    .product-card img {
+        width: 220px;
+        height: 220px;
+        object-fit: contain;
+        margin-bottom: 20px;
+        transition: .4s;
+    }
+    .product-card:hover img {
+        transform: scale(1.08);
+    }
+    .product-card h3 {
+        color: #113911;
+        font-weight: 700;
+        font-size: 28px;
+        margin-bottom: 12px;
+    }
+
+    /* RATINGS */
+    .rating {
+        margin-bottom: 15px;
+    }
+    .rating i {
+        color: #FFC107;
+        font-size: 17px;
+    }
+    .rating span {
+        margin-left: 8px;
+        color: #666;
+        font-size: 15px;
+    }
+
+    /* PRODUCT DETAILS */
+    .weight {
+        color: #D4A017;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+    .description {
+        color: #000000;
+        line-height: 1.8;
+        min-height: 60px;
+    }
+    .price {
+        color: #1B5E20;
+        font-size: 26px;
+        font-weight: 700;
+        margin: 20px 0;
+    }
+
+    /* BUTTON */
+    .product-btn {
+        display: inline-block;
+        margin-top: 10px;
+        background: #1B5E20;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: .3s;
+    }
+    .product-btn:hover {
+        background: #D4A017;
+        color: white;
+    }
+
+    @media(max-width:768px){
+        .shop-header h1 { font-size: 36px; }
+        .product-card img { width: 180px; height: 180px; }
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -49,122 +198,87 @@
     <div class="container">
 
         <div class="row g-4 justify-content-center">
+            {% if products %}
+                {% for product in products %}
+                <div class="col-lg-4 col-md-6">
+                    <div class="product-card">
+                        <img src="{{ product.get_image_url }}" alt="{{ product.name }}" loading="lazy" decoding="async">
+                        <h3>{{ product.name }}</h3>
 
+                        <div class="rating">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star-half-stroke"></i>
+                            <span>4.9 (126 Reviews)</span>
+                        </div>
+                        <p class="weight">Available in {{ product.weight }}</p>
+                        <p class="description">{{ product.description }}</p>
+                        <a href="{% url 'product_detail' slug=product.slug %}" class="product-btn">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
             <!-- Cardamom -->
-
             <div class="col-lg-4 col-md-6">
-
                 <div class="product-card">
-
-                    <img src="{{ url_for('static', filename='images/products/cardmom-100g.jpg') }}"
-                         alt="Cardamom Powder">
-
+                    <img src="{% static 'images/products/cardmom-100g.jpg' %}" alt="Cardamom Powder">
                     <h3>Cardamom Powder</h3>
-
                     <div class="rating">
                         <i class="fa-solid fa-star"></i>
                         <i class="fa-solid fa-star"></i>
                         <i class="fa-solid fa-star"></i>
                         <i class="fa-solid fa-star"></i>
                         <i class="fa-solid fa-star-half-stroke"></i>
-
                         <span>4.9 (126 Reviews)</span>
                     </div>
-
-                    <p class="weight">
-                        Available in 50g & 100g
-                    </p>
-
-                    <p class="description">
-                        Finely ground premium Kerala cardamom with a rich aroma.
-                    </p>
-
-                    <a href="{{ url_for('product') }}?id=cardamom"
-                       class="product-btn">
-                        View Details
-                    </a>
-
+                    <p class="weight">Available in 50g & 100g</p>
+                    <p class="description">Finely ground premium Kerala cardamom with a rich aroma.</p>
+                    <a href="{% url 'product' %}?id=cardamom" class="product-btn">View Details</a>
                 </div>
-
             </div>
-
             <!-- Pepper -->
-
             <div class="col-lg-4 col-md-6">
-
                 <div class="product-card">
-
-                    <img src="{{ url_for('static', filename='images/products/pepper-100g.jpg') }}"
-                         alt="Black Pepper Powder">
-
+                    <img src="{% static 'images/products/pepper-100g.jpg' %}" alt="Black Pepper Powder">
                     <h3>Black Pepper Powder</h3>
-
                     <div class="rating">
                         <i class="fa-solid fa-star"></i>
                         <i class="fa-solid fa-star"></i>
                         <i class="fa-solid fa-star"></i>
                         <i class="fa-solid fa-star"></i>
                         <i class="fa-solid fa-star-half-stroke"></i>
-
                         <span>4.8 (92 Reviews)</span>
                     </div>
-
-                    <p class="weight">
-                        Available in 50g & 100g
-                    </p>
-
-                    <p class="description">
-                        Freshly ground black pepper with bold flavour and aroma.
-                    </p>
-
-                    <a href="{{ url_for('product') }}?id=pepper"
-                       class="product-btn">
-                        View Details
-                    </a>
-
+                    <p class="weight">Available in 50g & 100g</p>
+                    <p class="description">Freshly ground black pepper with bold flavour and aroma.</p>
+                    <a href="{% url 'product' %}?id=pepper" class="product-btn">View Details</a>
                 </div>
-
             </div>
-
             <!-- Nutmeg -->
-
             <div class="col-lg-4 col-md-6">
-
                 <div class="product-card">
-
-                    <img src="{{ url_for('static', filename='images/products/nutmeg-100.jpg') }}"
-                         alt="Nutmeg Powder">
-
+                    <img src="{% static 'images/products/nutmeg-100.jpg' %}" alt="Nutmeg Powder">
                     <h3>Nutmeg Powder</h3>
-
                     <div class="rating">
                         <i class="fa-solid fa-star"></i>
                         <i class="fa-solid fa-star"></i>
                         <i class="fa-solid fa-star"></i>
                         <i class="fa-solid fa-star"></i>
                         <i class="fa-regular fa-star"></i>
-
                         <span>4.6 (54 Reviews)</span>
                     </div>
-
-                    <p class="weight">
-                        Available in 50g & 100g
-                    </p>
-
-                    <p class="description">
-                        Premium nutmeg powder made from carefully selected nutmeg.
-                    </p>
-
-                    <a href="{{ url_for('product') }}?id=nutmeg"
-                       class="product-btn">
-                        View Details
-                    </a>
-
+                    <p class="weight">Available in 50g & 100g</p>
+                    <p class="description">Premium nutmeg powder made from carefully selected nutmeg.</p>
+                    <a href="{% url 'product' %}?id=nutmeg" class="product-btn">View Details</a>
                 </div>
-
             </div>
-
+            {% endif %}
         </div>
+
 
     </div>
 
@@ -173,5 +287,5 @@
 {% endblock %}
 
 {% block js %}
-<script src="{{ url_for('static', filename='js/shop.js') }}"></script>
+<script src="{% static 'js/shop.js' %}"></script>
 {% endblock %}
