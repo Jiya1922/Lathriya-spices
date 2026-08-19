@@ -1,9 +1,76 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Contact Us | Lathriya Spices{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+<style>
+    .contact-header {
+        background: #1B5E20;
+        color: white;
+        padding: 80px 0;
+    }
+    .contact-header h1 {
+        font-size: 50px;
+        font-weight: 700;
+    }
+    .contact-header p {
+        margin-top: 15px;
+        font-size: 18px;
+    }
+    .contact-section {
+        padding: 80px 0;
+        background: #f8f8f8;
+    }
+    .contact-info, .contact-form {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
+    .contact-info h3, .contact-form h3 {
+        color: #1B5E20;
+        margin-bottom: 25px;
+        font-weight: 700;
+    }
+    .info-item {
+        display: flex;
+        margin-top: 30px;
+    }
+    .info-item i {
+        width: 55px;
+        height: 55px;
+        background: #1B5E20;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 18px;
+        font-size: 20px;
+    }
+    .info-item h5 {
+        color: #1B5E20;
+        margin-bottom: 5px;
+    }
+    .contact-form input, .contact-form textarea {
+        border-radius: 12px;
+        padding: 14px;
+    }
+    .contact-btn {
+        width: 100%;
+        border: none;
+        background: #D4A017;
+        color: white;
+        padding: 14px;
+        border-radius: 40px;
+        font-weight: 600;
+        transition: .3s;
+    }
+    .contact-btn:hover {
+        background: #1B5E20;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -14,6 +81,7 @@
         <p>We're always happy to hear from you.</p>
     </div>
 </section>
+
 <!-- Contact -->
 <section class="contact-section">
     <div class="container">
@@ -30,7 +98,7 @@
                         <div>
                             <h5>Address</h5>
                             <p>
-                                Chottupara,K.P Colony, Idukki,<br>
+                                Chottupara, K.P Colony, Idukki,<br>
                                 Kerala, India
                             </p>
                         </div>
@@ -68,35 +136,19 @@
                     <form>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Your Name"
-                                    required>
+                                <input type="text" class="form-control" placeholder="Your Name" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <input
-                                    type="email"
-                                    class="form-control"
-                                    placeholder="Your Email"
-                                    required>
+                                <input type="email" class="form-control" placeholder="Your Email" required>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <input
-                                type="tel"
-                                class="form-control"
-                                placeholder="Phone Number">
+                            <input type="tel" class="form-control" placeholder="Phone Number">
                         </div>
                         <div class="mb-3">
-                            <textarea
-                                class="form-control"
-                                rows="6"
-                                placeholder="Your Message"
-                                required></textarea>
-
+                            <textarea class="form-control" rows="6" placeholder="Your Message" required></textarea>
                         </div>
-                        <button class="contact-btn">
+                        <button type="submit" class="contact-btn">
                             Send Message
                         </button>
                     </form>

@@ -1,9 +1,53 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Terms & Conditions | Lathriya Spices{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/policy.css') }}">
+<style>
+    .policy-header {
+        background: #1B5E20;
+        color: white;
+        padding: 80px 0;
+        text-align: center;
+    }
+    .policy-header h1 {
+        font-size: 48px;
+        font-weight: 700;
+    }
+    .policy-header p {
+        font-size: 18px;
+        margin-top: 15px;
+    }
+    .policy-content {
+        background: #f8f8f8;
+        padding: 80px 0;
+    }
+    .policy-box {
+        background: white;
+        padding: 50px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
+    .policy-box h3 {
+        color: #1B5E20;
+        margin-top: 35px;
+        margin-bottom: 15px;
+        font-weight: 700;
+    }
+    .policy-box h3:first-child {
+        margin-top: 0;
+    }
+    .policy-box p {
+        color: #555;
+        line-height: 1.8;
+        font-size: 16px;
+    }
+    @media(max-width:768px){
+        .policy-box { padding: 30px; }
+        .policy-header h1 { font-size: 36px; }
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -21,63 +65,42 @@
                 By accessing and using the Lathriya Spices website, you agree to comply with these Terms & Conditions. If you do not agree with any part of these terms, please do not use our website.
             </p>
             <h3>Products & Availability</h3>
-
             <p>
                 We strive to ensure that all product information, descriptions, and prices are accurate. However, product availability may change without prior notice, and we reserve the right to discontinue or modify products at any time.
             </p>
-
             <h3>Pricing</h3>
-
             <p>
                 All prices displayed on our website are in Indian Rupees (₹) and are inclusive of applicable taxes unless stated otherwise. Prices may change without prior notice.
             </p>
-
             <h3>Orders & Payments</h3>
-
             <p>
                 Orders are confirmed only after successful payment verification. We reserve the right to cancel or refuse any order due to incorrect pricing, suspected fraudulent activity, or product unavailability.
             </p>
-
             <h3>Shipping & Delivery</h3>
-
             <p>
-                Shipping and delivery are carried out according to our Shipping Policy. Delivery timelines are estimates and may vary depending on courier services and location.
+                Shipping and delivery are carried out according to our <a href="{% url 'shipping' %}">Shipping Policy</a>. Delivery timelines are estimates and may vary depending on courier services and location.
             </p>
-
             <h3>Intellectual Property</h3>
-
             <p>
                 All website content including text, logos, graphics, images, and product descriptions are the property of Lathriya Spices and may not be copied, reproduced, or distributed without written permission.
             </p>
-
             <h3>Limitation of Liability</h3>
-
             <p>
                 Lathriya Spices shall not be liable for any indirect, incidental, or consequential damages arising from the use of our website or products, except where required by applicable law.
             </p>
-
             <h3>Privacy</h3>
-
             <p>
-                Your personal information is handled according to our Privacy Policy. By using this website, you consent to the collection and use of your information as described in that policy.
+                Your personal information is handled according to our <a href="{% url 'privacy' %}">Privacy Policy</a>. By using this website, you consent to the collection and use of your information as described in that policy.
             </p>
-
             <h3>Changes to Terms</h3>
-
             <p>
                 We reserve the right to update or modify these Terms & Conditions at any time. Updated versions will be published on this page with immediate effect.
             </p>
-
             <h3>Contact Us</h3>
-
             <p>
-                If you have any questions regarding these Terms & Conditions, please contact us through our Contact Us page.
+                If you have any questions regarding these Terms & Conditions, please contact us through our <a href="{% url 'contact' %}">Contact Us</a> page.
             </p>
-
         </div>
-
     </div>
-
 </section>
-
 {% endblock %}

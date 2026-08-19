@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+{% load static %}
+{% load socialaccount %}
+
+{% block title %}Sign In - Lathriya Spices{% endblock %}
+
+{% block css %}
+<style>
+    .login-section {
+        min-height: 85vh;
+        background: linear-gradient(135deg, #022d11 0%, #0d401e 50%, #1B5E20 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Subtle background glow effect */
+    .login-section::before {
+        content: '';
+        position: absolute;
+        width: 450px;
+        height: 450px;
+        background: radial-gradient(circle, rgba(212, 160, 23, 0.15) 0%, rgba(0,0,0,0) 70%);
+        top: -100px;
+        right: -100px;
+        border-radius: 50%;
+        pointer-events: none;
+    }
+    
+    .login-section::after {
+        content: '';
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(27, 94, 32, 0.3) 0%, rgba(0,0,0,0) 70%);
+        bottom: -100px;
+        left: -100px;
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .login-card {
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(212, 160, 23, 0.3);
+        border-radius: 24px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
+        padding: 45px 40px;
+        max-width: 480px;
+        width: 100%;
+        text-align: center;
+        position: relative;
+        z-index: 10;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .login-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+    }
+
+    .brand-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(212, 160, 23, 0.12);
+        color: #B8860B;
+        padding: 6px 18px;
+        border-radius: 30px;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(212, 160, 23, 0.3);
+    }
+
+    .login-card h2 {
+        color: #022d11;
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .login-card h2 span {
+        color: #D4A017;
+    }
+
+    .login-card p.subtitle {
+        color: #666;
+        font-size: 15px;
+        margin-bottom: 35px;
+    }
+
+    /* Google SSO Button */
+    .btn-google-sso {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        width: 100%;
+        padding: 14px 24px;
+        background: #ffffff;
+        color: #222222;
+        border: 1.5px solid #e0e0e0;
+        border-radius: 40px;
+        font-size: 16px;
+        font-weight: 600;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .btn-google-sso:hover {
+        background: #f8f9fa;
+        border-color: #D4A017;
+        color: #022d11;
+        box-shadow: 0 8px 24px rgba(212, 160, 23, 0.25);
+        transform: translateY(-2px);
+    }
+
+    .btn-google-sso svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .divider {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: #999;
+        font-size: 13px;
+        margin: 30px 0;
+    }
+
+    .divider::before, .divider::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .divider span {
+        padding: 0 15px;
+    }
+
+    .feature-list {
+        text-align: left;
+        background: rgba(250, 247, 242, 0.8);
+        border-radius: 16px;
+        padding: 20px 22px;
+        margin-top: 25px;
+        border: 1px dashed rgba(27, 94, 32, 0.2);
+    }
+
+    .feature-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .feature-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .feature-item i {
+        color: #D4A017;
+        font-size: 16px;
+    }
+
+    .security-note {
+        margin-top: 25px;
+        font-size: 12px;
+        color: #888;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="login-section">
+    <div class="login-card">
+        <div class="brand-badge">
+            <i class="fa-solid fa-leaf"></i> LATHRIYA SPICES CLUB
+        </div>
+
+        <h2>Welcome to <span>Lathriya</span></h2>
+        <p class="subtitle">Sign in to complete your purchase & track your spice orders.</p>
+
+        <!-- Primary Google OAuth Button -->
+        <a href="{% provider_login_url 'google' %}" class="btn-google-sso">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+            Continue with Google
+        </a>
+
+        <div class="divider">
+            <span>SECURE SSO AUTHENTICATION</span>
+        </div>
+
+        <div class="feature-list">
+            <div class="feature-item">
+                <i class="fa-solid fa-bolt"></i>
+                <span><strong>Instant 1-Click Sign In</strong> — No password needed.</span>
+            </div>
+            <div class="feature-item">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span><strong>100% Encrypted & Safe</strong> — Powered by Google.</span>
+            </div>
+            <div class="feature-item">
+                <i class="fa-solid fa-truck-fast"></i>
+                <span><strong>Fast Checkout & Order Tracking</strong> for your spices.</span>
+            </div>
+        </div>
+
+        <div class="security-note">
+            <i class="fa-solid fa-lock text-success"></i> Your personal data is protected by 256-bit SSL encryption.
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -7,19 +7,295 @@
 
     <title>{% block title %}Lathriya Spices{% endblock %}</title>
 
-    <!-- Bootstrap -->
+    <!-- Bootstrap CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-    <!-- Main CSS -->
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- INLINE STYLES (No static CSS file) -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #333;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4, h5 {
+            font-family: 'Poppins', sans-serif;
+        }
+        a {
+            text-decoration: none;
+        }
+        ul {
+            list-style: none;
+        }
+        img {
+            max-width: 100%;
+        }
+        section {
+            padding: 80px 0;
+        }
+        :root {
+            --primary: #1B5E20;
+            --secondary: #6D4C41;
+            --accent: #D4A017;
+            --light: #FAF7F2;
+            --dark: #222;
+            --white: #fff;
+        }
+
+        /* ---------- NAVBAR ---------- */
+        .navbar {
+            padding: 15px 0;
+        }
+        .navbar-brand {
+            font-size: 30px;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        .navbar-brand span {
+            color: var(--accent);
+        }
+        .nav-link {
+            margin: 0 12px;
+            color: #444;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+        .nav-link:hover {
+            color: var(--primary);
+        }
+        .icon-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            color: #333;
+            transition: 0.3s;
+            text-decoration: none;
+            position: relative;
+        }
+        .icon-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        .cart-count {
+            position: absolute;
+            top: -6px;
+            right: -4px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: red;
+            color: white;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ==========================================
+                    WELCOME / HERO SECTION
+        ========================================== */
+        .welcome {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            background: #022d11;
+            color: white;
+        }
+        .sub-heading {
+            color: #D4A017;
+            font-size: 18px;
+            letter-spacing: 3px;
+            font-weight: 600;
+        }
+        .welcome h1 {
+            font-size: 48px;
+            margin: 20px 0;
+            line-height: 1.2;
+            font-weight: 700;
+        }
+        .welcome h1 span {
+            color: #D4A017;
+        }
+        .welcome p {
+            font-size: 18px;
+            color: #d7d7d7;
+            line-height: 1.8;
+            margin-bottom: 35px;
+        }
+        .features {
+            margin-bottom: 35px;
+        }
+        .features div {
+            margin-bottom: 12px;
+            font-size: 17px;
+        }
+        .features i {
+            color: #D4A017;
+            margin-right: 12px;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+        }
+        .hero-buttons .btn {
+            padding: 14px 35px;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+        .hero-buttons .btn-success {
+            background: #D4A017;
+            color: #022d11;
+            border: none;
+        }
+        .hero-buttons .btn-success:hover {
+            background: white;
+            color: #022d11;
+        }
+        .hero-buttons .btn-outline-light:hover {
+            color: #022d11;
+        }
+        .welcome-image {
+            max-width: 90%;
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /*====================================
+                SHOP BY CATEGORY
+        ====================================*/
+        .categories {
+            background: #f8f8f8;
+            padding: 90px 0;
+        }
+        .section-heading {
+            margin-bottom: 60px;
+        }
+        .section-heading h2 {
+            color: #1B5E20;
+            font-size: 42px;
+            font-weight: 700;
+        }
+        .section-heading p {
+            color: #666;
+            font-size: 18px;
+            margin-top: 15px;
+        }
+        .category-card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 30px;
+            text-align: center;
+            height: 100%;
+            transition: .35s;
+            box-shadow: 0 10px 30px rgba(0,0,0,.08);
+            cursor: pointer;
+        }
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 18px 40px rgba(0,0,0,.15);
+        }
+        .category-card img {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            margin-bottom: 20px;
+        }
+        .category-card h4 {
+            color: #1B5E20;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .category-card p {
+            color: #666;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+        .category-btn {
+            display: inline-block;
+            padding: 10px 25px;
+            border-radius: 30px;
+            background: #1B5E20;
+            color: #fff;
+            transition: .3s;
+        }
+        .category-btn:hover {
+            background: #D4A017;
+            color: #fff;
+        }
+
+        /* ==========================
+                  FOOTER
+        ========================== */
+        .footer {
+            background: #1B5E20;
+            color: white;
+            padding: 60px 0 20px;
+        }
+        .footer h3 {
+            color: white;
+            font-weight: 700;
+        }
+        .footer h3 span {
+            color: #D4A017;
+        }
+        .footer h5 {
+            color: #D4A017;
+            margin-bottom: 20px;
+        }
+        .footer ul {
+            padding: 0;
+        }
+        .footer ul li {
+            margin-bottom: 10px;
+        }
+        .footer ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: .3s;
+        }
+        .footer ul li a:hover {
+            color: #D4A017;
+        }
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: white;
+            color: #1B5E20;
+            border-radius: 50%;
+            margin-right: 10px;
+            transition: .3s;
+        }
+        .social-icons a:hover {
+            background: #D4A017;
+            color: white;
+        }
+        .footer hr {
+            border-color: rgba(255,255,255,.2);
+            margin: 40px 0 20px;
+        }
+        .copyright {
+            color: #ddd;
+            margin: 0;
+        }
+    </style>
 
     {% block css %}{% endblock %}
 
@@ -31,75 +307,66 @@
 
 <nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top">
 
-<div class="container">
+    <div class="container">
 
-<a class="navbar-brand fw-bold"
-href="{{ url_for('home') }}">
+        <a class="navbar-brand fw-bold" href="{% url 'home' %}">
+            Lathriya <span>Spices</span>
+        </a>
 
-Lathriya <span>Spices</span>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-</a>
+        <div class="collapse navbar-collapse" id="navbarMenu">
 
-<button class="navbar-toggler"
-type="button"
-data-bs-toggle="collapse"
-data-bs-target="#navbarMenu">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'shop' %}">Shop</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                </li>
+            </ul>
 
-<span class="navbar-toggler-icon"></span>
+            <div class="d-flex align-items-center">
 
-</button>
+                <a href="#" class="icon-btn" title="Search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </a>
 
-<div class="collapse navbar-collapse"
-id="navbarMenu">
+                {% if user.is_authenticated %}
+                <div class="dropdown d-inline">
+                    <a href="#" class="icon-btn dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="{{ user.email }}">
+                        <i class="fa-solid fa-user-check text-success"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li class="dropdown-header fw-bold text-truncate" style="max-width: 200px;">{{ user.email }}</li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'account_logout' %}"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</a></li>
+                    </ul>
+                </div>
+                {% else %}
+                <a href="{% url 'account_login' %}" class="icon-btn" title="Sign in with Google">
+                    <i class="fa-regular fa-user"></i>
+                </a>
+                {% endif %}
 
-<ul class="navbar-nav mx-auto">
+                <a href="{% url 'cart' %}" class="icon-btn position-relative" title="Cart">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="cart-count">{{ cart_count|default:0 }}</span>
+                </a>
 
-<li class="nav-item">
-<a class="nav-link"
-href="{{ url_for('home') }}">Home</a>
-</li>
+            </div>
 
-<li class="nav-item">
-<a class="nav-link"
-href="{{ url_for('shop') }}">Shop</a>
-</li>
+        </div>
 
-<li class="nav-item">
-<a class="nav-link"
-href="{{ url_for('about') }}">About</a>
-</li>
-
-<li class="nav-item">
-<a class="nav-link"
-href="{{ url_for('contact') }}">Contact</a>
-</li>
-
-</ul>
-
-<div class="d-flex align-items-center">
-
-<a href="#" class="icon-btn">
-<i class="fa-solid fa-magnifying-glass"></i>
-</a>
-
-<a href="#" class="icon-btn">
-<i class="fa-regular fa-user"></i>
-</a>
-
-<a href="{{ url_for('cart') }}"
-class="icon-btn position-relative">
-
-<i class="fa-solid fa-cart-shopping"></i>
-
-<span class="cart-count">0</span>
-
-</a>
-
-</div>
-
-</div>
-
-</div>
+    </div>
 
 </nav>
 
@@ -113,104 +380,67 @@ class="icon-btn position-relative">
 
 <footer class="footer">
 
-<div class="container">
+    <div class="container">
 
-<div class="row">
+        <div class="row">
 
-<div class="col-lg-4">
+            <div class="col-lg-4">
+                <h3>Lathriya <span>Spices</span></h3>
+                <p>Bringing premium Kerala spices directly from our plantations to your kitchen.</p>
+            </div>
 
-<h3>Lathriya <span>Spices</span></h3>
+            <div class="col-lg-2">
+                <h5>Quick Links</h5>
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'shop' %}">Shop</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                </ul>
+            </div>
 
-<p>
-Bringing premium Kerala spices directly
-from our plantations to your kitchen.
-</p>
+            <div class="col-lg-3">
+                <h5>Products</h5>
+                <ul>
+                    <li>Cardamom Powder</li>
+                    <li>Black Pepper Powder</li>
+                    <li>Nutmeg Powder</li>
+                </ul>
+            </div>
 
-</div>
+            <div class="col-lg-3">
+                <h5>Customer Support</h5>
+                <ul>
+                    <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                    <li><a href="{% url 'shipping' %}">Shipping Policy</a></li>
+                    <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
+                    <li><a href="{% url 'refund' %}">Refund & Cancellation Policy</a></li>
+                    <li><a href="{% url 'terms' %}">Terms & Conditions</a></li>
+                </ul>
 
-<div class="col-lg-2">
+                <div class="social-icons mt-3">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
 
-<h5>Quick Links</h5>
+        </div>
 
-<ul>
+        <hr>
 
-<li><a href="{{ url_for('home') }}">Home</a></li>
+        <p class="copyright text-center">
+            © 2026 Lathriya Spices. All Rights Reserved.
+        </p>
 
-<li><a href="{{ url_for('shop') }}">Shop</a></li>
-
-<li><a href="{{ url_for('about') }}">About</a></li>
-
-
-
-</ul>
-
-</div>
-
-<div class="col-lg-3">
-
-<h5>Products</h5>
-
-<ul>
-
-<li>Cardamom Powder</li>
-
-<li>Black Pepper Powder</li>
-
-<li>Nutmeg Powder</li>
-
-</ul>
-
-</div>
-
-<div class="col-lg-3">
-
-<h5>Customer Support</h5>
-
-<ul>
-      <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
-
-      <li><a href="{{ url_for('shipping') }}">Shipping Policy</a></li>
-
-      <li><a href="{{ url_for('privacy') }}">Privacy Policy</a></li>
-
-      <li><a href="{{ url_for('refund') }}">Refund & Cancellation Policy</a></li>
-
-      <li> <a href="{{ url_for('terms') }}">Terms & Conditions</a></li>
-     
- </ul>
-
-<div class="social-icons mt-3">
-
-<a href="#"><i class="fab fa-facebook-f"></i></a>
-
-<a href="#"><i class="fab fa-instagram"></i></a>
-
-<a href="#"><i class="fab fa-whatsapp"></i></a>
-
-</div>
-
-</div>
-
-</div>
-
-<hr>
-
-<p class="copyright text-center">
-
-© 2026 Lathriya Spices. All Rights Reserved.
-
-</p>
-
-</div>
+    </div>
 
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-
-<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
 {% block js %}
 
 {% endblock %}
 
 </body>
+</html>

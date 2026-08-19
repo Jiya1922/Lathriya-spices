@@ -1,47 +1,151 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Checkout | Lathriya Spices{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
+<style>
+    /* CHECKOUT PAGE */
+    body {
+        font-family: 'Inter', sans-serif;
+        background: #f8f9fa;
+    }
+    .checkout-header {
+        background: #fff;
+        padding: 60px 0;
+    }
+    .checkout-header h1 {
+        color: #1B5E20;
+        font-size: 42px;
+        font-weight: 700;
+    }
+    .checkout-header p {
+        color: #666;
+        margin-top: 10px;
+    }
+    .checkout-section {
+        padding: 60px 0;
+    }
+    .checkout-form {
+        background: #fff;
+        padding: 35px;
+        border-radius: 20px;
+        box-shadow: 0 8px 20px rgba(0,0,0,.08);
+    }
+    .checkout-form h3 {
+        color: #1B5E20;
+        margin-bottom: 30px;
+        font-weight: 700;
+    }
+    .checkout-form label {
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+    .checkout-form .form-control, .checkout-form .form-select {
+        border-radius: 12px;
+        padding: 12px;
+        border: 1px solid #ddd;
+    }
+    .checkout-form .form-control:focus, .checkout-form .form-select:focus {
+        border-color: #1B5E20;
+        box-shadow: none;
+    }
+    .order-summary {
+        background: #fff;
+        padding: 35px;
+        border-radius: 20px;
+        box-shadow: 0 8px 20px rgba(0,0,0,.08);
+        position: sticky;
+        top: 100px;
+    }
+    .order-summary h3 {
+        color: #1B5E20;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        margin: 18px 0;
+    }
+    .summary-total {
+        display: flex;
+        justify-content: space-between;
+        font-size: 22px;
+        font-weight: 700;
+        color: #1B5E20;
+        margin: 25px 0;
+    }
+    .payment-btn {
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 50px;
+        background: #D4A017;
+        color: white;
+        font-size: 18px;
+        font-weight: 600;
+        transition: .3s;
+        cursor: pointer;
+    }
+    .payment-btn:hover {
+        background: #1B5E20;
+    }
+    .user-badge {
+        background: #e8f5e9;
+        color: #1B5E20;
+        padding: 12px 20px;
+        border-radius: 12px;
+        font-weight: 600;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    @media(max-width:991px){
+        .order-summary { margin-top: 40px; position: relative; top: 0; }
+    }
+    @media(max-width:576px){
+        .checkout-header h1 { font-size: 34px; }
+        .checkout-form, .order-summary { padding: 20px; }
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 
-<!-- ================= HEADER ================= -->
-
+<!-- HEADER -->
 <section class="checkout-header">
     <div class="container text-center">
         <h1>Checkout</h1>
-        <p>Please enter your delivery details.</p>
+        <p>Please enter your delivery details to complete your order.</p>
     </div>
 </section>
 
-<!-- ================= CHECKOUT ================= -->
-
+<!-- CHECKOUT SECTION -->
 <section class="checkout-section">
-
     <div class="container">
-
         <div class="row">
-
-            <!-- LEFT -->
-
+            <!-- LEFT FORM -->
             <div class="col-lg-7">
-
                 <div class="checkout-form">
+                    <div class="user-badge">
+                        <i class="fa-solid fa-user-check fs-5"></i>
+                        <span>Signed in as <strong>{{ user.email }}</strong></span>
+                    </div>
 
                     <h3>Customer Details</h3>
 
-                    <form>
-
+                    <form id="checkoutForm">
+                        {% csrf_token %}
                         <div class="row">
-
                             <div class="col-md-6 mb-3">
                                 <label>First Name</label>
                                 <input type="text"
                                        class="form-control"
                                        id="firstName"
+                                       name="first_name"
+                                       value="{{ user.first_name }}"
                                        placeholder="Enter your first name"
                                        required>
                             </div>
@@ -51,139 +155,93 @@
                                 <input type="text"
                                        class="form-control"
                                        id="lastName"
+                                       name="last_name"
+                                       value="{{ user.last_name }}"
                                        placeholder="Enter your last name"
                                        required>
                             </div>
-
                         </div>
 
                         <div class="mb-3">
-
                             <label>Phone Number</label>
-
                             <input type="tel"
                                    class="form-control"
                                    id="phone"
+                                   name="phone"
                                    placeholder="10-digit mobile number"
                                    pattern="[0-9]{10}"
                                    maxlength="10"
                                    required>
-
                         </div>
 
                         <div class="mb-3">
-
                             <label>Email</label>
-
                             <input type="email"
                                    class="form-control"
                                    id="email"
-                                   placeholder="example@gmail.com"
+                                   name="email"
+                                   value="{{ user.email }}"
+                                   readonly
                                    required>
-
                         </div>
 
                         <div class="mb-3">
-
                             <label>Address</label>
-
                             <textarea class="form-control"
+                                      id="address"
+                                      name="address"
                                       rows="4"
                                       placeholder="House name, Street, Landmark"
                                       required></textarea>
-
                         </div>
 
-                        <div class="col-md-4 mb-3">
-
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
                                 <label>State</label>
-
-                                <select class="form-select"
-                                        id="state"
-                                        required>
-
+                                <select class="form-select" id="state" name="state" required>
                                     <option value="">Select State</option>
-                                    <option>Kerala</option>
+                                    <option selected>Kerala</option>
                                     <option>Tamil Nadu</option>
                                     <option>Karnataka</option>
                                     <option>Andhra Pradesh</option>
                                     <option>Telangana</option>
-                                    <option>Goa</option>
                                     <option>Maharashtra</option>
-                                    <option>Odisha</option>
-                                    <option>Chhattisgarh</option>
-                                    <option>Madhya Pradesh</option>
-                                    <option>Gujarat</option>
-                                    <option>West Bengal</option>
-                                    <option>Jharkhand</option>
-                                    <option>Bihar</option>
-                                    <option>Rajasthan</option>
-                                    <option>Haryana</option>
-                                    <option>Chandigarh</option>
                                     <option>Delhi</option>
-                                    <option>Punjab</option>
-                                    <option>Uttar Pradesh</option>
-                                    <option>Uttarakhand</option>
-                                    <option>Himachal Pradesh</option>
-                                    <option>Jammu and Kashmir</option>
-                                    <option>Ladakh</option>
-                                    <option>Sikkim</option>
-                                    <option>Assam</option>
-                                    <option>Arunachal Pradesh</option>
-                                    <option>Nagaland</option>
-                                    <option>Manipur</option>
-                                    <option>Mizoram</option>
-                                    <option>Tripura</option>
-                                    <option>Meghalaya</option>
-
                                 </select>
-
                             </div>
 
-                       <div class="row">
-
                             <div class="col-md-4 mb-3">
-
                                 <label>District</label>
-
                                 <input type="text"
                                        class="form-control"
                                        id="district"
+                                       name="district"
                                        placeholder="District"
                                        required>
-
                             </div>
 
                             <div class="col-md-4 mb-3">
-
                                 <label>Pincode</label>
-
                                 <input type="text"
                                        class="form-control"
                                        id="pincode"
+                                       name="pincode"
                                        placeholder="6-digit pincode"
                                        pattern="[0-9]{6}"
                                        maxlength="6"
                                        required>
-
                             </div>
-
                         </div>
 
+                        <input type="hidden" id="totalAmount" name="total_amount" value="250">
                     </form>
-
                 </div>
-
             </div>
 
-            <!-- RIGHT -->
-
+            <!-- RIGHT SUMMARY -->
             <div class="col-lg-5">
-
                 <div class="order-summary">
-
                     <h3>Order Summary</h3>
-
                     <hr>
 
                     <div class="summary-item">
@@ -203,22 +261,123 @@
                         <span>₹250</span>
                     </div>
 
-                    <button class="payment-btn">
-                        Proceed to Payment
+                    <button type="button" id="payBtn" class="payment-btn">
+                        <i class="fa-solid fa-lock me-2"></i>Proceed to Payment
                     </button>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
 </section>
 
 {% endblock %}
 
 {% block js %}
-<script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
+<!-- Razorpay Checkout SDK -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const payBtn = document.getElementById("payBtn");
+    const checkoutForm = document.getElementById("checkoutForm");
+
+    payBtn.addEventListener("click", function(e) {
+        e.preventDefault();
+        
+        if (!checkoutForm.checkValidity()) {
+            checkoutForm.reportValidity();
+            return;
+        }
+
+        const formData = new FormData(checkoutForm);
+        const data = {
+            first_name: formData.get("first_name"),
+            last_name: formData.get("last_name"),
+            phone: formData.get("phone"),
+            email: formData.get("email"),
+            address: formData.get("address"),
+            state: formData.get("state"),
+            district: formData.get("district"),
+            pincode: formData.get("pincode"),
+            total_amount: 250.00
+        };
+
+        // 1. Save Order to Database
+        fetch("{% url 'checkout' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(resData => {
+            if (resData.success) {
+                const dbOrderId = resData.order_id;
+                const razorpayKey = resData.razorpay_key || "{{ razorpay_key_id }}";
+
+                // 2. Initialize Razorpay Payment Popup
+                const options = {
+                    "key": razorpayKey,
+                    "amount": 25000, // in paise
+                    "currency": "INR",
+                    "name": "Lathriya Spices",
+                    "description": "Order #" + dbOrderId + " - Cardamom Powder",
+                    "image": "{% static 'images/home/welcome.png' %}",
+                    "handler": function (response){
+                        // 3. Verify Payment on Backend
+                        fetch("{% url 'verify_payment' %}", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRFToken": "{{ csrf_token }}"
+                            },
+                            body: JSON.stringify({
+                                order_id: dbOrderId,
+                                razorpay_order_id: response.razorpay_order_id || 'rzp_order_test',
+                                razorpay_payment_id: response.razorpay_payment_id || 'rzp_pay_test',
+                                razorpay_signature: response.razorpay_signature || 'rzp_sig_test'
+                            })
+                        })
+                        .then(r => r.json())
+                        .then(vData => {
+                            alert("Payment Successful! Order #" + dbOrderId + " placed successfully.");
+                            window.location.href = "{% url 'home' %}";
+                        });
+                    },
+                    "prefill": {
+                        "name": data.first_name + " " + data.last_name,
+                        "email": data.email,
+                        "contact": data.phone
+                    },
+                    "theme": {
+                        "color": "#1B5E20"
+                    }
+                };
+
+                // Fallback for development if Key is placeholder test key
+                if (!window.Razorpay || razorpayKey === "rzp_test_your_key_id") {
+                    if (confirm("Razorpay Test Mode: Simulate successful payment for Order #" + dbOrderId + "?")) {
+                        options.handler({
+                            razorpay_order_id: 'rzp_order_mock_123',
+                            razorpay_payment_id: 'rzp_pay_mock_123',
+                            razorpay_signature: 'rzp_sig_mock_123'
+                        });
+                    }
+                } else {
+                    const rzp = new Razorpay(options);
+                    rzp.open();
+                }
+            } else {
+                alert("Error initializing order: " + (resData.error || "Please check details"));
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Order processing failed. Please try again.");
+        });
+    });
+});
+</script>
 {% endblock %}
