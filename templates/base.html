@@ -870,62 +870,101 @@
 
     <!-- ================= FOOTER ================= -->
 
+    <!-- ================= FOOTER ================= -->
+
     <footer class="footer">
 
-        <div class="container text-center text-md-start">
+        <div class="container">
 
-            <div class="row g-4">
+            <!-- DESKTOP FOOTER (Full Column Grid) -->
+            <div class="d-none d-md-block">
+                <div class="row g-4 text-start">
 
-                <div class="col-lg-4 col-md-6 text-center text-md-start">
-                    <img src="{% static 'images/main_logo.png' %}" alt="Lathriya Spices Logo" class="mb-3 mx-auto mx-md-0" style="height: 60px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3)); display: block;">
-                    <h3><span class="text-white">Lathriya</span> <span class="brand-word-spices">Spices</span></h3>
-                    <p>Bringing premium Kerala spices directly from our plantations to your kitchen.</p>
-                </div>
+                    <div class="col-lg-4 col-md-6">
+                        <img src="{% static 'images/main_logo.png' %}" alt="Lathriya Spices Logo" class="mb-3" style="height: 60px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3)); display: block;">
+                        <h3><span class="text-white">Lathriya</span> <span class="brand-word-spices">Spices</span></h3>
+                        <p>Bringing premium Kerala spices directly from our plantations to your kitchen.</p>
+                    </div>
 
-                <div class="col-lg-2 col-md-6 text-center text-md-start">
-                    <h5>Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="{% url 'home' %}">Home</a></li>
-                        <li><a href="{% url 'shop' %}">Shop</a></li>
-                        <li><a href="{% url 'about' %}">About</a></li>
-                    </ul>
-                </div>
+                    <div class="col-lg-2 col-md-6">
+                        <h5>Quick Links</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="{% url 'home' %}">Home</a></li>
+                            <li><a href="{% url 'shop' %}">Shop</a></li>
+                            <li><a href="{% url 'about' %}">About</a></li>
+                        </ul>
+                    </div>
 
-                <div class="col-lg-3 col-md-6 text-center text-md-start">
-                    <h5>Products</h5>
-                    <ul class="list-unstyled">
-                        <li>Cardamom Powder</li>
-                        <li>Black Pepper Powder</li>
-                        <li>Nutmeg Powder</li>
-                    </ul>
-                </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h5>Products</h5>
+                        <ul class="list-unstyled">
+                            <li>Cardamom Powder</li>
+                            <li>Black Pepper Powder</li>
+                            <li>Nutmeg Powder</li>
+                        </ul>
+                    </div>
 
-                <div class="col-lg-3 col-md-6 text-center text-md-start">
-                    <h5>Customer Support</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="{% url 'contact' %}">Contact Us</a></li>
-                        <li><a href="{% url 'shipping' %}">Shipping Policy</a></li>
-                        <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
-                        <li><a href="{% url 'refund' %}">Refund & Cancellation Policy</a></li>
-                        <li><a href="{% url 'terms' %}">Terms & Conditions</a></li>
-                    </ul>
+                    <div class="col-lg-3 col-md-6">
+                        <h5>Customer Support</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                            <li><a href="{% url 'shipping' %}">Shipping Policy</a></li>
+                            <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
+                            <li><a href="{% url 'refund' %}">Refund & Cancellation Policy</a></li>
+                            <li><a href="{% url 'terms' %}">Terms & Conditions</a></li>
+                        </ul>
 
-                    <div class="social-icons mt-3 d-flex justify-content-center justify-content-md-start">
-                        <a href="#" class="facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="https://wa.me/" class="whatsapp" title="WhatsApp" target="_blank"><i
-                                class="fab fa-whatsapp"></i></a>
+                        <div class="social-icons mt-3 d-flex gap-2">
+                            <a href="#" class="facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="https://wa.me/" class="whatsapp" title="WhatsApp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+
                     </div>
 
                 </div>
 
+                <hr class="my-4 border-light opacity-25">
+
+                <p class="copyright text-center">
+                    © 2026 Lathriya Spices. All Rights Reserved.
+                </p>
             </div>
 
-            <hr>
+            <!-- MOBILE FOOTER (Ultra-Compact, Simple & Clean) -->
+            <div class="d-md-none text-center py-2">
+                <img src="{% static 'images/main_logo.png' %}" alt="Lathriya Spices Logo" class="mb-2 mx-auto" style="height: 42px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));">
+                <h4 class="mb-1 text-white fw-bold fs-5">Lathriya <span class="brand-word-spices">Spices</span></h4>
+                <p class="text-white-50 small mb-3 px-2" style="font-size: 12px; line-height: 1.4;">Premium Kerala spices directly from our plantations.</p>
 
-            <p class="copyright text-center">
-                © 2026 Lathriya Spices. All Rights Reserved.
-            </p>
+                <!-- Essential Quick Links in Dot-Separated Wrap -->
+                <div class="d-flex flex-wrap justify-content-center gap-2 mb-3 small fw-semibold text-white-50" style="font-size: 13px;">
+                    <a href="{% url 'home' %}" class="text-white text-decoration-none px-1">Home</a>
+                    <span class="opacity-25">•</span>
+                    <a href="{% url 'shop' %}" class="text-white text-decoration-none px-1">Shop</a>
+                    <span class="opacity-25">•</span>
+                    <a href="{% url 'about' %}" class="text-white text-decoration-none px-1">About</a>
+                    <span class="opacity-25">•</span>
+                    <a href="{% url 'contact' %}" class="text-white text-decoration-none px-1">Contact</a>
+                    <span class="opacity-25">•</span>
+                    <a href="{% url 'privacy' %}" class="text-white text-decoration-none px-1">Privacy</a>
+                    <span class="opacity-25">•</span>
+                    <a href="{% url 'terms' %}" class="text-white text-decoration-none px-1">Terms</a>
+                </div>
+
+                <!-- Social Icons -->
+                <div class="social-icons d-flex justify-content-center gap-2 mb-3">
+                    <a href="#" class="facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/" class="whatsapp" title="WhatsApp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                </div>
+
+                <hr class="my-2 border-light opacity-25">
+
+                <p class="copyright text-white-50 mb-0" style="font-size: 11px;">
+                    © 2026 Lathriya Spices. All Rights Reserved.
+                </p>
+            </div>
 
         </div>
 
