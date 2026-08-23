@@ -191,6 +191,15 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Razorpay Keys
@@ -219,19 +228,13 @@ if SUPABASE_STORAGE_S3_KEY_ID and SUPABASE_STORAGE_S3_SECRET_KEY and 'your_supab
     AWS_S3_FILE_OVERWRITE = True
     AWS_DEFAULT_ACL = None
 
-
     # Aggressive dynamic caching headers for fast image loading
     AWS_S3_OBJECT_PARAMETERS = {
         'CacheControl': 'public, max-age=31536000, must-revalidate',
     }
 
-    STORAGES = {
-        "default": {
-            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-        },
-        "staticfiles": {
-            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-        },
+    STORAGES["default"] = {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
     }
     DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
