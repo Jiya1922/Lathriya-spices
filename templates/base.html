@@ -666,23 +666,31 @@
         /* ==========================================
            GLOBAL MOBILE RESPONSIVE TYPOGRAPHY & NAVBAR
         ========================================== */
-        @media (max-width: 768px) {
-            /* 1. Single-Line Responsive Navbar */
+        @media (max-width: 991px) {
             .navbar > .container {
-                flex-wrap: nowrap !important;
+                flex-wrap: wrap !important;
+                justify-content: space-between !important;
+            }
+            .navbar-collapse {
+                flex-basis: 100% !important;
+                width: 100% !important;
+                margin-top: 10px !important;
             }
             .navbar-brand img {
                 height: 38px !important;
             }
             .brand-word-lathriya, .brand-word-spices {
                 font-size: 15px !important;
+                display: inline-block !important;
             }
             .navbar-brand {
-                margin-right: 4px !important;
+                margin-right: 0 !important;
                 gap: 4px !important;
             }
+        }
 
-            /* 2. Responsive Typography (No overly large text on mobile) */
+        @media (max-width: 768px) {
+            /* Responsive Typography (No overly large text on mobile) */
             h1, .welcome h1 {
                 font-size: 26px !important;
                 line-height: 1.25 !important;
@@ -716,7 +724,7 @@
                 width: 100% !important;
             }
 
-            /* 3. Responsive Hero Background Image */
+            /* Responsive Hero Background Image */
             .welcome {
                 min-height: auto !important;
                 padding: 55px 0 45px !important;
@@ -724,18 +732,6 @@
                 url("{% static 'images/home/home_logo.webp' %}") center center / cover no-repeat !important;
                 background-size: cover !important;
                 background-position: center top !important;
-            }
-        }
-
-        @media (max-width: 400px) {
-            .brand-word-spices {
-                display: none !important;
-            }
-            .brand-word-lathriya {
-                font-size: 14px !important;
-            }
-            .navbar-brand img {
-                height: 32px !important;
             }
         }
 
@@ -823,21 +819,14 @@
                 <span class="brand-text-wrapper"><span class="brand-word-lathriya">Lathriya</span> <span class="brand-word-spices">Spices</span></span>
             </a>
 
-            <!-- MOBILE CART & TOGGLER CONTROLS -->
-            <div class="d-flex align-items-center gap-2 ms-auto d-lg-none me-2">
-                <a href="{% url 'cart' %}" class="icon-btn position-relative" title="Cart">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span class="cart-count">{{ cart_count|default:0 }}</span>
-                </a>
-            </div>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+            <!-- MOBILE TOGGLER BUTTON -->
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarMenu">
 
-                <ul class="navbar-nav mx-auto">
+                <ul class="navbar-nav mx-auto text-center text-lg-start">
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'home' %}">Home</a>
                     </li>
@@ -854,7 +843,7 @@
 
                 <div class="d-flex align-items-center justify-content-center justify-content-lg-end gap-2 mt-3 mt-lg-0 pt-2 pt-lg-0 border-top border-lg-0">
 
-                    <!-- LIVE NAVBAR SEARCH (Inside Hamburger on Mobile, Right-aligned on Desktop) -->
+                    <!-- LIVE NAVBAR SEARCH -->
                     <div class="position-relative d-inline-block me-1" id="navSearchContainer">
                         <button type="button" class="icon-btn border-0" id="navSearchToggle"
                             title="Search Products">
@@ -878,7 +867,7 @@
                         </div>
                     </div>
 
-                    <!-- PROFILE DROPDOWN (Inside Hamburger on Mobile, Right-aligned on Desktop) -->
+                    <!-- PROFILE DROPDOWN -->
                     {% if user.is_authenticated %}
                     <div class="dropdown d-inline ms-1">
                         <a href="#" class="icon-btn dropdown-toggle border-0 position-relative" id="userDropdown"
@@ -926,8 +915,8 @@
                     </a>
                     {% endif %}
 
-                    <!-- DESKTOP CART ICON (Hidden on Mobile) -->
-                    <a href="{% url 'cart' %}" class="icon-btn position-relative d-none d-lg-inline-flex ms-1" title="Cart">
+                    <!-- CART ICON (Inside Hamburger on Mobile & Right-aligned on Desktop) -->
+                    <a href="{% url 'cart' %}" class="icon-btn position-relative ms-1" title="Cart">
                         <i class="fa-solid fa-cart-shopping"></i>
                         <span class="cart-count">{{ cart_count|default:0 }}</span>
                     </a>
