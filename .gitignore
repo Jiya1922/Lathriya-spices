@@ -1,65 +1,47 @@
-# ==========================================
-# Environment Variables & Secret Credentials
-# ==========================================
+# Environment & Secrets
 .env
 .env.local
 .env.*.local
 *.env
 
-# ==========================================
-# Database & Local Media Storage
-# ==========================================
-*.sqlite3
-db.sqlite3
-db.sqlite3-journal
-media/
-staticfiles/
-
-# ==========================================
-# Python Compiled / Bytecode Files
-# ==========================================
+# Python & Virtual Environments
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
-
-# ==========================================
-# Virtual Environments & Packages
-# ==========================================
-venv/
 env/
+venv/
 ENV/
+env.bak/
+venv.bak/
 .venv/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
 
-# ==========================================
-# Logs & Temporary Files
-# ==========================================
+# Database & Storage
+*.sqlite3
+*.db
+local_db.sqlite3
+
+# Test & Debug artifacts
+test_receipt_output.pdf
+verify_supabase_receipt.pdf
 *.log
-.freebuff/
+scratch/
 
-# ==========================================
-# Operating System & IDE Configs
-# ==========================================
-.DS_Store
-Thumbs.db
+# Django Static & Media (generated during build/collectstatic)
+staticfiles/
+media/
+!static/
+
+# IDE & Editor Settings
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
+.DS_Store
+Thumbs.db
+
+# Antigravity IDE / Gemini brain cache
+.agents/
+.gemini/

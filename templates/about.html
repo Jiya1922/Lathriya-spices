@@ -5,14 +5,11 @@
 
 {% block css %}
 <style>
-    /* ABOUT PAGE STYLES */
     :root {
         --primary: #1B5E20;
         --secondary: #6D4C41;
         --accent: #D4A017;
         --light: #FAF7F2;
-        --dark: #222;
-        --white: #fff;
     }
     .about-hero {
         background: linear-gradient(rgba(43, 140, 49, 0.85), rgba(27,94,32,.85)),
@@ -31,29 +28,86 @@
         font-size: 22px;
         opacity: .95;
     }
+
+    /* OUR STORY */
     .about-section {
-        padding: 90px 0;
+        padding: 80px 0;
         background: white;
     }
-    .about-section img {
-        border-radius: 20px;
+    .about-img-col {
+        position: relative;
+    }
+    .about-img-col img {
+        width: 100%;
+        height: 360px;
+        object-fit: cover;
+        border-radius: 18px;
         transition: .5s;
         box-shadow: 0 15px 40px rgba(0,0,0,.15);
     }
-    .about-section img:hover {
+    .about-img-col:hover img {
         transform: scale(1.03);
     }
-    .about-section h2 {
-        color: var(--primary);
-        font-size: 40px;
-        font-weight: 700;
-        margin-bottom: 25px;
+    .about-img-col::before {
+        display: none;
     }
-    .about-section p {
+    .about-text-col {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+        padding: 10px 0;
+    }
+    .about-tag {
+        display: inline-block;
+        font-size: 12px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #D4A017;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+    .about-text-col h2 {
+        color: #1B5E20;
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 18px;
+        line-height: 1.2;
+    }
+    .about-text-col h2 span {
+        color: #D4A017;
+    }
+    .about-divider {
+        width: 50px;
+        height: 2px;
+        background: linear-gradient(90deg, #D4A017, transparent);
+        margin-bottom: 20px;
+    }
+    .about-text-col p {
         color: #555;
         line-height: 1.9;
-        font-size: 17px;
+        font-size: 16px;
+        margin-bottom: 14px;
     }
+    .about-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background: #f8f9fa;
+        border-radius: 40px;
+        border: 1px solid #e5e5e5;
+        font-size: 14px;
+        color: #1B5E20;
+        font-weight: 600;
+        width: fit-content;
+    }
+    .about-badge i {
+        color: #D4A017;
+    }
+
+    /* WHY CHOOSE US */
     .why-us {
         background: var(--light);
         padding: 90px 0;
@@ -89,6 +143,8 @@
         color: #666;
         margin: 0;
     }
+
+    /* MISSION */
     .mission {
         background: white;
         padding: 90px 0;
@@ -106,21 +162,26 @@
         line-height: 2;
         font-size: 18px;
     }
+
     @media(max-width:992px){
         .about-hero { padding: 90px 0; }
         .about-hero h1 { font-size: 42px; }
-        .about-section { text-align: center; }
-        .about-section img { margin-bottom: 40px; }
+        .about-text-col { text-align: center; align-items: center; padding: 20px 0 0; }
+        .about-divider { margin: 0 auto 20px; }
+        .about-img-col { margin-bottom: 30px; }
+        .about-img-col img { height: 280px; }
     }
     @media(max-width:768px){
         .about-hero h1 { font-size: 34px; }
-        .about-section h2, .why-us h2, .mission h2 { font-size: 32px; }
+        .about-text-col h2, .why-us h2, .mission h2 { font-size: 30px; }
         .about-section, .why-us, .mission { padding: 60px 0; }
+        .about-img-col img { height: 240px; }
     }
 </style>
 {% endblock %}
 
 {% block content %}
+
 <!-- HERO -->
 <section class="about-hero">
     <div class="container text-center">
@@ -130,27 +191,37 @@
 </section>
 
 <!-- OUR STORY -->
-<section class="about-section">
+<section class="about-section reveal">
     <div class="container">
-        <div class="row align-items-center">
+        <div class="row align-items-center g-5">
             <div class="col-lg-6">
-                <img src="{% static 'images/about/plantation.jpg' %}" alt="Our Plantation" class="img-fluid">
+                <div class="about-img-col text-center p-4 bg-white rounded-4 shadow-sm border-0">
+                    <img src="{% static 'images/main_logo.png' %}" alt="Lathriya Spices Brand Logo" style="max-height:280px; width:auto; object-fit:contain; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.12));">
+                </div>
             </div>
             <div class="col-lg-6">
-                <h2>Our Story</h2>
-                <p>
-                    Lathriya Spices was founded with a simple goal: to deliver authentic, premium-quality spices directly from Kerala plantations to homes across India.
-                </p>
-                <p>
-                    We carefully source, process, and pack our spices while preserving their natural aroma, flavour, and freshness.
-                </p>
+                <div class="about-text-col">
+                    <div class="about-tag">Our Story</div>
+                    <h2>Crafted from <span>Kerala's</span> Finest Plantations</h2>
+                    <div class="about-divider"></div>
+                    <p>
+                        Lathriya Spices was founded with a simple goal: to deliver authentic, premium-quality spices directly from Kerala plantations to homes across India.
+                    </p>
+                    <p>
+                        We carefully source, process, and pack our spices while preserving their natural aroma, flavour, and freshness.
+                    </p>
+                    <div class="about-badge">
+                        <i class="fa-solid fa-leaf"></i>
+                        100% Natural &amp; Farm Fresh
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- WHY CHOOSE US -->
-<section class="why-us">
+<section class="why-us reveal">
     <div class="container">
         <h2 class="text-center mb-5">Why Choose Lathriya Spices?</h2>
         <div class="row text-center g-4">
@@ -187,7 +258,7 @@
 </section>
 
 <!-- MISSION -->
-<section class="mission">
+<section class="mission reveal">
     <div class="container text-center">
         <h2>Our Mission</h2>
         <p>
@@ -195,4 +266,34 @@
         </p>
     </div>
 </section>
+
+<!-- FSSAI CERTIFIED & REGISTERED TRUST CARD -->
+<section class="py-5 bg-light border-top border-bottom reveal">
+    <div class="container">
+        <div class="p-4 p-md-5 bg-white rounded-5 border shadow-sm">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-7">
+                    <h3 class="fw-bold text-dark mb-2" style="font-family:'Montserrat', sans-serif; color: #1B5E20 !important;">
+                        FSSAI Registered Food Quality Assurance
+                    </h3>
+                    <p class="text-muted mb-0 fs-6" style="line-height:1.8;">
+                        At Lathriya Spices, food safety and pure quality are at the heart of everything we produce. Our processing facility operates under strict Food Safety Standards Authority of India (FSSAI) guidelines, ensuring unadulterated purity, hygienic packaging, and rich natural aroma.
+                    </p>
+                </div>
+                <div class="col-lg-5 text-lg-end">
+                    <div class="p-3 px-4 bg-light rounded-4 border shadow-sm d-inline-block text-start" style="max-width:380px; border-left: 5px solid #1B5E20 !important;">
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="{% static 'images/home/fssai_logo.webp' %}" alt="FSSAI Official Logo" style="height: 52px; width: auto; object-fit: contain; flex-shrink:0;">
+                            <div>
+                                <div class="fw-bold text-dark fs-6 mb-0">FSSAI Registration License</div>
+                                <div class="text-success fw-bold fs-5" style="letter-spacing:1px;">Lic. No: 21324123000456</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 {% endblock %}

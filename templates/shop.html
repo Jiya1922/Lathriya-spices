@@ -6,80 +6,156 @@
 {% block css %}
 <style>
     /* ===================================
-                SHOP HEADER
+            COMPACT SHOP HERO
     =================================== */
-    .shop-header {
-        background: linear-gradient(135deg,#1B5E20,#2E7D32);
+    .shop-hero {
+        position: relative;
+        background: linear-gradient(160deg, #071a0b 0%, #0d3014 35%, #1B5E20 100%);
         color: white;
-        padding: 70px 0;
-    }
-    .shop-header h1 {
-        font-size: 48px;
-        font-weight: 700;
-        margin-bottom: 15px;
-    }
-    .shop-header p {
-        max-width: 700px;
-        margin: auto;
-        font-size: 18px;
-        line-height: 1.8;
-        opacity: .9;
-    }
-    .shop-header h4 {
-        font-size: 30px;
-        font-weight: 600;
-        margin-bottom: 15px;
-        color: #f8f8f8;
+        padding: 40px 0 32px;
+        overflow: hidden;
+        text-align: center;
     }
 
-    /* SEARCH SECTION */
-    .search-section {
-        background: #f8f8f8;
-        padding: 40px 0;
+    .shop-hero::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(212, 160, 23, .4), transparent);
     }
-    .search-box {
-        max-width: 600px;
-        margin: auto;
+
+    /* Top row: heading + price side by side */
+    .hero-top {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+    }
+
+    .hero-top h1 {
+        font-size: 34px;
+        font-weight: 700;
+        margin: 0;
+        line-height: 1.2;
+    }
+
+    .hero-top h1 span {
+        color: #D4A017;
+    }
+
+    .hero-price-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 18px;
+        border: 1px solid rgba(212, 160, 23, .4);
+        border-radius: 40px;
+        background: rgba(212, 160, 23, .1);
+        font-size: 15px;
+        font-weight: 600;
+        color: #D4A017;
+        white-space: nowrap;
+    }
+
+    .hero-price-pill i {
+        font-size: 13px;
+    }
+
+    /* Single-line description */
+    .hero-desc {
+        font-size: 15px;
+        color: rgba(255, 255, 255, .65);
+        margin: 0 auto 20px;
+        max-width: 550px;
+        line-height: 1.6;
+    }
+
+    /* Search inline */
+    .hero-search {
+        max-width: 440px;
+        margin: 0 auto;
         position: relative;
     }
-    .search-box input {
+
+    .hero-search input {
         width: 100%;
-        height: 55px;
-        border: none;
+        height: 42px;
+        border: 1px solid rgba(255, 255, 255, .12);
         outline: none;
-        border-radius: 50px;
-        padding: 0 55px 0 25px;
-        font-size: 16px;
-        background: white;
-        box-shadow: 0 8px 25px rgba(0,0,0,.08);
-    }
-    .search-box i {
-        position: absolute;
-        right: 22px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #1B5E20;
-        font-size: 18px;
+        border-radius: 40px;
+        padding: 0 42px 0 18px;
+        font-size: 14px;
+        background: rgba(255, 255, 255, .06);
+        color: white;
+        backdrop-filter: blur(6px);
+        transition: border-color .3s, background .3s;
     }
 
-    /* PRODUCTS */
+    .hero-search input::placeholder {
+        color: rgba(255, 255, 255, .35);
+    }
+
+    .hero-search input:focus {
+        border-color: rgba(212, 160, 23, .5);
+        background: rgba(255, 255, 255, .1);
+    }
+
+    .hero-search i {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: rgba(255, 255, 255, .35);
+        font-size: 14px;
+        transition: color .3s;
+    }
+
+    .hero-search input:focus~i {
+        color: #D4A017;
+    }
+
+    @media(max-width:768px) {
+        .shop-hero {
+            padding: 28px 0 22px;
+        }
+
+        .hero-top h1 {
+            font-size: 26px;
+        }
+
+        .hero-desc {
+            font-size: 13px;
+        }
+    }
+
+    /* ===================================
+            PRODUCT CARDS
+    =================================== */
     .shop-products {
         background: #f8f8f8;
-        padding-bottom: 80px;
+        padding: 60px 0 80px;
     }
+
     .product-card {
         background: white;
         border-radius: 20px;
         padding: 30px;
         text-align: center;
         transition: .35s;
-        box-shadow: 0 12px 30px rgba(0,0,0,.08);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, .06);
         height: 100%;
     }
+
     .product-card:hover {
         transform: translateY(-10px);
-        box-shadow: 0 18px 40px rgba(0,0,0,.15);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, .12);
     }
+
     .product-card img {
         width: 220px;
         height: 220px;
@@ -87,13 +163,15 @@
         margin-bottom: 20px;
         transition: .4s;
     }
+
     .product-card:hover img {
         transform: scale(1.08);
     }
+
     .product-card h3 {
         color: #113911;
         font-weight: 700;
-        font-size: 28px;
+        font-size: 26px;
         margin-bottom: 12px;
     }
 
@@ -101,10 +179,12 @@
     .rating {
         margin-bottom: 15px;
     }
+
     .rating i {
         color: #FFC107;
         font-size: 17px;
     }
+
     .rating span {
         margin-left: 8px;
         color: #666;
@@ -117,16 +197,11 @@
         font-weight: 600;
         margin-bottom: 12px;
     }
+
     .description {
-        color: #000000;
+        color: #000;
         line-height: 1.8;
         min-height: 60px;
-    }
-    .price {
-        color: #1B5E20;
-        font-size: 26px;
-        font-weight: 700;
-        margin: 20px 0;
     }
 
     /* BUTTON */
@@ -141,14 +216,17 @@
         font-weight: 600;
         transition: .3s;
     }
+
     .product-btn:hover {
         background: #D4A017;
         color: white;
     }
 
-    @media(max-width:768px){
-        .shop-header h1 { font-size: 36px; }
-        .product-card img { width: 180px; height: 180px; }
+    @media(max-width:768px) {
+        .product-card img {
+            width: 180px;
+            height: 180px;
+        }
     }
 </style>
 {% endblock %}
@@ -156,33 +234,26 @@
 {% block content %}
 
 <!-- =========================
-        SHOP HEADER
+        COMPACT SHOP HERO
 ========================= -->
 
-<section class="shop-header">
-    <div class="container text-center">
-        <h1>Our Products</h1>
+<section class="shop-hero">
+    <div class="container">
 
-        <p>
+        <div class="hero-top">
+            <h1>Our <span>Products</span></h1>
+            <div class="hero-price-pill">
+                ₹250 onwards
+            </div>
+        </div>
+
+        <p class="hero-desc">
             Discover our premium spice powders, carefully prepared from
             the finest ingredients to bring authentic flavour to your kitchen.
         </p>
 
-        <h4 class="price">₹250 onwards</h4>
-    </div>
-</section>
-
-<!-- SEARCH -->
-
-<section class="search-section">
-    <div class="container">
-
-        <div class="search-box">
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="Search products...">
-
+        <div class="hero-search">
+            <input type="text" id="searchInput" placeholder="Search products...">
             <i class="fa-solid fa-magnifying-glass"></i>
         </div>
 
@@ -193,35 +264,87 @@
         SHOP PRODUCTS
 ========================= -->
 
-<section class="shop-products">
+<section class="shop-products reveal">
 
     <div class="container">
 
         <div class="row g-4 justify-content-center">
-            {% if products %}
-                {% for product in products %}
-                <div class="col-lg-4 col-md-6">
-                    <div class="product-card">
-                        <img src="{{ product.get_image_url }}" alt="{{ product.name }}" loading="lazy" decoding="async">
-                        <h3>{{ product.name }}</h3>
+            {% for product in products %}
+            <div class="col-lg-4 col-md-6">
+                <div class="product-card d-flex flex-column justify-content-between position-relative text-center">
+                    <div>
+                        <!-- Top Corners Controls (Weight Select & Quantity) -->
+                        <div class="card-top-controls" onclick="event.stopPropagation();">
+                            <select class="card-weight-select" onchange="onCardWeightChange(this);"
+                                onclick="event.stopPropagation();">
+                                {% for variant in product.variants.all %}
+                                <option value="{{ variant.id }}" data-price="{{ variant.price }}"
+                                    data-stock="{{ variant.stock_quantity }}" {% if variant.is_default or forloop.first %}selected{% endif %}>
+                                    {{ variant.weight }} (₹{{ variant.price|floatformat:2 }}) — {{ variant.stock_quantity }} in stock
+                                </option>
+                                {% empty %}
+                                <option value="{{ product.default_variant.id|default:'' }}"
+                                    data-price="{{ product.starting_price }}"
+                                    data-stock="{{ product.default_variant.stock_quantity }}">
+                                    50g (₹{{ product.starting_price|floatformat:2 }}) — {{ product.default_variant.stock_quantity }} in stock
+                                </option>
+                                {% endfor %}
+                            </select>
+
+                            <div class="card-qty-control" onclick="event.stopPropagation();">
+                                <button type="button" class="card-qty-btn card-minus-btn"
+                                    onclick="changeCardQty(this, -1); event.stopPropagation();"
+                                    title="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
+                                <span class="card-qty-val">1</span>
+                                <button type="button" class="card-qty-btn card-plus-btn"
+                                    onclick="changeCardQty(this, 1); event.stopPropagation();"
+                                    title="Increase quantity"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                        </div>
+
+                        <a href="{% url 'product_detail' slug=product.slug %}" class="text-decoration-none text-dark">
+                            <img src="{{ product.get_image_url }}" alt="{{ product.name }}" loading="lazy"
+                                decoding="async">
+                            <h3>{{ product.name }}</h3>
+                        </a>
 
                         <div class="rating">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star-half-stroke"></i>
-                            <span>4.9 (126 Reviews)</span>
+                            {% if product.review_count > 0 %}
+                            {% for i in "12345" %}
+                            {% if forloop.counter <= product.avg_rating %} <i class="fa-solid fa-star"></i>
+                                {% elif forloop.counter <= product.avg_rating|add:"0.5" %} <i
+                                    class="fa-solid fa-star-half-stroke"></i>
+                                    {% else %}
+                                    <i class="fa-solid fa-star" style="color:#ddd;"></i>
+                                    {% endif %}
+                                    {% endfor %}
+                                    <span>{{ product.avg_rating }} ({{ product.review_count }})</span>
+                                    {% endif %}
                         </div>
-                        <p class="weight">Available in {{ product.weight }}</p>
-                        <p class="description">{{ product.description }}</p>
-                        <a href="{% url 'product_detail' slug=product.slug %}" class="product-btn">
-                            View Details
+                        <p class="weight card-price-display">₹{% if product.default_variant %}{{ product.default_variant.price|floatformat:2 }}{% else %}{{ product.starting_price|floatformat:2 }}{% endif %}</p>
+                        <p class="description">{{ product.description|truncatewords:15 }}</p>
+                    </div>
+                    <div class="d-flex gap-2 justify-content-center mt-3 flex-wrap align-items-center">
+                        <button type="button" class="product-btn card-add-to-cart-btn flex-fill py-2 fs-6 text-white"
+                            style="background:#1B5E20; border:none;"
+                            data-variant-id="{{ product.default_variant.id|default:'' }}">
+                            <i class="fa-solid fa-cart-shopping me-1"></i> Add to Cart
+                        </button>
+                        <button type="button" class="product-btn quick-buy-btn flex-fill py-2 fs-6 text-white"
+                            style="background:#D4A017; border:none;"
+                            data-variant-id="{{ product.default_variant.id|default:'' }}"
+                            data-detail-url="{% url 'product_detail' slug=product.slug %}?buy_now=1">
+                            <i class="fa-solid fa-bolt me-1"></i> Buy Now
+                        </button>
+                        <a href="{% url 'product_detail' slug=product.slug %}"
+                            class="btn btn-outline-success flex-fill py-2 fs-6 text-center fw-bold rounded-pill"
+                            style="border: 2px solid #1B5E20; color: #1B5E20; background: transparent;">
+                            <i class="fa-solid fa-eye me-1"></i> View Details
                         </a>
                     </div>
                 </div>
-                {% endfor %}
-            {% else %}
+            </div>
+            {% empty %}
             <!-- Cardamom -->
             <div class="col-lg-4 col-md-6">
                 <div class="product-card">
@@ -235,7 +358,7 @@
                         <i class="fa-solid fa-star-half-stroke"></i>
                         <span>4.9 (126 Reviews)</span>
                     </div>
-                    <p class="weight">Available in 50g & 100g</p>
+                    <p class="weight">Available in 50g &amp; 100g</p>
                     <p class="description">Finely ground premium Kerala cardamom with a rich aroma.</p>
                     <a href="{% url 'product' %}?id=cardamom" class="product-btn">View Details</a>
                 </div>
@@ -253,7 +376,7 @@
                         <i class="fa-solid fa-star-half-stroke"></i>
                         <span>4.8 (92 Reviews)</span>
                     </div>
-                    <p class="weight">Available in 50g & 100g</p>
+                    <p class="weight">Available in 50g &amp; 100g</p>
                     <p class="description">Freshly ground black pepper with bold flavour and aroma.</p>
                     <a href="{% url 'product' %}?id=pepper" class="product-btn">View Details</a>
                 </div>
@@ -271,14 +394,13 @@
                         <i class="fa-regular fa-star"></i>
                         <span>4.6 (54 Reviews)</span>
                     </div>
-                    <p class="weight">Available in 50g & 100g</p>
+                    <p class="weight">Available in 50g &amp; 100g</p>
                     <p class="description">Premium nutmeg powder made from carefully selected nutmeg.</p>
                     <a href="{% url 'product' %}?id=nutmeg" class="product-btn">View Details</a>
                 </div>
             </div>
-            {% endif %}
+            {% endfor %}
         </div>
-
 
     </div>
 

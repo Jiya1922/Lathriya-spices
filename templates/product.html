@@ -2,108 +2,189 @@
 {% load static %}
 {% load socialaccount %}
 
-{% block title %}Cardamom Powder | Lathriya Spices{% endblock %}
+{% block title %}{{ product.name|default:"Product" }} | Lathriya Spices{% endblock %}
 
 {% block css %}
 <style>
     /* BREADCRUMB */
     .breadcrumb-section {
         background: #f5f5f5;
-        padding: 18px 0;
+        padding: 12px 0;
     }
+
     .breadcrumb-section a {
         text-decoration: none;
         color: #879488;
     }
+
     .breadcrumb-section span {
         margin: 0 8px;
     }
 
-    /* PRODUCT */
+    /* PRODUCT DETAILS */
     .product-details {
-        padding: 80px 0;
-        background: #ffffff;
+        padding: 40px 0 50px;
+        background: #fff;
     }
+
     .product-details h5 {
         color: #333;
         font-weight: 600;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
+        font-size: 15px;
     }
+
     .product-details hr {
-        opacity: .15;
-        margin: 30px 0;
+        opacity: .12;
+        margin: 18px 0;
     }
-    .product-image {
-        background: #ffffff;
-        border: 1px solid #eeeeee;
-        padding: 30px;
-        box-shadow: 0 8px 30px rgba(0,0,0,.08);
+
+    /* IMAGE GALLERY */
+    .product-gallery {
         text-align: center;
-        border-radius: 20px;
-        margin-bottom: 20px;
     }
+
+    .product-image {
+        background: #fff;
+        border: 1px solid #eee;
+        padding: 20px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, .06);
+        text-align: center;
+        border-radius: 16px;
+        margin-bottom: 14px;
+    }
+
     .product-image img {
         width: 100%;
-        max-width: 420px;
+        max-width: 340px;
         transition: .3s;
     }
+
     .product-image img:hover {
-        transform: scale(1.05);
+        transform: scale(1.04);
     }
+
+    .thumbnail-gallery {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .thumb-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .thumb {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: .3s;
+    }
+
+    .thumb:hover {
+        border-color: #1B5E20;
+        transform: scale(1.06);
+    }
+
+    .active-thumb {
+        border: 3px solid #1B5E20;
+    }
+
+    .thumb-label {
+        font-size: 11px;
+        color: #888;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+    }
+
+    /* PRODUCT INFO */
     .product-title {
-        font-size: 40px;
+        font-size: 30px;
         font-weight: 700;
         color: #1B5E20;
-        margin-bottom: 15px;
+        margin-bottom: 8px;
+        line-height: 1.2;
     }
+
     .rating {
-        margin: 20px 0;
+        margin: 12px 0;
     }
+
     .rating i {
         color: #FFC107;
     }
+
     .rating span {
-        margin-left: 10px;
+        margin-left: 8px;
         color: #666;
-        font-size: 15px;
+        font-size: 14px;
     }
+
+    .rating .empty-star {
+        color: #ddd;
+    }
+
     #price {
         color: #c88700;
-        font-size: 42px;
+        font-size: 34px;
         font-weight: 700;
-        margin-bottom: 5px;
+        margin-bottom: 2px;
     }
+
+    .tax-text {
+        color: #888;
+        font-size: 13px;
+        margin-bottom: 0;
+    }
+
+    /* WEIGHT BUTTONS */
     .weight-options {
         display: flex;
-        gap: 15px;
-        margin: 20px 0;
+        gap: 10px;
+        margin: 14px 0;
+        flex-wrap: wrap;
     }
+
     .weight-btn {
         border: none;
-        padding: 12px 30px;
-        border-radius: 30px;
+        padding: 8px 22px;
+        border-radius: 25px;
         background: #eee;
         transition: .3s;
         cursor: pointer;
         font-weight: 600;
+        font-size: 14px;
     }
+
     .weight-btn.active {
         background: #1B5E20;
         color: white;
     }
+
     .weight-btn:hover {
         background: #2f7b31;
         color: white;
     }
+
+    /* QUANTITY */
     .quantity-box {
         display: flex;
         align-items: center;
-        gap: 15px;
-        margin: 20px 0;
+        gap: 12px;
+        margin: 14px 0;
     }
+
     .quantity-box button {
-        width: 40px;
-        height: 40px;
+        width: 34px;
+        height: 34px;
         border: none;
         background: #1B5E20;
         color: white;
@@ -111,406 +192,695 @@
         cursor: pointer;
         transition: .3s;
     }
+
     .quantity-box button:hover {
         background: #D4A017;
     }
+
     .quantity-box input {
-        width: 60px;
+        width: 50px;
         text-align: center;
         border: none;
-        font-size: 18px;
+        font-size: 16px;
     }
+
+    /* FEATURES */
     .stock {
         color: #1B5E20;
         font-weight: 600;
-        font-size: 17px;
-    }
-    .buttons {
-        display: flex;
-        gap: 20px;
-        margin-top: 35px;
-    }
-    .cart-btn, .buy-btn {
-        flex: 1;
-        border: none;
-        padding: 15px;
-        border-radius: 50px;
-        color: white;
-        font-weight: 600;
-        font-size: 18px;
-        transition: .3s;
-    }
-    .cart-btn {
-        background: #1B5E20;
-        color: white;
-    }
-    .cart-btn:hover {
-        background: #14481a;
-        transform: translateY(-3px);
-    }
-    .buy-btn {
-        background: #D4A017;
-        color: white;
-    }
-    .buy-btn:hover {
-        background: #b8860b;
-        transform: translateY(-3px);
-    }
-    .tax-text {
-        color: #777;
         font-size: 15px;
-        margin-bottom: 20px;
     }
 
-    /* PRODUCT FEATURES */
-    .product-features {
-        margin: 25px 0;
-    }
     .product-features p {
         display: flex;
         align-items: center;
-        gap: 12px;
-        margin-bottom: 15px;
-        font-size: 17px;
+        gap: 10px;
+        margin-bottom: 8px;
+        font-size: 14px;
         color: #444;
     }
+
     .product-features i {
-        width: 35px;
-        height: 35px;
+        width: 28px;
+        height: 28px;
         background: #e8f5e9;
         color: #1B5E20;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-size: 12px;
+        flex-shrink: 0;
+    }
+
+    /* BUTTONS */
+    .buttons {
+        display: flex;
+        gap: 14px;
+        margin-top: 20px;
+    }
+
+    .cart-btn,
+    .buy-btn {
+        flex: 1;
+        border: none;
+        padding: 12px;
+        border-radius: 40px;
+        color: white;
+        font-weight: 600;
         font-size: 15px;
+        transition: .3s;
+    }
+
+    .cart-btn {
+        background: #1B5E20;
+    }
+
+    .cart-btn:hover {
+        background: #14481a;
+        transform: translateY(-2px);
+    }
+
+    .buy-btn {
+        background: #D4A017;
+    }
+
+    .buy-btn:hover {
+        background: #b8860b;
+        transform: translateY(-2px);
     }
 
     /* DELIVERY BOX */
     .delivery-box {
-        margin-top: 35px;
-        padding: 25px;
+        margin-top: 18px;
+        padding: 16px;
         background: #f8f9fa;
-        border-radius: 15px;
-        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+        border: 1px solid #eee;
     }
+
     .delivery-box h5 {
         color: #1B5E20;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
+        font-size: 14px;
     }
+
     .delivery-box p {
-        margin-bottom: 12px;
+        margin-bottom: 6px;
         color: #555;
+        font-size: 13px;
     }
+
     .delivery-box i {
         color: #1B5E20;
-        margin-right: 10px;
+        margin-right: 8px;
     }
 
-    /* PRODUCT GALLERY */
-    .product-gallery {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .thumbnail-gallery {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        flex-wrap: wrap;
-    }
-    .thumb {
-        width: 90px;
-        height: 90px;
-        object-fit: cover;
-        border: 2px solid #ddd;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: .3s;
-    }
-    .thumb:hover {
-        border-color: #1B5E20;
-        transform: scale(1.08);
-    }
-    .active-thumb {
-        border: 3px solid #1B5E20;
-    }
-
-    /* PRODUCT INFO */
+    /* PRODUCT INFO TABS */
     .product-info {
-        padding: 80px 0;
+        padding: 40px 0;
         background: #f9f9f9;
     }
+
     .section-title {
         color: #1B5E20;
-        font-size: 38px;
+        font-size: 28px;
         font-weight: 700;
-        margin-bottom: 40px;
+        margin-bottom: 24px;
     }
+
     .info-tabs {
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
-        gap: 15px;
-        margin-bottom: 40px;
+        gap: 10px;
+        margin-bottom: 24px;
     }
+
     .tab-btn {
         border: none;
-        padding: 12px 28px;
-        border-radius: 40px;
+        padding: 8px 22px;
+        border-radius: 30px;
         background: white;
         color: #1B5E20;
         font-weight: 600;
-        box-shadow: 0 5px 15px rgba(0,0,0,.08);
+        font-size: 14px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, .06);
         transition: .3s;
     }
-    .tab-btn:hover, .tab-btn.active {
+
+    .tab-btn:hover,
+    .tab-btn.active {
         background: #1B5E20;
         color: white;
     }
+
     .tab-content {
         display: none;
         background: white;
-        padding: 40px;
-        border-radius: 18px;
-        box-shadow: 0 10px 25px rgba(0,0,0,.08);
-        line-height: 2;
-        font-size: 17px;
+        padding: 28px;
+        border-radius: 14px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, .06);
+        line-height: 1.8;
+        font-size: 15px;
     }
+
     .active-content {
         display: block;
+    }
+
+    /* REVIEWS SECTION */
+    .reviews-section {
+        padding: 50px 0;
+        background: white;
+    }
+
+    .review-card {
+        background: #f8f9fa;
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 16px;
+        border: 1px solid #eee;
+    }
+
+    .review-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 10px;
+    }
+
+    .review-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #1B5E20;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 16px;
+        flex-shrink: 0;
+    }
+
+    .review-meta {
+        flex: 1;
+    }
+
+    .review-meta strong {
+        color: #333;
+        font-size: 15px;
+    }
+
+    .review-meta .review-date {
+        color: #999;
+        font-size: 12px;
+        display: block;
+    }
+
+    .review-stars i {
+        color: #FFC107;
+        font-size: 13px;
+    }
+
+    .review-stars i.empty {
+        color: #ddd;
+    }
+
+    .review-comment {
+        color: #555;
+        font-size: 14px;
+        line-height: 1.7;
+        margin-top: 6px;
+    }
+
+    /* REVIEW FORM */
+    .review-form-card {
+        background: #f8f9fa;
+        border-radius: 14px;
+        padding: 24px;
+        border: 2px dashed #e0e0e0;
+        margin-bottom: 24px;
+    }
+
+    .review-form-card h5 {
+        color: #1B5E20;
+        margin-bottom: 16px;
+        font-size: 16px;
+    }
+
+    .star-rating-input {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 14px;
+    }
+
+    .star-rating-input i {
+        font-size: 24px;
+        cursor: pointer;
+        color: #ddd;
+        transition: .2s;
+    }
+
+    .star-rating-input i.active {
+        color: #FFC107;
+    }
+
+    .star-rating-input i:hover {
+        color: #FFC107;
+    }
+
+    .review-form-card textarea {
+        width: 100%;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 12px;
+        font-size: 14px;
+        resize: vertical;
+        min-height: 80px;
+        outline: none;
+        transition: .3s;
+    }
+
+    .review-form-card textarea:focus {
+        border-color: #1B5E20;
+    }
+
+    .review-submit-btn {
+        margin-top: 12px;
+        padding: 10px 28px;
+        border: none;
+        border-radius: 30px;
+        background: #1B5E20;
+        color: white;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: .3s;
+    }
+
+    .review-submit-btn:hover {
+        background: #14481a;
+    }
+
+    @media(max-width:768px) {
+        .product-details {
+            padding: 24px 0 30px;
+        }
+
+        .product-title {
+            font-size: 24px;
+        }
+
+        #price {
+            font-size: 28px;
+        }
+
+        .product-image img {
+            max-width: 260px;
+        }
+
+        .thumb {
+            width: 56px;
+            height: 56px;
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-    <!-- BREADCRUMB -->
-    <section class="breadcrumb-section">
-        <div class="container">
-            <p>
-                <a href="{% url 'home' %}">Home</a>
-                <span>/</span>
-                <a href="{% url 'shop' %}">Shop</a>
-                <span>/</span>
-                <strong>Cardamom Powder</strong>
+
+<!-- BREADCRUMB -->
+<section class="breadcrumb-section">
+    <div class="container">
+        <p>
+            <a href="{% url 'home' %}">Home</a>
+            <span>/</span>
+            <a href="{% url 'shop' %}">Shop</a>
+            <span>/</span>
+            <strong>{{ product.name|default:"Product" }}</strong>
+        </p>
+    </div>
+</section>
+
+<!-- PRODUCT DETAILS -->
+<section class="product-details">
+    <div class="container">
+        <div class="row align-items-start">
+
+            <!-- Product Image -->
+            <div class="col-lg-6">
+                <div class="product-gallery">
+                    <div class="product-image">
+                        <img id="mainImage" src="{{ product.get_image_url }}" alt="{{ product.name }}" loading="eager"
+                            decoding="async">
+                    </div>
+                    <div class="thumbnail-gallery">
+                        <div class="thumb-wrap">
+                            <img class="thumb active-thumb" src="{{ product.get_image_url }}"
+                                onclick="changeImage(this)" alt="{{ product.name }}">
+                            <span class="thumb-label">Main</span>
+                        </div>
+                        <div class="thumb-wrap">
+                            <img class="thumb" src="{{ product.get_side_image_url }}" onclick="changeImage(this)"
+                                alt="Side View">
+                            <span class="thumb-label">Side</span>
+                        </div>
+                        <div class="thumb-wrap">
+                            <img class="thumb" src="{{ product.get_package_image_url }}" onclick="changeImage(this)"
+                                alt="Package View">
+                            <span class="thumb-label">Package</span>
+                        </div>
+                    </div>
+                    <!-- Delivery Information moved to left column below thumbnails -->
+                    <div class="delivery-box mt-4">
+                        <h5 class="fw-bold"><i class="fa-solid fa-truck"></i> Delivery Information</h5>
+                        <p><i class="fa-solid fa-location-dot"></i> Delivery available across India</p>
+                        <p><i class="fa-solid fa-box"></i> Packed fresh after your order</p>
+                        <p><i class="fa-solid fa-clock"></i> Estimated delivery: 3–7 Business Days</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="col-lg-6">
+                <h1 class="product-title">{{ product.name|default:"Product" }}</h1>
+
+                <!-- Dynamic Rating -->
+                <div class="rating">
+                    {% if product.review_count > 0 %}
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= product.avg_rating %}
+                                <i class="fa-solid fa-star"></i>
+                            {% elif forloop.counter <= product.avg_rating|add:"0.5" %}
+                                <i class="fa-solid fa-star-half-stroke"></i>
+                            {% else %}
+                                <i class="fa-solid fa-star empty-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                        <span class="ms-2 fw-semibold">{{ product.avg_rating }} ({{ product.review_count }} Review{{ product.review_count|pluralize }})</span>
+                    {% else %}
+                        <span class="badge bg-light text-muted border px-3 py-1.5 rounded-pill fs-7">
+                            <i class="fa-regular fa-star me-1 text-warning"></i> No reviews yet
+                        </span>
+                    {% endif %}
+                </div>
+
+                <!-- Dynamic Price -->
+                <h2 id="price">₹{{ product.starting_price|floatformat:2 }}</h2>
+                <p class="tax-text">Inclusive of all taxes</p>
+
+                <hr>
+                <h5>Select Weight</h5>
+                <div class="weight-options" id="weightOptions">
+                    {% for variant in variants %}
+                    <button class="weight-btn {% if variant.is_default or forloop.first %}active{% endif %}"
+                        data-variant-id="{{ variant.id }}" data-weight="{{ variant.weight }}"
+                        data-price="{{ variant.price }}" data-stock="{{ variant.stock_quantity }}">
+                        {{ variant.weight }} <span style="font-size:11px; opacity:0.85;">({{ variant.stock_quantity }}
+                            left)</span>
+                    </button>
+                    {% empty %}
+                    <button class="weight-btn active" data-weight="50g" data-price="{{ product.price|default:'250' }}"
+                        data-stock="{{ product.default_variant.stock_quantity }}">
+                        {{ product.weight|default:"50g" }} <span style="font-size:11px; opacity:0.85;">({{
+                            product.default_variant.stock_quantity }} left)</span>
+                    </button>
+                    {% endfor %}
+                </div>
+
+                <hr>
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <h5 class="mb-0 fw-bold text-dark">Quantity</h5>
+                </div>
+                
+                <div class="d-flex align-items-center gap-3 flex-wrap mb-4">
+                    <div class="quantity-box">
+                        <button id="minus"><i class="fa-solid fa-minus"></i></button>
+                        <input type="text" id="quantity" value="1" readonly>
+                        <button id="plus"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+
+                    <!-- Neat Stock Badge placed right beside quantity box -->
+                    <div id="stockBadgeContainer">
+                        {% with stock=product.default_variant.stock_quantity|default:10 %}
+                            {% if stock <= 0 %}
+                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-2 rounded-pill fw-bold fs-7" id="stockBadge">
+                                    <i class="fa-solid fa-circle-xmark me-1"></i> Out of Stock
+                                </span>
+                            {% elif stock <= 10 %}
+                                <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-3 py-2 rounded-pill fw-bold fs-7" id="stockBadge">
+                                    <i class="fa-solid fa-fire text-danger me-1"></i> Only <span id="stockVal">{{ stock }}</span> units left in stock!
+                                </span>
+                            {% else %}
+                                <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill fw-bold fs-7" id="stockBadge">
+                                    <i class="fa-solid fa-circle-check me-1"></i> <span id="stockVal">{{ stock }}</span> units available in stock
+                                </span>
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                </div>
+
+                <div class="product-features">
+                    <p><i class="fa-solid fa-truck-fast"></i> Free Delivery Across India</p>
+                    <p><i class="fa-solid fa-shield-halved"></i> Secure Razorpay Payment</p>
+                    <p><i class="fa-solid fa-leaf"></i> 100% Natural &amp; No Preservatives</p>
+                    <p><i class="fa-solid fa-award"></i> Premium Kerala Quality</p>
+                </div>
+
+                <div class="buttons">
+                    <button id="cartBtn" class="cart-btn"><i class="fa-solid fa-cart-shopping"></i> Add to Cart</button>
+                    <button id="buyBtn" class="buy-btn"><i class="fa-solid fa-bolt"></i> Buy Now</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- PRODUCT INFORMATION TABS -->
+<section class="product-info reveal">
+    <div class="container">
+        <h2 class="section-title text-center">Product Information</h2>
+        <div class="info-tabs">
+            <button class="tab-btn active" onclick="showTab('description', this)">Description</button>
+            <button class="tab-btn" onclick="showTab('benefits', this)">Benefits</button>
+            <button class="tab-btn" onclick="showTab('ingredients', this)">Ingredients</button>
+            <button class="tab-btn" onclick="showTab('storage', this)">Storage</button>
+            <button class="tab-btn" onclick="showTab('shipping', this)">Shipping</button>
+        </div>
+        <div id="description" class="tab-content active-content">
+            <h4>{{ product.name|default:"Premium Spice Powder" }}</h4>
+            <div class="product-tab-text">{{ product.description|linebreaks }}</div>
+        </div>
+        <div id="benefits" class="tab-content">
+            {% with benefits_list=product.get_benefits_list %}
+                {% if benefits_list %}
+                    <ul class="list-unstyled mb-0">
+                        {% for benefit in benefits_list %}
+                            <li class="mb-2 d-flex align-items-start gap-2 fs-6 text-dark">
+                                <i class="fa-solid fa-circle-check text-success mt-1 flex-shrink-0"></i>
+                                <span>{{ benefit }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2 d-flex align-items-start gap-2 fs-6 text-dark"><i class="fa-solid fa-circle-check text-success mt-1 flex-shrink-0"></i><span>Rich Natural Aroma</span></li>
+                        <li class="mb-2 d-flex align-items-start gap-2 fs-6 text-dark"><i class="fa-solid fa-circle-check text-success mt-1 flex-shrink-0"></i><span>100% Pure Kerala Spices</span></li>
+                        <li class="mb-2 d-flex align-items-start gap-2 fs-6 text-dark"><i class="fa-solid fa-circle-check text-success mt-1 flex-shrink-0"></i><span>No Artificial Colours</span></li>
+                        <li class="mb-2 d-flex align-items-start gap-2 fs-6 text-dark"><i class="fa-solid fa-circle-check text-success mt-1 flex-shrink-0"></i><span>No Preservatives</span></li>
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        </div>
+        <div id="ingredients" class="tab-content">
+            {% with ingredients_list=product.get_ingredients_list %}
+                {% if ingredients_list %}
+                    <ul class="list-unstyled mb-0">
+                        {% for item in ingredients_list %}
+                            <li class="mb-2 d-flex align-items-start gap-2 fs-6 text-dark">
+                                <i class="fa-solid fa-circle-check text-success mt-1 flex-shrink-0"></i>
+                                <span>{{ item }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2 d-flex align-items-start gap-2 fs-6 text-dark"><i class="fa-solid fa-circle-check text-success mt-1 flex-shrink-0"></i><span>100% Premium Kerala Spices</span></li>
+                        <li class="mb-2 d-flex align-items-start gap-2 fs-6 text-dark"><i class="fa-solid fa-circle-check text-success mt-1 flex-shrink-0"></i><span>No preservatives</span></li>
+                        <li class="mb-2 d-flex align-items-start gap-2 fs-6 text-dark"><i class="fa-solid fa-circle-check text-success mt-1 flex-shrink-0"></i><span>No added colours</span></li>
+                        <li class="mb-2 d-flex align-items-start gap-2 fs-6 text-dark"><i class="fa-solid fa-circle-check text-success mt-1 flex-shrink-0"></i><span>No artificial flavours</span></li>
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        </div>
+        <div id="storage" class="tab-content">
+            <div class="product-tab-text">{{ product.storage_info|linebreaks|default:"Store in a cool and dry place. Keep the lid tightly closed after use. Avoid direct sunlight." }}</div>
+        </div>
+        <div id="shipping" class="tab-content">
+            <ul>
+                <li>Ships within 24 Hours</li>
+                <li>Secure Packaging</li>
+                <li>Delivery Across India</li>
+                <li>Estimated Delivery: 3–7 Days</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- REVIEWS SECTION -->
+<section class="reviews-section reveal">
+    <div class="container">
+        <h2 class="section-title text-center">Customer Reviews ({{ review_count|default:reviews|length }})</h2>
+
+        {% if user.is_authenticated and not user_review %}
+        <!-- Review Form -->
+        <div class="review-form-card" id="reviewFormCard">
+            <h5><i class="fa-solid fa-pen"></i> Write a Review</h5>
+            <form id="reviewForm">
+                {% csrf_token %}
+                <div class="star-rating-input" id="starRating">
+                    <i class="fa-solid fa-star" data-star="1"></i>
+                    <i class="fa-solid fa-star" data-star="2"></i>
+                    <i class="fa-solid fa-star" data-star="3"></i>
+                    <i class="fa-solid fa-star" data-star="4"></i>
+                    <i class="fa-solid fa-star" data-star="5"></i>
+                </div>
+                <input type="hidden" name="rating" id="ratingInput" value="5">
+                <textarea name="comment" placeholder="Share your experience with this product..."
+                    id="commentInput"></textarea>
+                <button type="submit" class="review-submit-btn">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Review
+                </button>
+            </form>
+        </div>
+        {% elif user.is_authenticated and user_review %}
+        <div class="review-form-card" style="border-color: #1B5E20;">
+            <h5><i class="fa-solid fa-check-circle"></i> You reviewed this product ({{ user_review.rating }}★)</h5>
+            <p style="color:#555; font-size:14px; margin:0;">{{ user_review.comment|default:"No comment" }}</p>
+        </div>
+        {% else %}
+        <div class="review-form-card">
+            <p style="text-align:center; color:#888; margin:0;">
+                <a href="{% provider_login_url 'google' %}" style="color:#1B5E20; font-weight:600;">Sign in</a> to write
+                a review.
             </p>
         </div>
-    </section>
+        {% endif %}
 
-    <!-- PRODUCT DETAILS -->
-    <section class="product-details">
-        <div class="container">
-            <div class="row align-items-start">
-                <!-- Product Image -->
-                <div class="col-lg-6">
-                    <div class="product-gallery">
-                        <div class="product-image">
-                            <img id="mainImage"
-                                 src="{% if product %}{{ product.get_image_url }}{% else %}{% static 'images/products/cardmom-100g.jpg' %}{% endif %}"
-                                 alt="{% if product %}{{ product.name }}{% else %}Cardamom Powder{% endif %}"
-                                 loading="eager" decoding="async">
-                        </div>
-                        <div class="thumbnail-gallery">
-                            <img class="thumb active-thumb"
-                                 src="{% if product %}{{ product.get_image_url }}{% else %}{% static 'images/products/cardmom-100g.jpg' %}{% endif %}"
-                                 onclick="changeImage(this)"
-                                 alt="{% if product %}{{ product.name }}{% else %}Cardamom 100g{% endif %}"
-                                 loading="lazy" decoding="async">
-
-                            <img class="thumb"
-                                 src="{% static 'images/products/cardmom-50g.jpg' %}"
-                                 onclick="changeImage(this)"
-                                 alt="Cardamom 50g">
-                            <img class="thumb"
-                                 src="{% static 'images/products/cardmom-side.jpg' %}"
-                                 onclick="changeImage(this)"
-                                 alt="Side View">
-                            <img class="thumb"
-                                 src="{% static 'images/products/cardmom-pack.jpg' %}"
-                                 onclick="changeImage(this)"
-                                 alt="Package">      
-                        </div>
+        <!-- Reviews List -->
+        <div id="reviewsList">
+            {% for review in reviews %}
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="review-avatar">{{ review.user.username|first|upper }}</div>
+                    <div class="review-meta">
+                        <strong>{{ review.user.get_full_name|default:review.user.username }}</strong>
+                        <span class="review-date">{{ review.created_at|date:"M d, Y" }}</span>
+                    </div>
+                    <div class="review-stars">
+                        {% for i in "12345" %}
+                        {% if forloop.counter <= review.rating %} <i class="fa-solid fa-star"></i>
+                            {% else %}
+                            <i class="fa-solid fa-star empty"></i>
+                            {% endif %}
+                            {% endfor %}
                     </div>
                 </div>
-                <!-- Product Info -->
-                <div class="col-lg-6">
-                    <h1 class="product-title">
-                        {% if product %}{{ product.name }}{% else %}Cardamom Powder{% endif %}
-                    </h1>
-
-
-                    <h2 id="price">₹250</h2>
-
-                    <p class="tax-text">
-                        Inclusive of all taxes
-                    </p>
-
-                    <hr>
-
-                    <h5>Select Weight</h5>
-
-                    <div class="weight-options">
-                        <button class="weight-btn active" data-weight="50g" data-price="250">
-                            50g
-                        </button>
-                        <button class="weight-btn" data-weight="100g" data-price="450">
-                            100g
-                        </button>
-                    </div>
-                    <hr>
-                    <h5>Quantity</h5>
-                    <div class="quantity-box">
-                        <button id="minus">
-                            <i class="fa-solid fa-minus"></i>
-                        </button>
-                        <input type="text" id="quantity" value="1" readonly>
-                        <button id="plus">
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-                    </div>
-                    <div class="product-features">
-                        <p class="stock">
-                            <i class="fa-solid fa-circle-check"></i>
-                            In Stock
-                        </p>
-                        <p>
-                            <i class="fa-solid fa-truck-fast"></i>
-                            Free Delivery Across India
-                        </p>
-                        <p>
-                            <i class="fa-solid fa-shield-halved"></i>
-                            Secure Razorpay Payment
-                        </p>
-                        <p>
-                            <i class="fa-solid fa-leaf"></i>
-                            100% Natural & No Preservatives
-                        </p>
-                        <p>
-                            <i class="fa-solid fa-award"></i>
-                            Premium Kerala Quality
-                        </p>
-                    </div>
-                    <div class="buttons">
-                        <button id="cartBtn" class="cart-btn">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                            Add to Cart
-                        </button>
-
-                        <button id="buyBtn" class="buy-btn" onclick="{% if user.is_authenticated %}window.location.href='{% url 'checkout' %}'{% else %}window.location.href='{% url 'account_login' %}'{% endif %}">
-                            <i class="fa-solid fa-bolt"></i>
-                            Buy Now
-                        </button>
-                    </div>
-                    <div class="delivery-box">
-                        <h5>Delivery Information</h5>
-                        <p>
-                            <i class="fa-solid fa-location-dot"></i>
-                            Delivery available across India
-                        </p>
-                        <p>
-                            <i class="fa-solid fa-box"></i>
-                            Packed fresh after your order
-                        </p>
-                        <p>
-                            <i class="fa-solid fa-clock"></i>
-                            Estimated delivery: 3–7 Business Days
-                        </p>
-                    </div>
-                </div>
+                {% if review.comment %}
+                <p class="review-comment">{{ review.comment }}</p>
+                {% endif %}
             </div>
+            {% empty %}
+            <p style="text-align:center; color:#999; padding:30px 0;">No reviews yet. Be the first to review!</p>
+            {% endfor %}
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- PRODUCT INFORMATION -->
-    <section class="product-info">
-        <div class="container">
-            <h2 class="section-title text-center">
-                Product Information
-            </h2>
-            <!-- Tabs -->
-            <div class="info-tabs">
-                <button class="tab-btn active" onclick="showTab('description', this)">
-                    Description
-                </button>
-                <button class="tab-btn" onclick="showTab('benefits', this)">
-                    Benefits
-                </button>
-                <button class="tab-btn" onclick="showTab('ingredients', this)">
-                    Ingredients
-                </button>
-                <button class="tab-btn" onclick="showTab('storage', this)">
-                    Storage
-                </button>
-                <button class="tab-btn" onclick="showTab('shipping', this)">
-                    Shipping
-                </button>
+<!-- AUTH MODAL -->
+<div class="modal fade" id="authModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center p-4">
+            <div class="modal-header border-0">
+                <h4 class="modal-title w-100 fw-bold" style="color:#1B5E20;">Sign In to Continue</h4>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <!-- Description -->
-            <div id="description" class="tab-content active-content">
-                <h4>Premium Cardamom Powder</h4>
-                <p>
-                    Lathriya Spices Cardamom Powder is produced from carefully
-                    selected premium Kerala green cardamom.
-                    Freshly ground to preserve its natural aroma and flavour,
-                    making it perfect for tea, coffee, desserts,
-                    biryanis and everyday cooking.
-                </p>
-            </div>
-            <!-- Benefits -->
-            <div id="benefits" class="tab-content">
-                <ul>
-                    <li>✔ Rich Natural Aroma</li>
-                    <li>✔ 100% Pure Kerala Cardamom</li>
-                    <li>✔ No Artificial Colours</li>
-                    <li>✔ No Preservatives</li>
-                    <li>✔ Suitable for Tea, Coffee & Desserts</li>
-                </ul>
-            </div>
-            <!-- Ingredients -->
-            <div id="ingredients" class="tab-content">
-                <p>
-                    100% Premium Kerala Green Cardamom. No preservatives. No added colours. No artificial flavours.
-                </p>
-            </div>
-            <!-- Storage -->
-            <div id="storage" class="tab-content">
-                <p>
-                    Store in a cool and dry place. Keep the lid tightly closed after use. Avoid direct sunlight.
-                </p>
-            </div>
-            <!-- Shipping -->
-            <div id="shipping" class="tab-content">
-                <ul>
-                    <li>Ships within 24 Hours</li>
-                    <li>Secure Packaging</li>
-                    <li>Delivery Across India</li>
-                    <li>Estimated Delivery : 3–7 Days</li>
-                </ul>
-            </div>
-        </div>
-    </section>
+            <div class="modal-body">
+                <p class="text-muted mb-4">You need to sign in to place your order and complete the payment.</p>
+                <a id="modalGoogleLoginBtn" href="{% provider_login_url 'google' %}?next={% url 'shop' %}"
+                    class="btn btn-outline-dark w-100 py-3 rounded-pill fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2">
 
-    <!-- GOOGLE OAUTH AUTH MODAL -->
-    <div class="modal fade" id="authModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content text-center p-4">
-                <div class="modal-header border-0">
-                    <h4 class="modal-title w-100 font-bold" style="color: #1B5E20;">
-                        Sign In to Continue
-                    </h4>
-                    <button class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <p class="text-muted mb-4">You need to sign in to place your order and complete the payment.</p>
-                    <a href="{% provider_login_url 'google' %}?next={% url 'checkout' %}" class="btn btn-outline-dark w-100 py-3 rounded-pill fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2">
-                        <i class="fab fa-google text-danger fs-5"></i> Continue with Google
-                    </a>
-                </div>
+
+                    <i class="fab fa-google text-danger fs-5"></i> Continue with Google
+                </a>
             </div>
         </div>
     </div>
-    {% endblock %}
+</div>
 
-    {% block js %}
-<script src="{% static 'js/product.js' %}"></script>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/product.js' %}?v=3"></script>
+
+<script>
+    /* Review form star rating + AJAX submit */
+    (function () {
+        var stars = document.querySelectorAll('#starRating i');
+        var ratingInput = document.getElementById('ratingInput');
+        var reviewForm = document.getElementById('reviewForm');
+
+        stars.forEach(function (star) {
+            star.addEventListener('click', function () {
+                var val = this.dataset.star;
+                ratingInput.value = val;
+                stars.forEach(function (s) {
+                    s.classList.toggle('active', parseInt(s.dataset.star) <= parseInt(val));
+                });
+            });
+            star.addEventListener('mouseenter', function () {
+                var val = parseInt(this.dataset.star);
+                stars.forEach(function (s) {
+                    s.style.color = parseInt(s.dataset.star) <= val ? '#FFC107' : '#ddd';
+                });
+            });
+            star.addEventListener('mouseleave', function () {
+                var val = parseInt(ratingInput.value);
+                stars.forEach(function (s) {
+                    s.style.color = '';
+                    s.classList.toggle('active', parseInt(s.dataset.star) <= val);
+                });
+            });
+        });
+
+        // Set initial state
+        stars.forEach(function (s) {
+            s.classList.toggle('active', parseInt(s.dataset.star) <= parseInt(ratingInput.value));
+        });
+
+        if (reviewForm) {
+            reviewForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                var form = this;
+                fetch(window.location.href, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({
+                        rating: ratingInput.value,
+                        comment: document.getElementById('commentInput').value
+                    })
+                }).then(function (r) { return r.json(); })
+                    .then(function (data) {
+                        if (data.success) { location.reload(); }
+                    });
+            });
+        }
+    })();
+</script>
 {% endblock %}

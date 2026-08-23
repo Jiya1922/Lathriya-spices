@@ -8,7 +8,12 @@
 <style>
     .login-section {
         min-height: 85vh;
-        background: linear-gradient(135deg, #022d11 0%, #0d401e 50%, #1B5E20 100%);
+        background:
+            linear-gradient(135deg, rgba(2,45,17,.88) 0%, rgba(13,64,30,.82) 50%, rgba(27,94,32,.75) 100%),
+            url("{% static 'images/logo-background.webp' %}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -17,84 +22,67 @@
         overflow: hidden;
     }
 
-    /* Subtle background glow effect */
     .login-section::before {
         content: '';
         position: absolute;
         width: 450px;
         height: 450px;
-        background: radial-gradient(circle, rgba(212, 160, 23, 0.15) 0%, rgba(0,0,0,0) 70%);
+        background: radial-gradient(circle, rgba(212, 160, 23, 0.12) 0%, rgba(0,0,0,0) 70%);
         top: -100px;
         right: -100px;
         border-radius: 50%;
         pointer-events: none;
     }
-    
-    .login-section::after {
-        content: '';
-        position: absolute;
-        width: 400px;
-        height: 400px;
-        background: radial-gradient(circle, rgba(27, 94, 32, 0.3) 0%, rgba(0,0,0,0) 70%);
-        bottom: -100px;
-        left: -100px;
-        border-radius: 50%;
-        pointer-events: none;
-    }
 
     .login-card {
-        background: rgba(255, 255, 255, 0.96);
+        background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(15px);
-        border: 1px solid rgba(212, 160, 23, 0.3);
+        border: 1px solid rgba(212, 160, 23, 0.25);
         border-radius: 24px;
         box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
         padding: 45px 40px;
-        max-width: 480px;
+        max-width: 460px;
         width: 100%;
         text-align: center;
         position: relative;
         z-index: 10;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-
     .login-card:hover {
         transform: translateY(-4px);
         box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
     }
 
-    .brand-badge {
+    .login-card .brand-icon {
+        width: 56px;
+        height: 56px;
+        background: linear-gradient(135deg, #1B5E20, #2E7D32);
+        border-radius: 16px;
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        background: rgba(212, 160, 23, 0.12);
-        color: #B8860B;
-        padding: 6px 18px;
-        border-radius: 30px;
-        font-size: 13px;
-        font-weight: 600;
-        letter-spacing: 1px;
+        justify-content: center;
         margin-bottom: 20px;
-        border: 1px solid rgba(212, 160, 23, 0.3);
+    }
+    .login-card .brand-icon i {
+        color: #D4A017;
+        font-size: 24px;
     }
 
     .login-card h2 {
         color: #022d11;
-        font-size: 32px;
+        font-size: 28px;
         font-weight: 700;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
-
-    .login-card h2 span {
-        color: #D4A017;
-    }
+    .login-card h2 span { color: #D4A017; }
 
     .login-card p.subtitle {
-        color: #666;
-        font-size: 15px;
-        margin-bottom: 35px;
+        color: #777;
+        font-size: 14px;
+        margin-bottom: 30px;
+        line-height: 1.6;
     }
 
-    /* Google SSO Button */
     .btn-google-sso {
         display: flex;
         align-items: center;
@@ -103,7 +91,7 @@
         width: 100%;
         padding: 14px 24px;
         background: #ffffff;
-        color: #222222;
+        color: #222;
         border: 1.5px solid #e0e0e0;
         border-radius: 40px;
         font-size: 16px;
@@ -113,7 +101,6 @@
         text-decoration: none;
         cursor: pointer;
     }
-
     .btn-google-sso:hover {
         background: #f8f9fa;
         border-color: #D4A017;
@@ -121,81 +108,47 @@
         box-shadow: 0 8px 24px rgba(212, 160, 23, 0.25);
         transform: translateY(-2px);
     }
-
-    .btn-google-sso svg {
-        width: 22px;
-        height: 22px;
-    }
-
-    .divider {
-        display: flex;
-        align-items: center;
-        text-align: center;
-        color: #999;
-        font-size: 13px;
-        margin: 30px 0;
-    }
-
-    .divider::before, .divider::after {
-        content: '';
-        flex: 1;
-        border-bottom: 1px solid #e0e0e0;
-    }
-
-    .divider span {
-        padding: 0 15px;
-    }
+    .btn-google-sso svg { width: 22px; height: 22px; }
 
     .feature-list {
         text-align: left;
         background: rgba(250, 247, 242, 0.8);
-        border-radius: 16px;
-        padding: 20px 22px;
-        margin-top: 25px;
-        border: 1px dashed rgba(27, 94, 32, 0.2);
+        border-radius: 14px;
+        padding: 18px 20px;
+        margin-top: 24px;
+        border: 1px dashed rgba(27, 94, 32, 0.15);
     }
-
     .feature-item {
         display: flex;
         align-items: center;
-        gap: 12px;
-        font-size: 14px;
-        color: #333;
-        margin-bottom: 10px;
+        gap: 10px;
+        font-size: 13px;
+        color: #444;
+        margin-bottom: 8px;
     }
-
-    .feature-item:last-child {
-        margin-bottom: 0;
-    }
-
-    .feature-item i {
-        color: #D4A017;
-        font-size: 16px;
-    }
+    .feature-item:last-child { margin-bottom: 0; }
+    .feature-item i { color: #D4A017; font-size: 14px; flex-shrink: 0; }
 
     .security-note {
-        margin-top: 25px;
+        margin-top: 20px;
         font-size: 12px;
-        color: #888;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
+        color: #999;
     }
+    .security-note i { margin-right: 4px; }
 </style>
 {% endblock %}
 
 {% block content %}
 <section class="login-section">
     <div class="login-card">
-        <div class="brand-badge">
-            <i class="fa-solid fa-leaf"></i> LATHRIYA SPICES CLUB
+
+        <div class="brand-icon">
+            <i class="fa-solid fa-leaf"></i>
         </div>
 
         <h2>Welcome to <span>Lathriya</span></h2>
-        <p class="subtitle">Sign in to complete your purchase & track your spice orders.</p>
+        <p class="subtitle">Sign in to complete your purchase &amp; track your spice orders.</p>
 
-        <!-- Primary Google OAuth Button -->
         <a href="{% provider_login_url 'google' %}" class="btn-google-sso">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
                 <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
@@ -203,30 +156,26 @@
                 <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
                 <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
             </svg>
-            Continue with Google
+            Sign in with Google
         </a>
-
-        <div class="divider">
-            <span>SECURE SSO AUTHENTICATION</span>
-        </div>
 
         <div class="feature-list">
             <div class="feature-item">
                 <i class="fa-solid fa-bolt"></i>
-                <span><strong>Instant 1-Click Sign In</strong> — No password needed.</span>
+                <span><strong>Instant Sign In</strong> — No password needed.</span>
             </div>
             <div class="feature-item">
                 <i class="fa-solid fa-shield-halved"></i>
-                <span><strong>100% Encrypted & Safe</strong> — Powered by Google.</span>
+                <span><strong>Secure &amp; Encrypted</strong> — Powered by Google.</span>
             </div>
             <div class="feature-item">
                 <i class="fa-solid fa-truck-fast"></i>
-                <span><strong>Fast Checkout & Order Tracking</strong> for your spices.</span>
+                <span><strong>Fast Checkout &amp; Order Tracking</strong></span>
             </div>
         </div>
 
         <div class="security-note">
-            <i class="fa-solid fa-lock text-success"></i> Your personal data is protected by 256-bit SSL encryption.
+            <i class="fa-solid fa-lock"></i> Your data is protected by 256-bit SSL encryption.
         </div>
     </div>
 </section>

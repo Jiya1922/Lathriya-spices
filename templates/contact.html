@@ -6,17 +6,80 @@
 {% block css %}
 <style>
     .contact-header {
-        background: #1B5E20;
+        background: linear-gradient(135deg, #0A260C 0%, #1B5E20 50%, #2E7D32 100%);
         color: white;
-        padding: 80px 0;
+        padding: 95px 0 75px;
+        position: relative;
+        overflow: hidden;
+    }
+    .contact-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(245, 176, 65, 0.15) 0%, rgba(27, 94, 32, 0) 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+    .contact-header::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
+        left: -10%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(27, 94, 32, 0.3) 0%, rgba(0, 0, 0, 0) 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+    .contact-header-badge {
+        background: rgba(245, 176, 65, 0.15);
+        color: #F5B041;
+        border: 1px solid rgba(245, 176, 65, 0.3);
+        padding: 8px 20px;
+        border-radius: 30px;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
     }
     .contact-header h1 {
-        font-size: 50px;
-        font-weight: 700;
+        font-size: 52px;
+        font-weight: 900;
+        font-family: 'Montserrat', sans-serif;
+        line-height: 1.15;
     }
-    .contact-header p {
-        margin-top: 15px;
+    .contact-header p.lead-desc {
+        max-width: 680px;
+        margin: 18px auto 0;
         font-size: 18px;
+        color: rgba(255, 255, 255, 0.88);
+        font-weight: 400;
+        line-height: 1.6;
+    }
+    .contact-feature-pill {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 40px;
+        padding: 10px 22px;
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+    }
+    .contact-feature-pill:hover {
+        background: rgba(255, 255, 255, 0.18);
+        transform: translateY(-2px);
     }
     .contact-section {
         padding: 80px 0;
@@ -74,11 +137,28 @@
 {% endblock %}
 
 {% block content %}
-<!-- Hero -->
+<!-- Hero Header Section -->
 <section class="contact-header">
-    <div class="container text-center">
-        <h1>Contact Us</h1>
-        <p>We're always happy to hear from you.</p>
+    <div class="container text-center position-relative" style="z-index: 2;">
+        <h1 class="text-white">
+            Connect With <span style="color: #F5B041; text-shadow: 0 4px 20px rgba(245,176,65,0.35);">Lathriya Spices</span>
+        </h1>
+        <p class="lead-desc">
+            Have questions about our fresh Kerala plantation spices, bulk orders, or shipping? Our dedicated team in Idukki is always happy to assist you.
+        </p>
+
+        <!-- Quick Feature Badges -->
+        <div class="d-flex align-items-center justify-content-center flex-wrap gap-3 mt-4 pt-2">
+            <div class="contact-feature-pill">
+                <i class="fa-solid fa-seedling text-warning"></i> Direct from Idukki Farms
+            </div>
+            <div class="contact-feature-pill">
+                <i class="fa-solid fa-clock-rotate-left text-warning"></i> Fast 24/7 Assistance
+            </div>
+            <div class="contact-feature-pill">
+                <i class="fa-solid fa-truck-fast text-warning"></i> Pan-India Express Delivery
+            </div>
+        </div>
     </div>
 </section>
 
@@ -132,24 +212,35 @@
             <!-- Right -->
             <div class="col-lg-7">
                 <div class="contact-form">
-                    <h3>Send us a Message</h3>
-                    <form>
+                    <h3>Send us a Message / Feedback</h3>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show rounded-4 mb-4 shadow-sm" role="alert">
+                            <i class="fa-solid fa-circle-check me-2"></i> {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="POST" action="{% url 'contact' %}">
+                        {% csrf_token %}
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <input type="text" class="form-control" placeholder="Your Name" required>
+                                <input type="text" class="form-control" name="name" placeholder="Your Name" value="{{ user.get_full_name|default:user.username }}" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <input type="email" class="form-control" placeholder="Your Email" required>
+                                <input type="email" class="form-control" name="email" placeholder="Your Email" value="{{ user.email }}" required>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <input type="tel" class="form-control" placeholder="Phone Number">
+                            <input type="tel" class="form-control" name="phone" placeholder="Phone Number (Optional)">
                         </div>
                         <div class="mb-3">
-                            <textarea class="form-control" rows="6" placeholder="Your Message" required></textarea>
+                            <textarea class="form-control" name="message" rows="6" placeholder="Your Message / Feedback" required></textarea>
                         </div>
                         <button type="submit" class="contact-btn">
-                            Send Message
+                            <i class="fa-solid fa-paper-plane me-2"></i> Send Message
                         </button>
                     </form>
                 </div>

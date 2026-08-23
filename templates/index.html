@@ -68,15 +68,9 @@
 
             </div>
 
-            <!-- Right Side -->
+            <!-- Right Side (Background subject displays cleanly on right) -->
 
-            <div class="col-lg-6 text-center">
-
-                <img src="{% static 'images/home/welcome.png' %}"
-                     alt="Lathriya Spices"
-                     class="img-fluid welcome-image">
-
-            </div>
+            <div class="col-lg-6 d-none d-lg-block" style="min-height: 450px;"></div>
 
         </div>
 
@@ -85,10 +79,10 @@
 </section>
 
 <!-- ==========================================
-                SHOP BY CATEGORY
+                OUR PRODUCTS (from DB)
 =========================================== -->
 
-<section class="categories">
+<section class="categories reveal">
 
     <div class="container">
 
@@ -105,78 +99,133 @@
 
         <div class="row justify-content-center g-4">
 
-            <!-- Cardamom -->
+            {% for product in products %}
+            <div class="col-lg-4 col-md-6">
+                <div class="category-card d-flex flex-column justify-content-between text-center position-relative">
+                    <div>
+                        <!-- Top Corners Controls (Weight Select & Quantity) -->
+                        <div class="card-top-controls" onclick="event.stopPropagation();">
+                            <select class="card-weight-select" onchange="onCardWeightChange(this);" onclick="event.stopPropagation();">
+                                {% for variant in product.variants.all %}
+                                <option value="{{ variant.id }}" data-price="{{ variant.price }}" data-stock="{{ variant.stock_quantity }}" {% if variant.is_default or forloop.first %}selected{% endif %}>
+                                    {{ variant.weight }} (₹{{ variant.price|floatformat:2 }}) — {{ variant.stock_quantity }} in stock
+                                </option>
+                                {% empty %}
+                                <option value="{{ product.default_variant.id|default:'' }}" data-price="{{ product.starting_price }}" data-stock="{{ product.default_variant.stock_quantity }}">
+                                    50g (₹{{ product.starting_price|floatformat:2 }}) — {{ product.default_variant.stock_quantity }} in stock
+                                </option>
+                                {% endfor %}
+                            </select>
+
+                            <div class="card-qty-control" onclick="event.stopPropagation();">
+                                <button type="button" class="card-qty-btn card-minus-btn" onclick="changeCardQty(this, -1); event.stopPropagation();" title="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
+                                <span class="card-qty-val">1</span>
+                                <button type="button" class="card-qty-btn card-plus-btn" onclick="changeCardQty(this, 1); event.stopPropagation();" title="Increase quantity"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                        </div>
+
+                        <a href="{% url 'product_detail' slug=product.slug %}" class="text-decoration-none text-dark">
+                            <img src="{{ product.get_image_url }}" alt="{{ product.name }}" loading="lazy">
+                            <h4>{{ product.name }}</h4>
+                        </a>
+                        <p>{{ product.description|truncatewords:8 }}</p>
+                        <div class="fw-bold text-success fs-5 mb-2 card-price-display">₹{% if product.default_variant %}{{ product.default_variant.price|floatformat:2 }}{% else %}{{ product.starting_price|floatformat:2 }}{% endif %}</div>
+                    </div>
+                    <div class="d-flex gap-2 justify-content-center mt-3 flex-wrap align-items-center">
+                        <button type="button"
+                            class="category-btn card-add-to-cart-btn flex-fill py-2 fs-6 text-white"
+                            style="background:#1B5E20; border:none; border-radius:25px;"
+                            data-variant-id="{{ product.default_variant.id|default:'' }}">
+                            <i class="fa-solid fa-cart-shopping me-1"></i> Add to Cart
+                        </button>
+                        <button type="button"
+                            class="category-btn quick-buy-btn flex-fill py-2 fs-6 text-white"
+                            style="background:#D4A017; border:none; border-radius:25px;"
+                            data-variant-id="{{ product.default_variant.id|default:'' }}"
+                            data-detail-url="{% url 'product_detail' slug=product.slug %}?buy_now=1">
+                            <i class="fa-solid fa-bolt me-1"></i> Buy Now
+                        </button>
+                        <a href="{% url 'product_detail' slug=product.slug %}" class="btn btn-outline-success flex-fill py-2 fs-6 text-center fw-bold rounded-pill" style="border: 2px solid #1B5E20; color: #1B5E20; background: transparent;">
+                            <i class="fa-solid fa-eye me-1"></i> View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            {% empty %}
+            <!-- Fallback static cards if no featured products -->
             <div class="col-lg-3 col-md-6">
-
-                <div class="category-card"
-                     onclick="window.location.href='{% url 'shop' %}?category=cardamom'">
-
-                    <img src="{% static 'images/categries/cardmom.jpg' %}"
-                         alt="Cardamom">
-
+                <div class="category-card" onclick="window.location.href='{% url 'shop' %}'">
+                    <img src="{% static 'images/categries/cardmom.jpg' %}" alt="Cardamom">
                     <h4>Cardamom</h4>
-
                     <p>Premium handpicked green cardamom.</p>
-
                 </div>
-
             </div>
-
-            <!-- Pepper -->
             <div class="col-lg-3 col-md-6">
-
-                <div class="category-card"
-                     onclick="window.location.href='{% url 'shop' %}?category=pepper'">
-
-                    <img src="{% static 'images/categries/pepper.jpg' %}"
-                         alt="Black Pepper">
-
+                <div class="category-card" onclick="window.location.href='{% url 'shop' %}'">
+                    <img src="{% static 'images/categries/pepper.jpg' %}" alt="Black Pepper">
                     <h4>Black Pepper</h4>
-
                     <p>Fresh Kerala black pepper.</p>
-
                 </div>
-
             </div>
-
-            <!-- Cloves -->
             <div class="col-lg-3 col-md-6">
-
-                <div class="category-card"
-                     onclick="window.location.href='{% url 'shop' %}?category=cloves'">
-
-                    <img src="{% static 'images/categries/cloves.jpg' %}"
-                         alt="Cloves">
-
+                <div class="category-card" onclick="window.location.href='{% url 'shop' %}'">
+                    <img src="{% static 'images/categries/cloves.jpg' %}" alt="Cloves">
                     <h4>Cloves</h4>
-
                     <p>Premium aromatic cloves.</p>
-
                 </div>
-
             </div>
-
-            <!-- Nutmeg -->
             <div class="col-lg-3 col-md-6">
-
-                <div class="category-card"
-                     onclick="window.location.href='{% url 'shop' %}?category=nutmeg'">
-
-                    <img src="{% static 'images/categries/nutmeg.jpg' %}"
-                         alt="Nutmeg">
-
+                <div class="category-card" onclick="window.location.href='{% url 'shop' %}'">
+                    <img src="{% static 'images/categries/nutmeg.jpg' %}" alt="Nutmeg">
                     <h4>Nutmeg</h4>
-
                     <p>Fresh whole nutmeg.</p>
-
                 </div>
-
             </div>
+            {% endfor %}
 
+        </div>
+
+        <!-- View All Products Button -->
+        <div class="text-center mt-5">
+            <a href="{% url 'shop' %}" class="btn btn-success btn-lg rounded-pill px-5 py-3 shadow fw-bold transition-all" style="background:#1B5E20; border:none; font-size:16px; letter-spacing:0.5px;">
+                Explore All Products <i class="fa-solid fa-arrow-right-long ms-2"></i>
+            </a>
         </div>
 
     </div>
 
+</section>
+
+<!-- ==========================================
+     FSSAI CERTIFIED & REGISTERED TRUST BANNER
+=========================================== -->
+<section class="py-5 bg-white border-top border-bottom my-2 reveal">
+    <div class="container">
+        <div class="p-4 p-md-5 rounded-5 border shadow-sm" style="background: linear-gradient(135deg, #f9fbf9 0%, #edf7ed 100%);">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-7">
+                    <h3 class="fw-bold text-dark mb-2" style="font-family:'Montserrat', sans-serif;">
+                        FSSAI Registered Food Safety Guaranteed
+                    </h3>
+                    <p class="text-muted mb-0 fs-6" style="line-height:1.7;">
+                        Every spice batch at <strong>Lathriya Spices</strong> is processed, quality-tested, and packaged in strict compliance with Food Safety Standards Authority of India (FSSAI) guidelines to ensure 100% unadulterated freshness directly from Idukki plantations.
+                    </p>
+                </div>
+                <div class="col-lg-5 text-lg-end">
+                    <div class="p-3 px-4 bg-white rounded-4 border shadow-sm d-inline-block text-start" style="max-width:380px; border-left: 5px solid #1B5E20 !important;">
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="{% static 'images/home/fssai_logo.webp' %}" alt="FSSAI Official Logo" style="height: 52px; width: auto; object-fit: contain; flex-shrink:0;">
+                            <div>
+                                <div class="fw-bold text-dark fs-6 mb-0">FSSAI Registration License</div>
+                                <div class="text-success fw-bold fs-5" style="letter-spacing:1px;">Lic. No: 21324123000456</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 {% endblock %}
