@@ -17,6 +17,12 @@ if allowed_hosts_env:
 else:
     ALLOWED_HOSTS = ['*']
 
+# Reverse Proxy & SSL Configuration (For Render, Heroku, Railway)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https' if not DEBUG else 'http'
+
 SITE_DOMAIN = os.getenv('SITE_DOMAIN', 'lathriyaspices.com').strip()
 
 INSTALLED_APPS = [
