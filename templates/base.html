@@ -747,6 +747,14 @@
                 <span class="brand-text-wrapper"><span class="brand-word-lathriya">Lathriya</span> <span class="brand-word-spices">Spices</span></span>
             </a>
 
+            <!-- MOBILE CART & TOGGLER CONTROLS -->
+            <div class="d-flex align-items-center gap-2 ms-auto d-lg-none me-2">
+                <a href="{% url 'cart' %}" class="icon-btn position-relative" title="Cart">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="cart-count">{{ cart_count|default:0 }}</span>
+                </a>
+            </div>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -768,88 +776,85 @@
                     </li>
                 </ul>
 
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center justify-content-center justify-content-lg-end gap-2 mt-3 mt-lg-0 pt-2 pt-lg-0 border-top border-lg-0">
 
-                    <div class="d-flex align-items-center">
-
-                        <!-- LIVE NAVBAR SEARCH -->
-                        <div class="position-relative d-inline-block me-1" id="navSearchContainer">
-                            <button type="button" class="icon-btn border-0" id="navSearchToggle"
-                                title="Search Products">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </button>
-                            <div class="nav-search-popup shadow-lg rounded-4 p-3 bg-white" id="navSearchPopup"
-                                style="display:none; position:absolute; right:0; top:50px; width:330px; z-index:1050; border:1px solid rgba(27,94,32,0.15);">
-                                <div class="input-group mb-2">
-                                    <span class="input-group-text bg-light border-0"><i
-                                            class="fa-solid fa-magnifying-glass text-muted"></i></span>
-                                    <input type="text" id="navSearchInput" class="form-control bg-light border-0"
-                                        placeholder="Search cardamom, pepper..." autocomplete="off">
-                                    <button type="button" class="btn-close ms-2 my-auto" id="navSearchClose"
-                                        style="font-size:12px;"></button>
-                                </div>
-                                <div id="navSearchResults" class="list-group list-group-flush overflow-auto"
-                                    style="max-height:260px;">
-                                    <div class="text-muted text-center py-2 style-hint" style="font-size:13px;">Type to
-                                        search products...</div>
-                                </div>
+                    <!-- LIVE NAVBAR SEARCH (Inside Hamburger on Mobile, Right-aligned on Desktop) -->
+                    <div class="position-relative d-inline-block me-1" id="navSearchContainer">
+                        <button type="button" class="icon-btn border-0" id="navSearchToggle"
+                            title="Search Products">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                        <div class="nav-search-popup shadow-lg rounded-4 p-3 bg-white" id="navSearchPopup"
+                            style="display:none; position:absolute; right:0; top:50px; width:330px; z-index:1050; border:1px solid rgba(27,94,32,0.15);">
+                            <div class="input-group mb-2">
+                                <span class="input-group-text bg-light border-0"><i
+                                        class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                                <input type="text" id="navSearchInput" class="form-control bg-light border-0"
+                                    placeholder="Search cardamom, pepper..." autocomplete="off">
+                                <button type="button" class="btn-close ms-2 my-auto" id="navSearchClose"
+                                    style="font-size:12px;"></button>
+                            </div>
+                            <div id="navSearchResults" class="list-group list-group-flush overflow-auto"
+                                style="max-height:260px;">
+                                <div class="text-muted text-center py-2 style-hint" style="font-size:13px;">Type to
+                                    search products...</div>
                             </div>
                         </div>
-
-                        {% if user.is_authenticated %}
-                        <div class="dropdown d-inline ms-1">
-                            <a href="#" class="icon-btn dropdown-toggle border-0 position-relative" id="userDropdown"
-                                data-bs-toggle="dropdown" aria-expanded="false" title="{{ user.email }}"
-                                style="background: rgba(27, 94, 32, 0.08); color: #1B5E20; border-radius: 50%; width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; transition: all .3s ease; box-shadow: 0 2px 8px rgba(27,94,32,0.12);">
-                                <i class="fa-solid fa-circle-user fs-5 text-success"></i>
-                            </a>
-
-                            <ul class="dropdown-menu dropdown-menu-end shadow-lg rounded-4 border-0 p-2"
-                                aria-labelledby="userDropdown" style="min-width: 220px;">
-                                <li class="dropdown-header fw-bold text-truncate" style="max-width: 200px;">
-                                    <div class="text-dark">{{ user.get_full_name|default:user.username }}</div>
-                                    <div class="text-muted small fw-normal">{{ user.email }}</div>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider my-2">
-                                </li>
-                                <li>
-                                    <a class="dropdown-item rounded-3 d-flex align-items-center justify-content-between py-2"
-                                        href="{% url 'profile' %}">
-                                        <span><i class="fa-solid fa-user-gear text-success me-2"></i>My Profile</span>
-                                        {% if user.profile and not user.profile.is_complete %}
-                                        <span class="badge bg-warning text-dark"
-                                            style="font-size:10px;">Incomplete</span>
-                                        {% else %}
-                                        <span class="badge bg-success" style="font-size:10px;">Verified</span>
-                                        {% endif %}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item rounded-3 d-flex align-items-center justify-content-between py-2"
-                                        href="{% url 'profile' %}#orders">
-                                        <span><i class="fa-solid fa-box-archive text-success me-2"></i>My Orders</span>
-                                        <span class="badge bg-success" style="font-size:10px;">Track</span>
-                                    </a>
-                                </li>
-                                <li><a class="dropdown-item rounded-3 py-2 text-danger"
-                                        href="{% url 'account_logout' %}"><i
-                                            class="fa-solid fa-right-from-bracket me-2"></i>Logout</a></li>
-                            </ul>
-                        </div>
-                        {% else %}
-                        <a href="{% url 'account_login' %}" class="icon-btn" title="Sign in with Google">
-                            <i class="fa-solid fa-user-plus"></i>
-                        </a>
-                        {% endif %}
-
-
-                        <a href="{% url 'cart' %}" class="icon-btn position-relative" title="Cart">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                            <span class="cart-count">{{ cart_count|default:0 }}</span>
-                        </a>
-
                     </div>
+
+                    <!-- PROFILE DROPDOWN (Inside Hamburger on Mobile, Right-aligned on Desktop) -->
+                    {% if user.is_authenticated %}
+                    <div class="dropdown d-inline ms-1">
+                        <a href="#" class="icon-btn dropdown-toggle border-0 position-relative" id="userDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false" title="{{ user.email }}"
+                            style="background: rgba(27, 94, 32, 0.08); color: #1B5E20; border-radius: 50%; width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; transition: all .3s ease; box-shadow: 0 2px 8px rgba(27,94,32,0.12);">
+                            <i class="fa-solid fa-circle-user fs-5 text-success"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end shadow-lg rounded-4 border-0 p-2"
+                            aria-labelledby="userDropdown" style="min-width: 220px;">
+                            <li class="dropdown-header fw-bold text-truncate" style="max-width: 200px;">
+                                <div class="text-dark">{{ user.get_full_name|default:user.username }}</div>
+                                <div class="text-muted small fw-normal">{{ user.email }}</div>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider my-2">
+                            </li>
+                            <li>
+                                <a class="dropdown-item rounded-3 d-flex align-items-center justify-content-between py-2"
+                                    href="{% url 'profile' %}">
+                                    <span><i class="fa-solid fa-user-gear text-success me-2"></i>My Profile</span>
+                                    {% if user.profile and not user.profile.is_complete %}
+                                    <span class="badge bg-warning text-dark"
+                                        style="font-size:10px;">Incomplete</span>
+                                    {% else %}
+                                    <span class="badge bg-success" style="font-size:10px;">Verified</span>
+                                    {% endif %}
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item rounded-3 d-flex align-items-center justify-content-between py-2"
+                                    href="{% url 'profile' %}#orders">
+                                    <span><i class="fa-solid fa-box-archive text-success me-2"></i>My Orders</span>
+                                    <span class="badge bg-success" style="font-size:10px;">Track</span>
+                                </a>
+                            </li>
+                            <li><a class="dropdown-item rounded-3 py-2 text-danger"
+                                    href="{% url 'account_logout' %}"><i
+                                        class="fa-solid fa-right-from-bracket me-2"></i>Logout</a></li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <a href="{% url 'account_login' %}" class="icon-btn" title="Sign in with Google">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </a>
+                    {% endif %}
+
+                    <!-- DESKTOP CART ICON (Hidden on Mobile) -->
+                    <a href="{% url 'cart' %}" class="icon-btn position-relative d-none d-lg-inline-flex ms-1" title="Cart">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span class="cart-count">{{ cart_count|default:0 }}</span>
+                    </a>
 
                 </div>
 
@@ -867,37 +872,37 @@
 
     <footer class="footer">
 
-        <div class="container">
+        <div class="container text-center text-md-start">
 
-            <div class="row">
+            <div class="row g-4">
 
-                <div class="col-lg-4">
-                    <img src="{% static 'images/main_logo.png' %}" alt="Lathriya Spices Logo" class="mb-3" style="height: 60px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3)); display: block;">
+                <div class="col-lg-4 col-md-6 text-center text-md-start">
+                    <img src="{% static 'images/main_logo.png' %}" alt="Lathriya Spices Logo" class="mb-3 mx-auto mx-md-0" style="height: 60px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3)); display: block;">
                     <h3><span class="text-white">Lathriya</span> <span class="brand-word-spices">Spices</span></h3>
                     <p>Bringing premium Kerala spices directly from our plantations to your kitchen.</p>
                 </div>
 
-                <div class="col-lg-2">
+                <div class="col-lg-2 col-md-6 text-center text-md-start">
                     <h5>Quick Links</h5>
-                    <ul>
+                    <ul class="list-unstyled">
                         <li><a href="{% url 'home' %}">Home</a></li>
                         <li><a href="{% url 'shop' %}">Shop</a></li>
                         <li><a href="{% url 'about' %}">About</a></li>
                     </ul>
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col-lg-3 col-md-6 text-center text-md-start">
                     <h5>Products</h5>
-                    <ul>
+                    <ul class="list-unstyled">
                         <li>Cardamom Powder</li>
                         <li>Black Pepper Powder</li>
                         <li>Nutmeg Powder</li>
                     </ul>
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col-lg-3 col-md-6 text-center text-md-start">
                     <h5>Customer Support</h5>
-                    <ul>
+                    <ul class="list-unstyled">
                         <li><a href="{% url 'contact' %}">Contact Us</a></li>
                         <li><a href="{% url 'shipping' %}">Shipping Policy</a></li>
                         <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
@@ -905,7 +910,7 @@
                         <li><a href="{% url 'terms' %}">Terms & Conditions</a></li>
                     </ul>
 
-                    <div class="social-icons mt-3">
+                    <div class="social-icons mt-3 d-flex justify-content-center justify-content-md-start">
                         <a href="#" class="facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
                         <a href="#" class="instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
                         <a href="https://wa.me/" class="whatsapp" title="WhatsApp" target="_blank"><i
