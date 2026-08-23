@@ -17,6 +17,8 @@ if allowed_hosts_env:
 else:
     ALLOWED_HOSTS = ['*']
 
+SITE_DOMAIN = os.getenv('SITE_DOMAIN', 'lathriyaspices.com').strip()
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
