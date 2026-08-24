@@ -306,7 +306,10 @@ class CartItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cart_items', db_index=True)
     variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE, related_name='cart_items')
     quantity = models.PositiveIntegerField(default=1)
-    reserved_at = models.DateTimeField(auto_now=True, db_index=True)
+    # auto_now_add=True: set ONLY on creation — prevents every cart update from resetting the
+    # 15-minute reservation clock, which would allow bots/users to hold stock hostage indefinitely.
+    # Call touch_reservation() explicitly when you intentionally want to refresh the timer.
+    reserved_at = models.DateTimeField(auto_now_add=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -319,6 +322,11 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.quantity}x {self.variant}"
+
+    def touch_reservation(self):
+        """Explicitly refresh the reservation timer (e.g. on active checkout interaction)."""
+        from django.utils import timezone
+        CartItem.objects.filter(pk=self.pk).update(reserved_at=timezone.now())
 
 
 class UserProfile(models.Model):

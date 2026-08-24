@@ -281,7 +281,8 @@ def add_to_cart(request):
     except (ProductVariant.DoesNotExist, ValueError):
         return JsonResponse({'error': 'Invalid variant'}, status=400)
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+        logger.error(f"Error in add_to_cart: {e}", exc_info=True)
+        return JsonResponse({'error': 'An unexpected error occurred while updating cart.'}, status=500)
 
 
 def update_cart(request):
@@ -355,7 +356,8 @@ def update_cart(request):
     except (ProductVariant.DoesNotExist, ValueError):
         return JsonResponse({'error': 'Invalid variant'}, status=400)
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+        logger.error(f"Error in update_cart: {e}", exc_info=True)
+        return JsonResponse({'error': 'An unexpected error occurred while updating cart.'}, status=500)
 
 
 def remove_from_cart(request):
@@ -557,7 +559,8 @@ def checkout(request):
                 'amount': float(order.total_amount)
             })
         except Exception as e:
-            return JsonResponse({'success': False, 'error': str(e)}, status=400)
+            logger.error(f"Error in checkout processing: {e}", exc_info=True)
+            return JsonResponse({'success': False, 'error': 'Failed to process checkout request.'}, status=400)
 
     return render(request, 'checkout.html', {
         'cart_items': cart_items,
@@ -661,7 +664,7 @@ def verify_payment(request):
             return JsonResponse({'success': True, 'message': 'Payment status updated successfully.'})
         except Exception as e:
             logger.error(f"Error in verify_payment: {e}", exc_info=True)
-            return JsonResponse({'success': False, 'error': str(e)}, status=400)
+            return JsonResponse({'success': False, 'error': 'Payment verification failed.'}, status=400)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 
@@ -713,7 +716,7 @@ def razorpay_webhook(request):
         return JsonResponse({'status': 'ok', 'message': 'Webhook processed successfully'})
     except Exception as e:
         logger.error(f"Error processing Razorpay webhook: {e}", exc_info=True)
-        return JsonResponse({'error': str(e)}, status=500)
+        return JsonResponse({'error': 'Webhook processing error'}, status=500)
 
 
 @login_required
