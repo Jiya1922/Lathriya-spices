@@ -406,8 +406,90 @@
 
 </section>
 
+<!-- ===== MOBILE FLOATING CART BUTTON (shop page only) ===== -->
+<a href="{% url 'cart' %}" id="floatingCartBtn" aria-label="View Cart"
+   style="
+       display: none;
+       position: fixed;
+       bottom: 24px;
+       right: 18px;
+       z-index: 1050;
+       width: 56px;
+       height: 56px;
+       border-radius: 50%;
+       background: #1B5E20;
+       color: #fff;
+       box-shadow: 0 6px 20px rgba(27,94,32,0.45);
+       align-items: center;
+       justify-content: center;
+       font-size: 22px;
+       text-decoration: none;
+       transition: background 0.2s ease, transform 0.15s ease;
+   "
+   ontouchstart="this.style.background='#D4A017'; this.style.transform='scale(0.93)';"
+   ontouchend="this.style.background='#1B5E20'; this.style.transform='scale(1)';">
+    <i class="fa-solid fa-cart-shopping"></i>
+    <span id="floatingCartCount"
+          style="
+              display: none;
+              position: absolute;
+              top: -4px;
+              right: -4px;
+              width: 20px;
+              height: 20px;
+              border-radius: 50%;
+              background: #d32f2f;
+              color: #fff;
+              font-size: 11px;
+              font-weight: 700;
+              align-items: center;
+              justify-content: center;
+              border: 2px solid #fff;
+              box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+          "></span>
+</a>
+
 {% endblock %}
 
 {% block js %}
 <script src="{% static 'js/shop.js' %}"></script>
+<script>
+(function () {
+    function isMobile() { return window.innerWidth <= 991; }
+
+    var btn = document.getElementById('floatingCartBtn');
+    var badge = document.getElementById('floatingCartCount');
+    if (!btn) return;
+
+    /* Show button only on mobile */
+    function toggleVisibility() {
+        btn.style.display = isMobile() ? 'flex' : 'none';
+    }
+    toggleVisibility();
+    window.addEventListener('resize', toggleVisibility);
+
+    /* Sync badge count from the existing navbar cart-count badge */
+    function syncCount() {
+        var navBadge = document.querySelector('.cart-count');
+        if (!navBadge) { badge.style.display = 'none'; return; }
+        var count = parseInt(navBadge.textContent || '0', 10);
+        if (count > 0) {
+            badge.textContent = count > 9 ? '9+' : count;
+            badge.style.display = 'flex';
+        } else {
+            badge.style.display = 'none';
+        }
+    }
+    syncCount();
+
+    /* Re-sync whenever the navbar badge changes (cart add/remove) */
+    var navBadge = document.querySelector('.cart-count');
+    if (navBadge && window.MutationObserver) {
+        new MutationObserver(syncCount).observe(navBadge, { childList: true, characterData: true, subtree: true });
+    }
+    /* Also re-sync after any XHR cart action via polling */
+    setTimeout(syncCount, 1000);
+    setTimeout(syncCount, 2500);
+})();
+</script>
 {% endblock %}
