@@ -17,6 +17,14 @@ if allowed_hosts_env:
 else:
     ALLOWED_HOSTS = ['*']
 
+for domain in ['.onrender.com', 'lathriya-spices.onrender.com', 'localhost', '127.0.0.1']:
+    if domain not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(domain)
+
+if render_host := os.getenv('RENDER_EXTERNAL_HOSTNAME'):
+    if render_host not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(render_host)
+
 # Reverse Proxy & SSL Configuration (For Render, Heroku, Railway)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
@@ -158,11 +166,6 @@ AUTHENTICATION_BACKENDS = [
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
-        'APP': {
-            'client_id': os.getenv('GOOGLE_CLIENT_ID', ''),
-            'secret': os.getenv('GOOGLE_CLIENT_SECRET', ''),
-            'key': ''
-        },
         'SCOPE': [
             'profile',
             'email',
