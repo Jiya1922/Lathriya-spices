@@ -406,7 +406,7 @@
 
 </section>
 
-<!-- ===== MOBILE FLOATING CART BUTTON (shop page only) ===== -->
+<!-- ===== MOBILE DRAGGABLE FLOATING CART BUTTON (shop page only) ===== -->
 <a href="{% url 'cart' %}" id="floatingCartBtn" aria-label="View Cart"
    style="
        display: none;
@@ -424,11 +424,12 @@
        justify-content: center;
        font-size: 22px;
        text-decoration: none;
-       transition: background 0.2s ease, transform 0.15s ease;
-   "
-   ontouchstart="this.style.background='#D4A017'; this.style.transform='scale(0.93)';"
-   ontouchend="this.style.background='#1B5E20'; this.style.transform='scale(1)';">
-    <i class="fa-solid fa-cart-shopping"></i>
+       touch-action: none;
+       user-select: none;
+       -webkit-user-drag: none;
+       cursor: grab;
+   ">
+    <i class="fa-solid fa-cart-shopping" style="pointer-events:none;"></i>
     <span id="floatingCartCount"
           style="
               display: none;
@@ -446,6 +447,7 @@
               justify-content: center;
               border: 2px solid #fff;
               box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+              pointer-events: none;
           "></span>
 </a>
 
@@ -463,7 +465,11 @@
 
     /* Show button only on mobile */
     function toggleVisibility() {
-        btn.style.display = isMobile() ? 'flex' : 'none';
+        if (!isMobile()) {
+            btn.style.display = 'none';
+        } else {
+            btn.style.display = 'flex';
+        }
     }
     toggleVisibility();
     window.addEventListener('resize', toggleVisibility);
@@ -471,25 +477,117 @@
     /* Sync badge count from the existing navbar cart-count badge */
     function syncCount() {
         var navBadge = document.querySelector('.cart-count');
-        if (!navBadge) { badge.style.display = 'none'; return; }
+        if (!navBadge) { if (badge) badge.style.display = 'none'; return; }
         var count = parseInt(navBadge.textContent || '0', 10);
-        if (count > 0) {
+        if (count > 0 && badge) {
             badge.textContent = count > 9 ? '9+' : count;
             badge.style.display = 'flex';
-        } else {
+        } else if (badge) {
             badge.style.display = 'none';
         }
     }
     syncCount();
 
-    /* Re-sync whenever the navbar badge changes (cart add/remove) */
+    /* Re-sync whenever navbar badge changes */
     var navBadge = document.querySelector('.cart-count');
     if (navBadge && window.MutationObserver) {
         new MutationObserver(syncCount).observe(navBadge, { childList: true, characterData: true, subtree: true });
     }
-    /* Also re-sync after any XHR cart action via polling */
     setTimeout(syncCount, 1000);
     setTimeout(syncCount, 2500);
+
+    /* =======================================================
+       DRAGGABLE / MOVABLE FLOATING CART ICON (Excluding Navbar)
+       ======================================================= */
+    var isDragging = false;
+    var hasMoved = false;
+    var startX = 0, startY = 0;
+    var initialLeft = 0, initialTop = 0;
+    var navbarHeight = 65; // Safe top offset to avoid covering navbar
+
+    function getCoords(e) {
+        if (e.touches && e.touches.length > 0) {
+            return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        }
+        return { x: e.clientX, y: e.clientY };
+    }
+
+    function onDragStart(e) {
+        if (!isMobile()) return;
+        var coords = getCoords(e);
+        startX = coords.x;
+        startY = coords.y;
+        hasMoved = false;
+        isDragging = true;
+
+        var rect = btn.getBoundingClientRect();
+        initialLeft = rect.left;
+        initialTop = rect.top;
+
+        btn.style.cursor = 'grabbing';
+        btn.style.transition = 'none';
+    }
+
+    function onDragMove(e) {
+        if (!isDragging) return;
+        var coords = getCoords(e);
+        var dx = coords.x - startX;
+        var dy = coords.y - startY;
+
+        if (!hasMoved && Math.hypot(dx, dy) > 5) {
+            hasMoved = true;
+        }
+
+        if (hasMoved) {
+            e.preventDefault(); // Prevent page scroll while dragging icon
+            var newLeft = initialLeft + dx;
+            var newTop = initialTop + dy;
+
+            var btnWidth = btn.offsetWidth || 56;
+            var btnHeight = btn.offsetHeight || 56;
+
+            // Boundaries: Exclude navbar at top (navbarHeight) and keep in viewport
+            var minX = 10;
+            var maxX = window.innerWidth - btnWidth - 10;
+            var minY = navbarHeight + 8;
+            var maxY = window.innerHeight - btnHeight - 12;
+
+            newLeft = Math.max(minX, Math.min(newLeft, maxX));
+            newTop = Math.max(minY, Math.min(newTop, maxY));
+
+            btn.style.left = newLeft + 'px';
+            btn.style.top = newTop + 'px';
+            btn.style.right = 'auto';
+            btn.style.bottom = 'auto';
+        }
+    }
+
+    function onDragEnd() {
+        if (!isDragging) return;
+        isDragging = false;
+        btn.style.cursor = 'grab';
+        btn.style.transition = 'transform 0.15s ease, background 0.2s ease';
+    }
+
+    // Touch events
+    btn.addEventListener('touchstart', onDragStart, { passive: false });
+    window.addEventListener('touchmove', onDragMove, { passive: false });
+    window.addEventListener('touchend', onDragEnd);
+    window.addEventListener('touchcancel', onDragEnd);
+
+    // Mouse events
+    btn.addEventListener('mousedown', onDragStart);
+    window.addEventListener('mousemove', onDragMove);
+    window.addEventListener('mouseup', onDragEnd);
+
+    // Prevent click navigation if the user was dragging
+    btn.addEventListener('click', function (e) {
+        if (hasMoved) {
+            e.preventDefault();
+            e.stopPropagation();
+            hasMoved = false;
+        }
+    });
 })();
 </script>
 {% endblock %}
