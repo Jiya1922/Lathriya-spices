@@ -186,35 +186,51 @@ def _send_dispatch_email_worker(order_id, tracking_number):
             if not resend_api_key:
                 return
 
-    # Mode B: Resend API
+    # Mode B: Resend API (HTTP REST & SDK support)
     if resend_api_key:
         try:
-            import resend
-            resend.api_key = resend_api_key
-
+            import base64
             from_email = getattr(settings, 'RESEND_FROM_EMAIL', '') or os.environ.get('RESEND_FROM_EMAIL', '').strip()
             if not from_email:
                 from_email = "Lathriya Spices <onboarding@resend.dev>"
 
-            email_params = {
+            # Format attachments
+            attachments = []
+            if pdf_bytes:
+                b64_pdf = base64.b64encode(pdf_bytes).decode('utf-8')
+                attachments.append({
+                    "filename": f"Lathriya_Spices_Receipt_{order.display_order_id}.pdf",
+                    "content": b64_pdf
+                })
+
+            # Send via Resend REST API (Guaranteed to work in all cloud environments without SMTP port restrictions)
+            api_headers = {
+                "Authorization": f"Bearer {resend_api_key}",
+                "Content-Type": "application/json"
+            }
+            api_payload = {
                 "from": from_email,
                 "to": [recipient_email],
                 "subject": subject,
                 "html": html_content,
             }
+            if attachments:
+                api_payload["attachments"] = attachments
 
-            if pdf_bytes:
-                email_params["attachments"] = [
-                    {
-                        "filename": f"Lathriya_Spices_Receipt_{order.display_order_id}.pdf",
-                        "content": list(pdf_bytes),
-                    }
-                ]
+            api_resp = http_requests.post(
+                "https://api.resend.com/emails",
+                headers=api_headers,
+                json=api_payload,
+                timeout=15
+            )
 
-            response = resend.Emails.send(email_params)
-            logger.info(f"[RESEND_SUCCESS] Dispatch email sent for Order #{order.display_order_id} to {recipient_email}. ID: {response}")
+            if api_resp.status_code in (200, 201):
+                logger.info(f"[RESEND_SUCCESS] Dispatch email sent via Resend API for Order #{order.display_order_id} to {recipient_email}. Resp: {api_resp.text}")
+                return
+            else:
+                logger.error(f"[RESEND_ERROR] Resend API responded with status {api_resp.status_code}: {api_resp.text}")
         except Exception as resend_err:
-            logger.error(f"[RESEND_ERROR] Failed to send email for Order #{order.id} to {recipient_email}: {resend_err}", exc_info=True)
+            logger.error(f"[RESEND_ERROR] Failed to send email via Resend for Order #{order.id} to {recipient_email}: {resend_err}", exc_info=True)
     else:
         logger.warning(f"[EMAIL_WARNING] No email credentials found (neither Gmail SMTP nor Resend). Skipping email for Order #{order.id}.")
 
