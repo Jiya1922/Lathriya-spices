@@ -403,11 +403,15 @@ document.addEventListener("DOMContentLoaded", function() {
                         })
                         .then(r => r.json())
                         .then(vData => {
-                            if (vData.redirect_url) {
+                            if (vData && vData.redirect_url) {
                                 window.location.href = vData.redirect_url;
                             } else {
                                 window.location.href = "/order/success/" + dbOrderId + "/";
                             }
+                        })
+                        .catch(err => {
+                            console.error("Payment verification error:", err);
+                            window.location.href = "/order/success/" + dbOrderId + "/";
                         });
                     },
                     "prefill": {
@@ -439,7 +443,7 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .catch(err => {
             console.error(err);
-            alert("Order processing failed. Please try again.");
+            alert("Order processing failed: " + (err.message || "Please check your network and try again."));
         });
     });
 

@@ -38,12 +38,12 @@ class SecurityAndRateLimitMiddleware:
         # Compatible with Supabase Storage, Razorpay Checkout, Google OAuth & CDNs (Bootstrap, FontAwesome, Google Fonts)
         csp_directives = (
             "default-src 'self' https: data: blob:; "
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; "
-            "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com; "
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.razorpay.com https://checkout.razorpay.com https://cdn.razorpay.com https://api.razorpay.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://accounts.google.com; "
+            "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com https://*.razorpay.com; "
             "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com data:; "
-            "img-src 'self' data: https: blob: *.supabase.co *.supabase.in; "
-            "connect-src 'self' https: *.supabase.co *.supabase.in https://lapi.razorpay.com https://api.razorpay.com; "
-            "frame-src 'self' https://api.razorpay.com https://checkout.razorpay.com; "
+            "img-src 'self' data: https: blob: *.supabase.co *.supabase.in https://*.razorpay.com; "
+            "connect-src 'self' https: *.supabase.co *.supabase.in https://*.razorpay.com https://lapi.razorpay.com https://api.razorpay.com; "
+            "frame-src 'self' https://*.razorpay.com https://api.razorpay.com https://checkout.razorpay.com https://accounts.google.com; "
             "object-src 'none'; "
             "base-uri 'self';"
         )
