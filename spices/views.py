@@ -263,10 +263,20 @@ def add_to_cart(request):
             else:
                 net_qty = quantity
 
+            if variant.stock_quantity <= 0:
+                return JsonResponse({
+                    'success': False,
+                    'remaining_stock': 0,
+                    'variant_id': str(variant.id),
+                    'error': f"Sorry, {variant.product.name} ({variant.weight}) is currently out of stock!"
+                }, status=400)
+
             if net_qty > 0 and variant.stock_quantity < net_qty:
                 return JsonResponse({
                     'success': False,
-                    'error': f'Only {variant.stock_quantity} units available in stock.'
+                    'remaining_stock': variant.stock_quantity,
+                    'variant_id': str(variant.id),
+                    'error': f"Only {variant.stock_quantity} unit(s) available in stock for {variant.product.name} ({variant.weight})."
                 }, status=400)
 
             # Atomic FCFS Stock Reservation / Restoration
@@ -335,7 +345,9 @@ def update_cart(request):
             if delta > 0 and variant.stock_quantity < delta:
                 return JsonResponse({
                     'success': False,
-                    'error': f'Only {variant.stock_quantity} additional units available in stock.'
+                    'remaining_stock': variant.stock_quantity,
+                    'variant_id': str(variant.id),
+                    'error': f'Only {variant.stock_quantity} additional unit(s) available in stock for {variant.product.name} ({variant.weight}).'
                 }, status=400)
 
             variant.stock_quantity -= delta
@@ -616,6 +628,7 @@ def checkout(request):
             return JsonResponse({
                 'success': True,
                 'order_id': order.id,
+                'order_number': order.display_order_id,
                 'razorpay_key': razorpay_key,
                 'amount': float(order.total_amount)
             })
@@ -719,7 +732,7 @@ def verify_payment(request):
                     return JsonResponse({
                         'success': True,
                         'receipt_url': receipt_url,
-                        'redirect_url': f'/order/success/{order.id}/',
+                        'redirect_url': f'/order/success/{order.display_order_id}/',
                         'message': 'Payment status updated & receipt processed successfully.'
                     })
             return JsonResponse({'success': True, 'message': 'Payment status updated successfully.'})
@@ -781,8 +794,18 @@ def razorpay_webhook(request):
 
 
 @login_required
-def order_success(request, order_id):
-    order = get_object_or_404(Order, id=order_id, user=request.user)
+def order_success(request, order_ref):
+    if str(order_ref).isdigit():
+        order = Order.objects.filter(id=int(order_ref), user=request.user).first()
+    else:
+        order = Order.objects.filter(order_number=order_ref, user=request.user).first()
+
+    if not order:
+        if request.user.is_staff:
+            order = get_object_or_404(Order, id=int(order_ref)) if str(order_ref).isdigit() else get_object_or_404(Order, order_number=order_ref)
+        else:
+            return get_object_or_404(Order, order_number=order_ref, user=request.user) if not str(order_ref).isdigit() else get_object_or_404(Order, id=int(order_ref), user=request.user)
+
     return render(request, 'order_success.html', {
         'order': order
     })
@@ -794,17 +817,20 @@ def service_worker(request):
 
 
 @login_required
-def download_receipt(request, order_id):
+def download_receipt(request, order_ref):
     """
     Secure view to download PDF receipt for an order.
     Strictly verifies ownership: User can ONLY view/download their own order receipts.
     Fetches the PDF from Supabase Storage or generates on the fly if missing from storage.
     """
-    order = get_object_or_404(Order, id=order_id)
+    if str(order_ref).isdigit():
+        order = get_object_or_404(Order, id=int(order_ref))
+    else:
+        order = get_object_or_404(Order, order_number=order_ref)
     
     # Strict Ownership Check: Ensure user owns this order or is admin/staff
     if order.user != request.user and not request.user.is_staff:
-        logger.warning(f"[SECURITY UNAUTHORIZED] User '{request.user}' attempted unauthorized access to Order #{order.id} receipt owned by '{order.user}'.")
+        logger.warning(f"[SECURITY UNAUTHORIZED] User '{request.user}' attempted unauthorized access to Order #{order.display_order_id} receipt owned by '{order.user}'.")
         return HttpResponse("Forbidden: You do not have permission to view or download this receipt.", status=403)
 
     pdf_bytes = None
@@ -871,8 +897,8 @@ def download_receipt(request, order_id):
     if not pdf_bytes:
         return HttpResponse("Receipt could not be generated. Please contact support.", status=500)
 
-    # Clean professional receipt reference code (e.g., REC-851050)
-    ref_code = f"REC-{(order.id * 1849 + 849201) % 900000 + 100000}"
+    # Clean professional receipt reference code using unique order number (e.g., LS-849201)
+    ref_code = order.display_order_id
     filename = f"Lathriya_Spices_Receipt_{ref_code}.pdf"
     response = HttpResponse(pdf_bytes, content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="{filename}"'

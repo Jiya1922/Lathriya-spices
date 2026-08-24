@@ -76,7 +76,7 @@
         </div>
 
         <div class="text-center mb-4">
-            <h3 class="fw-bold text-success mb-1">Order #{{ order.id }} Confirmed</h3>
+            <h3 class="fw-bold text-success mb-1">Order #{{ order.display_order_id }} Confirmed</h3>
             <p class="text-muted">Placed on {{ order.created_at|date:"M d, Y, h:i A" }} IST</p>
             {% if order.razorpay_payment_id %}
             <div class="d-inline-block bg-light px-3 py-2 rounded-pill text-dark border fs-7 mt-1">
@@ -89,7 +89,7 @@
             <i class="fa-solid fa-seedling fs-3"></i>
             <div>
                 <div class="fw-bold">Fresh Plantation Processing Started</div>
-                <div style="font-size:13px; opacity:0.95;">Our team in Kerala is packing your spices fresh. Once dispatched, your courier/post tracking number will be updated in your profile.</div>
+                <div style="font-size:13px; opacity:0.95;">Our team in Kerala is packing your spices fresh. Once dispatched, we'll send an email with your <strong>tracking ID</strong> and <strong>official PDF receipt</strong>, and update it in your profile.</div>
             </div>
         </div>
 

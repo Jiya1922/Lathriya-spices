@@ -384,7 +384,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     "amount": amountInPaise,
                     "currency": "INR",
                     "name": "Lathriya Spices",
-                    "description": "Order #" + dbOrderId,
+                    "description": "Order #" + (resData.order_number || dbOrderId),
                     "image": "{% static 'images/main_logo.png' %}",
                     "handler": function (response){
                         // 3. Verify Payment on Backend
@@ -426,7 +426,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 // Fallback for development/testing if Key is missing, empty, or placeholder test key
                 if (!window.Razorpay || !razorpayKey || razorpayKey === "rzp_test_your_key_id" || razorpayKey.trim() === "") {
-                    if (confirm("Razorpay Test Mode: Simulate successful payment for Order #" + dbOrderId + " (Total: ₹" + resData.amount + ")?")) {
+                    var displayOrderNo = resData.order_number || dbOrderId;
+                    if (confirm("Razorpay Test Mode: Simulate successful payment for Order #" + displayOrderNo + " (Total: ₹" + resData.amount + ")?")) {
                         options.handler({
                             razorpay_order_id: 'rzp_order_mock_' + dbOrderId,
                             razorpay_payment_id: 'rzp_pay_mock_' + dbOrderId + '_' + Date.now(),

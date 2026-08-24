@@ -64,8 +64,22 @@ document.addEventListener("DOMContentLoaded", function() {
     if (plus && quantity) {
         plus.addEventListener("click", function() {
             var maxStock = getMaxStock();
+            if (maxStock <= 0) {
+                var outMsg = "Sorry, this product variant is currently out of stock!";
+                if (window.showToast) {
+                    window.showToast(outMsg, true);
+                } else {
+                    alert(outMsg);
+                }
+                return;
+            }
             if (count >= maxStock) {
-                alert("Maximum available stock for this variant is " + maxStock + " units.");
+                var excMsg = "Only " + maxStock + " unit(s) available in stock.";
+                if (window.showToast) {
+                    window.showToast(excMsg, true);
+                } else {
+                    alert(excMsg);
+                }
                 return;
             }
             count++;
@@ -96,12 +110,33 @@ document.addEventListener("DOMContentLoaded", function() {
         cartBtn.addEventListener("click", function(e) {
             if (e) e.preventDefault();
             var targetVariantId = getSelectedVariantId();
-            if (!targetVariantId) { alert("Please select a weight option."); return; }
+            if (!targetVariantId) {
+                if (window.showToast) window.showToast("Please select a weight option.", true);
+                else alert("Please select a weight option.");
+                return;
+            }
             
             var qtyVal = quantity ? parseInt(quantity.value || 1) : 1;
             var active = document.querySelector(".weight-btn.active");
             var selectedWeight = active ? active.dataset.weight || "50g" : "50g";
             var prodName = document.querySelector(".product-title") ? document.querySelector(".product-title").textContent.trim() : "Product";
+
+            var maxStock = parseInt(active ? active.dataset.stock : "9999");
+            if (isNaN(maxStock)) maxStock = 9999;
+
+            if (maxStock <= 0) {
+                var outMsg = "Sorry, " + prodName + " (" + selectedWeight + ") is currently out of stock!";
+                if (window.showToast) window.showToast(outMsg, true);
+                else alert(outMsg);
+                return;
+            }
+
+            if (qtyVal > maxStock) {
+                var excMsg = "Only " + maxStock + " unit(s) available in stock for " + prodName + " (" + selectedWeight + ").";
+                if (window.showToast) window.showToast(excMsg, true);
+                else alert(excMsg);
+                return;
+            }
 
             var origHtml = cartBtn.innerHTML;
             cartBtn.disabled = true;
@@ -184,9 +219,33 @@ document.addEventListener("DOMContentLoaded", function() {
         var buyBtn = document.getElementById("buyBtn");
         if (!buyBtn) return;
         var targetVariantId = getSelectedVariantId();
-        if (!targetVariantId) { alert("Please select a weight option."); return; }
+        if (!targetVariantId) {
+            if (window.showToast) window.showToast("Please select a weight option.", true);
+            else alert("Please select a weight option.");
+            return;
+        }
 
         var qtyVal = quantity ? parseInt(quantity.value || 1) : 1;
+        var active = document.querySelector(".weight-btn.active");
+        var selectedWeight = active ? active.dataset.weight || "50g" : "50g";
+        var prodName = document.querySelector(".product-title") ? document.querySelector(".product-title").textContent.trim() : "Product";
+
+        var maxStock = parseInt(active ? active.dataset.stock : "9999");
+        if (isNaN(maxStock)) maxStock = 9999;
+
+        if (maxStock <= 0) {
+            var outMsg = "Sorry, " + prodName + " (" + selectedWeight + ") is currently out of stock!";
+            if (window.showToast) window.showToast(outMsg, true);
+            else alert(outMsg);
+            return;
+        }
+
+        if (qtyVal > maxStock) {
+            var excMsg = "Only " + maxStock + " unit(s) available in stock for " + prodName + " (" + selectedWeight + ").";
+            if (window.showToast) window.showToast(excMsg, true);
+            else alert(excMsg);
+            return;
+        }
 
         // Instant visual feedback for 0ms tap delay
         var origHtml = buyBtn.getAttribute("data-orig") || buyBtn.innerHTML;
@@ -227,13 +286,21 @@ document.addEventListener("DOMContentLoaded", function() {
                 window.location.href = "/checkout/";
             } else {
                 restoreBuyBtn();
-                alert(data.error || "Something went wrong.");
+                if (window.showToast) {
+                    window.showToast(data.error || "Sorry, item is currently out of stock.", true);
+                } else {
+                    alert(data.error || "Sorry, item is currently out of stock.");
+                }
             }
         })
         .catch(function(err) {
             console.error(err);
             restoreBuyBtn();
-            alert("Something went wrong.");
+            if (window.showToast) {
+                window.showToast("Something went wrong. Please try again.", true);
+            } else {
+                alert("Something went wrong. Please try again.");
+            }
         });
     }
 

@@ -373,22 +373,24 @@
             user-select: none;
         }
 
-        /* FLOATING TOAST NOTIFICATION */
+        /* FLOATING TOAST NOTIFICATION (Right Side Just Below Navbar) */
         .toast-container {
             position: fixed;
-            top: 24px;
+            top: 92px;
             right: 24px;
             z-index: 99999;
             display: flex;
             flex-direction: column;
             gap: 10px;
+            max-width: 420px;
+            width: auto;
             pointer-events: none;
         }
 
         .custom-toast {
             background: #1B5E20;
             color: #fff;
-            padding: 14px 22px;
+            padding: 13px 22px;
             border-radius: 50px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
             font-weight: 600;
@@ -396,7 +398,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            transform: translateY(-20px) scale(0.95);
+            transform: translateY(-15px) scale(0.95);
             opacity: 0;
             transition: all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             pointer-events: auto;
@@ -405,6 +407,24 @@
         .custom-toast.show {
             transform: translateY(0) scale(1);
             opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .toast-container {
+                top: 76px;
+                right: 14px;
+                left: 14px;
+                max-width: none;
+                align-items: center;
+            }
+            .custom-toast {
+                width: 100%;
+                justify-content: center;
+                text-align: center;
+                border-radius: 16px;
+                font-size: 13px;
+                padding: 11px 16px;
+            }
         }
 
         /* ==========================================
@@ -1066,6 +1086,24 @@
 
     </nav>
 
+    <!-- FLASH / TOAST MESSAGES CONTAINER (Right side just below navbar) -->
+    <div id="toastContainer" class="toast-container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="custom-toast show server-toast {% if message.tags == 'error' %}bg-danger text-white{% elif message.tags == 'warning' %}bg-warning text-dark{% else %}bg-success text-white{% endif %}">
+                    {% if message.tags == 'error' %}
+                        <i class="fa-solid fa-circle-xmark fs-5"></i>
+                    {% elif message.tags == 'warning' %}
+                        <i class="fa-solid fa-triangle-exclamation fs-5 text-dark"></i>
+                    {% else %}
+                        <i class="fa-solid fa-circle-check fs-5 text-warning"></i>
+                    {% endif %}
+                    <span>{{ message }}</span>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
     <!-- PAGE CONTENT -->
 
     {% block content %}
@@ -1308,6 +1346,17 @@
             }, 2800);
         };
 
+        // Auto-dismiss any pre-rendered server messages
+        document.addEventListener("DOMContentLoaded", function () {
+            var serverToasts = document.querySelectorAll(".custom-toast.server-toast");
+            serverToasts.forEach(function (st) {
+                setTimeout(function () {
+                    st.classList.remove("show");
+                    setTimeout(function () { st.remove(); }, 350);
+                }, 3500);
+            });
+        });
+
         /* GLOBAL CARD WEIGHT & QUANTITY CONTROLS */
         function changeCardQty(btn, delta) {
             if (window.event) {
@@ -1335,10 +1384,22 @@
             if (isNaN(currentQty) || currentQty < 1) currentQty = 1;
 
             var newQty = currentQty + delta;
-            if (newQty < 1) newQty = 1;
+            if (maxStock <= 0) {
+                if (window.showToast) {
+                    window.showToast("Sorry, this product variant is currently out of stock!", true);
+                } else {
+                    alert("Sorry, this product variant is currently out of stock!");
+                }
+                return;
+            }
 
             if (newQty > maxStock) {
-                alert("Maximum available stock for this variant is " + maxStock + " units.");
+                var msg = "Only " + maxStock + " unit(s) available in stock.";
+                if (window.showToast) {
+                    window.showToast(msg, true);
+                } else {
+                    alert(msg);
+                }
                 return;
             }
 
@@ -1491,8 +1552,22 @@
                 }
             }
 
+            if (maxStock <= 0) {
+                if (window.showToast) {
+                    window.showToast("Sorry, " + prodName + " (" + weightLabel + ") is currently out of stock!", true);
+                } else {
+                    alert("Sorry, " + prodName + " (" + weightLabel + ") is currently out of stock!");
+                }
+                return;
+            }
+
             if (qtyVal > maxStock) {
-                alert("Selected quantity (" + qtyVal + ") exceeds available stock (" + maxStock + " available).");
+                var msg = "Only " + maxStock + " unit(s) available in stock for " + prodName + " (" + weightLabel + ").";
+                if (window.showToast) {
+                    window.showToast(msg, true);
+                } else {
+                    alert(msg);
+                }
                 return;
             }
 
@@ -1544,13 +1619,21 @@
                         window.location.href = "/checkout/";
                     } else {
                         restoreBtn();
-                        alert(data.error || "Failed to proceed to checkout.");
+                        if (window.showToast) {
+                            window.showToast(data.error || "Sorry, item is currently out of stock.", true);
+                        } else {
+                            alert(data.error || "Sorry, item is currently out of stock.");
+                        }
                     }
                 })
                 .catch(function (err) {
                     console.error(err);
                     restoreBtn();
-                    alert("Something went wrong. Please try again.");
+                    if (window.showToast) {
+                        window.showToast("Something went wrong. Please try again.", true);
+                    } else {
+                        alert("Something went wrong. Please try again.");
+                    }
                 });
         });
 
@@ -1583,17 +1666,35 @@
                 }
             }
 
+            var prodName = card ? (card.querySelector("h3, h4") ? card.querySelector("h3, h4").textContent.trim() : "Product") : "Product";
+
+            if (maxStock <= 0) {
+                if (window.showToast) {
+                    window.showToast("Sorry, " + prodName + " (" + weightLabel + ") is currently out of stock!", true);
+                } else {
+                    alert("Sorry, " + prodName + " (" + weightLabel + ") is currently out of stock!");
+                }
+                return;
+            }
+
             if (qtyVal > maxStock) {
-                alert("Selected quantity (" + qtyVal + ") exceeds available stock (" + maxStock + " available).");
+                var msg = "Only " + maxStock + " unit(s) available in stock for " + prodName + " (" + weightLabel + ").";
+                if (window.showToast) {
+                    window.showToast(msg, true);
+                } else {
+                    alert(msg);
+                }
                 return;
             }
 
             if (!variantId || variantId === "None" || variantId === "") {
-                alert("Please select a valid product variant.");
+                if (window.showToast) {
+                    window.showToast("Please select a valid product weight option.", true);
+                } else {
+                    alert("Please select a valid product weight option.");
+                }
                 return;
             }
-
-            var prodName = card ? (card.querySelector("h3, h4") ? card.querySelector("h3, h4").textContent.trim() : "Product") : "Product";
 
             var origHtml = btn.getAttribute("data-orig") || btn.innerHTML;
             if (!btn.getAttribute("data-orig")) btn.setAttribute("data-orig", origHtml);

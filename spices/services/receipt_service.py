@@ -22,11 +22,11 @@ def process_payment_receipt(order, payment_id=None, razorpay_order_id=None, forc
         return None
 
     pid = payment_id or order.razorpay_payment_id or f"pay_order_{order.id}"
-    rzp_oid = razorpay_order_id or f"ORDER-{order.id}"
+    rzp_oid = razorpay_order_id or f"ORDER-{order.display_order_id}"
 
     # 1. Check Idempotency (Prevent Duplicate Receipts for the same order)
     if order.receipt_path and not force_regenerate:
-        logger.info(f"[IDEMPOTENCY] Receipt already exists for Order #{order.id} (Payment ID: {pid}). Path: '{order.receipt_path}'. Skipping PDF generation.")
+        logger.info(f"[IDEMPOTENCY] Receipt already exists for Order #{order.display_order_id} (Payment ID: {pid}). Path: '{order.receipt_path}'. Skipping PDF generation.")
         return order.receipt_url
 
     logger.info(f"Starting PDF receipt processing for Order #{order.id} (Payment ID: {pid})...")

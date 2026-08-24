@@ -8,8 +8,8 @@ urlpatterns = [
     path('product/<slug:slug>/', views.product_detail, name='product_detail'),
     path('cart/', views.cart, name='cart'),
     path('checkout/', views.checkout, name='checkout'),
-    path('order/success/<int:order_id>/', views.order_success, name='order_success'),
-    path('order/receipt/<int:order_id>/', views.download_receipt, name='download_receipt'),
+    path('order/success/<str:order_ref>/', views.order_success, name='order_success'),
+    path('order/receipt/<str:order_ref>/', views.download_receipt, name='download_receipt'),
     path('profile/', views.profile, name='profile'),
 
     path('about/', views.about, name='about'),

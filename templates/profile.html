@@ -361,7 +361,7 @@
                                             <div class="card rounded-4 border shadow-sm overflow-hidden">
                                                 <div class="card-header bg-light py-3 px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
                                                     <div>
-                                                        <span class="fw-bold fs-5 text-success">Order #{{ order.id }}</span>
+                                                        <span class="fw-bold fs-5 text-success">Order #{{ order.display_order_id }}</span>
                                                         <span class="text-muted ms-2 fs-7">· {{ order.created_at|date:"M d, Y, h:i A" }}</span>
                                                     </div>
                                                     <div>
@@ -404,7 +404,7 @@
                                                     {% elif order.status == 'PAID' %}
                                                         <div class="p-3 bg-light rounded-4 text-muted fs-7 mb-3 d-flex align-items-center gap-2">
                                                             <i class="fa-solid fa-truck-ramp-box text-warning fs-5"></i>
-                                                            <span>Your tracking number will be assigned shortly after your order is dispatched.</span>
+                                                            <span>Your order is being packed fresh. Once dispatched, we'll send an automated email with your <strong>consignment tracking ID</strong> and <strong>PDF receipt</strong>.</span>
                                                         </div>
                                                     {% endif %}
 
@@ -437,7 +437,7 @@
                                                     <div class="d-flex justify-content-between align-items-center pt-2 border-top flex-wrap gap-2">
                                                         <div>
                                                             {% if order.status == 'PAID' %}
-                                                            <a href="{% url 'download_receipt' order.id %}" target="_blank" class="btn btn-sm btn-outline-success rounded-pill px-3 fw-bold">
+                                                            <a href="{% url 'download_receipt' order.display_order_id %}" target="_blank" class="btn btn-sm btn-outline-success rounded-pill px-3 fw-bold">
                                                                 <i class="fa-solid fa-file-pdf me-1"></i> Download PDF Receipt
                                                             </a>
                                                             {% endif %}
@@ -473,7 +473,7 @@
                                         <div class="card rounded-4 border shadow-sm mb-3 overflow-hidden">
                                             <div class="card-header bg-light py-3 px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
                                                 <div>
-                                                    <span class="fw-bold fs-6 text-dark">Order #{{ order.id }}</span>
+                                                    <span class="fw-bold fs-6 text-dark">Order #{{ order.display_order_id }}</span>
                                                     <span class="text-muted ms-2 fs-7">· {{ order.created_at|date:"M d, Y, h:i A" }}</span>
                                                 </div>
                                                 <div>
@@ -526,7 +526,7 @@
                                                 <div class="d-flex justify-content-between align-items-center pt-2 border-top flex-wrap gap-2">
                                                     <div>
                                                         {% if order.status == 'PAID' %}
-                                                        <a href="{% url 'download_receipt' order.id %}" target="_blank" class="btn btn-sm btn-outline-success rounded-pill px-3 fw-bold">
+                                                        <a href="{% url 'download_receipt' order.display_order_id %}" target="_blank" class="btn btn-sm btn-outline-success rounded-pill px-3 fw-bold">
                                                             <i class="fa-solid fa-file-pdf me-1"></i> Download PDF Receipt
                                                         </a>
                                                         {% endif %}

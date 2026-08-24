@@ -239,6 +239,7 @@ class Order(models.Model):
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING', db_index=True)
     tracking_number = models.CharField(max_length=100, blank=True, null=True, help_text="Courier / India Post Tracking Number provided by Admin")
+    order_number = models.CharField(max_length=50, blank=True, null=True, unique=True, db_index=True, help_text="Unique non-sequential order reference e.g. LS-849201")
     
     razorpay_order_id = models.CharField(max_length=100, blank=True, null=True, db_index=True)
     razorpay_payment_id = models.CharField(max_length=100, blank=True, null=True, db_index=True)
@@ -258,10 +259,25 @@ class Order(models.Model):
             models.Index(fields=['status', '-created_at']),
             models.Index(fields=['razorpay_order_id']),
             models.Index(fields=['email']),
+            models.Index(fields=['order_number']),
         ]
 
+    @property
+    def display_order_id(self):
+        return self.order_number or f"LS-{self.id + 100000}"
+
+    def save(self, *args, **kwargs):
+        if not self.order_number:
+            import random
+            for _ in range(25):
+                candidate = f"LS-{random.randint(100000, 999999)}"
+                if not Order.objects.filter(order_number=candidate).exists():
+                    self.order_number = candidate
+                    break
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return f"Order #{self.id} - {self.first_name} {self.last_name} ({self.status})"
+        return f"Order #{self.order_number or self.id} - {self.first_name} {self.last_name} ({self.status})"
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items', db_index=True)

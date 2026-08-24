@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Dispatched - Lathriya Spices</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4f6f4; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; color: #333333;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed; background-color: #f4f6f4; padding: 30px 10px;">
+        <tr>
+            <td align="center">
+                <!-- Main Container -->
+                <table border="0" cellpadding="0" cellspacing="0" width="600" style="max-width: 600px; width: 100%; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td align="center" style="background: linear-gradient(135deg, #0A260C 0%, #1B5E20 50%, #2E7D32 100%); padding: 35px 25px; text-align: center;">
+                            <div style="font-size: 26px; font-weight: 800; color: #ffffff; letter-spacing: 2px; text-transform: uppercase;">
+                                Lathriya <span style="color: #F5B041;">Spices</span>
+                            </div>
+                            <div style="font-size: 13px; color: rgba(255,255,255,0.85); margin-top: 5px; letter-spacing: 1px;">
+                                Authentic Kerala Plantation Spices • Idukki
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Status Notification Banner -->
+                    <tr>
+                        <td style="padding: 30px 35px 20px;">
+                            <h2 style="font-size: 22px; color: #1B5E20; margin: 0 0 10px 0; font-weight: 800;">
+                                Great news, {{ customer_name }}!
+                            </h2>
+                            <p style="font-size: 15px; line-height: 1.6; color: #555555; margin: 0;">
+                                Your order <strong>#{{ order.display_order_id }}</strong> has been carefully packed fresh from our Idukki farm and handed over to our courier partner for delivery.
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Tracking Card Box -->
+                    <tr>
+                        <td style="padding: 0 35px 25px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f8fdf9; border: 2px dashed #A5D6A7; border-radius: 12px; padding: 22px;">
+                                <tr>
+                                    <td>
+                                        <div style="font-size: 12px; font-weight: 700; color: #1B5E20; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">
+                                            Consignment / Tracking Number
+                                        </div>
+                                        <div style="font-size: 22px; font-weight: 800; color: #0A260C; letter-spacing: 1.5px; margin-bottom: 8px;">
+                                            {{ order.tracking_number }}
+                                        </div>
+                                        <div style="font-size: 13px; color: #666666; margin-bottom: 18px;">
+                                            Dispatched via: <strong>India Post / Express Courier</strong>
+                                        </div>
+                                        <div>
+                                            <a href="https://www.indiapost.gov.in/_layouts/15/dpt.cptc.va/trackconsignment.aspx" target="_blank" style="display: inline-block; background-color: #1B5E20; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 14px; letter-spacing: 0.5px; box-shadow: 0 4px 12px rgba(27,94,32,0.25);">
+                                                Track Your Shipment &rarr;
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Itemized Order Details -->
+                    <tr>
+                        <td style="padding: 0 35px 25px;">
+                            <h3 style="font-size: 16px; color: #1B5E20; font-weight: 700; margin: 0 0 12px 0; border-bottom: 2px solid #E8F5E9; padding-bottom: 8px;">
+                                Order Items Summary
+                            </h3>
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                {% for item in items %}
+                                <tr>
+                                    <td style="padding: 10px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; color: #333333;">
+                                        <strong>{{ item.product_name }}</strong>
+                                        <div style="font-size: 12px; color: #777777;">Qty: {{ item.quantity }} × ₹{{ item.price }}</div>
+                                    </td>
+                                    <td align="right" style="padding: 10px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; font-weight: 700; color: #1B5E20;">
+                                        ₹{{ item.subtotal }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td style="padding: 15px 0 5px; font-size: 15px; font-weight: 800; color: #0A260C;">
+                                        Total Paid
+                                    </td>
+                                    <td align="right" style="padding: 15px 0 5px; font-size: 18px; font-weight: 800; color: #1B5E20;">
+                                        ₹{{ order.total_amount }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Shipping Address & Info -->
+                    <tr>
+                        <td style="padding: 0 35px 25px;">
+                            <div style="background-color: #fafafa; border-radius: 10px; padding: 18px; font-size: 13px; line-height: 1.6; color: #555555;">
+                                <strong style="color: #1B5E20; font-size: 14px; display: block; margin-bottom: 6px;">
+                                    📍 Delivery Address:
+                                </strong>
+                                {{ order.first_name }} {{ order.last_name }}<br>
+                                {{ order.address }}<br>
+                                {{ order.district }}, {{ order.state }} - {{ order.pincode }}<br>
+                                Phone: {{ order.phone }}
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- PDF Receipt Note -->
+                    <tr>
+                        <td style="padding: 0 35px 25px;">
+                            <div style="background-color: #FFF9E6; border: 1px solid #FFE082; border-radius: 10px; padding: 14px 18px; font-size: 13px; color: #856404; display: flex; align-items: center;">
+                                <span>📄 <strong>Official Tax Receipt Attached:</strong> A downloadable PDF receipt has been attached to this email for your accounts and warranty records.</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f9fbf9; padding: 25px 35px; border-top: 1px solid #E8F5E9; text-align: center;">
+                            <p style="font-size: 13px; color: #666666; margin: 0 0 10px 0;">
+                                Need help with your order? Reply to this email or reach us at:
+                            </p>
+                            <div style="font-size: 13px; font-weight: 600; color: #1B5E20; margin-bottom: 15px;">
+                                📧 <a href="mailto:lathriyaspices@gmail.com" style="color: #1B5E20; text-decoration: none;">lathriyaspices@gmail.com</a> &nbsp;|&nbsp; 
+                                📞 <a href="tel:+919074913271" style="color: #1B5E20; text-decoration: none;">+91 90749 13271</a>
+                            </div>
+                            <div style="font-size: 11px; color: #999999; line-height: 1.5;">
+                                Lathriya Spices, Chottupara, K.P Colony, Idukki, Kerala - 685554<br>
+                                &copy; 2026 Lathriya Spices. All rights reserved.
+                            </div>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
