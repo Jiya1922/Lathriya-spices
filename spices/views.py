@@ -764,7 +764,7 @@ def download_receipt(request, order_id):
     """
     Secure view to download PDF receipt for an order.
     Strictly verifies ownership: User can ONLY view/download their own order receipts.
-    Fetches the PDF from Supabase Storage server-side to bypass signature/access issues.
+    Fetches the PDF from Supabase Storage or generates on the fly if missing from storage.
     """
     order = get_object_or_404(Order, id=order_id)
     
@@ -773,35 +773,69 @@ def download_receipt(request, order_id):
         logger.warning(f"[SECURITY UNAUTHORIZED] User '{request.user}' attempted unauthorized access to Order #{order.id} receipt owned by '{order.user}'.")
         return HttpResponse("Forbidden: You do not have permission to view or download this receipt.", status=403)
 
-    from spices.services.supabase_service import get_s3_client
-    import os
-    bucket_name = os.getenv('SUPABASE_RECEIPTS_BUCKET', 'payment-receipts').strip()
-
     pdf_bytes = None
+
+    # 1. Attempt to fetch from Supabase Storage if receipt_path is recorded
     if order.receipt_path:
-        object_key = order.receipt_path.split('/', 1)[1] if '/' in order.receipt_path else order.receipt_path
         try:
+            from spices.services.supabase_service import get_s3_client
+            bucket_name = os.getenv('SUPABASE_RECEIPTS_BUCKET', 'payment-receipts').strip()
+            object_key = order.receipt_path.split('/', 1)[1] if '/' in order.receipt_path else order.receipt_path
             s3 = get_s3_client()
             obj = s3.get_object(Bucket=bucket_name, Key=object_key)
             pdf_bytes = obj['Body'].read()
         except Exception as e:
             logger.warning(f"Could not fetch PDF from Supabase Storage for Order #{order.id}: {e}")
 
-    # Fallback: Regenerate PDF on the fly if missing from storage
+    # 2. In-memory Direct PDF Generation (guarantees receipt is always downloadable)
     if not pdf_bytes:
         try:
+            from spices.services.pdf_service import generate_payment_receipt
+            items = []
+            for item in order.items.all():
+                items.append({
+                    'product_name': item.product_name,
+                    'quantity': item.quantity,
+                    'price': float(item.price)
+                })
+
+            customer_name = f"{order.first_name} {order.last_name}".strip()
+            if not customer_name:
+                customer_name = order.user.get_full_name() or order.user.username
+
+            customer_phone = getattr(order, 'phone', '') or (getattr(order.user.profile, 'phone', '') if hasattr(order.user, 'profile') else '')
+            addr_parts = [p.strip() for p in [getattr(order, 'address', ''), getattr(order, 'district', ''), getattr(order, 'state', ''), getattr(order, 'pincode', '')] if p and p.strip()]
+            customer_address = ", ".join(addr_parts)
+
             pid = order.razorpay_payment_id or f"pay_order_{order.id}"
-            process_payment_receipt(order, payment_id=pid, razorpay_order_id=order.razorpay_order_id)
-            if order.receipt_path:
-                object_key = order.receipt_path.split('/', 1)[1] if '/' in order.receipt_path else order.receipt_path
-                s3 = get_s3_client()
-                obj = s3.get_object(Bucket=bucket_name, Key=object_key)
-                pdf_bytes = obj['Body'].read()
+            rzp_oid = order.razorpay_order_id or f"ORDER-{order.id}"
+
+            pdf_bytes = generate_payment_receipt(
+                customer_name=customer_name,
+                payment_id=pid,
+                razorpay_order_id=rzp_oid,
+                items=items,
+                total_amount=float(order.total_amount),
+                payment_date=order.created_at,
+                payment_status="SUCCESS",
+                customer_phone=customer_phone,
+                customer_address=customer_address
+            )
+
+            # Try to upload to Supabase in the background / update record if not uploaded yet
+            try:
+                from spices.services.supabase_service import upload_receipt_to_supabase
+                r_path, r_url = upload_receipt_to_supabase(file_data=pdf_bytes, payment_id=pid, created_at=order.created_at)
+                order.receipt_path = r_path
+                order.receipt_url = r_url
+                order.save(update_fields=['receipt_path', 'receipt_url'])
+            except Exception as upload_err:
+                logger.warning(f"Background upload to Supabase skipped during download: {upload_err}")
         except Exception as err:
-            logger.error(f"Failed to generate receipt on the fly for Order #{order.id}: {err}")
+            logger.error(f"Failed to generate receipt in-memory for Order #{order.id}: {err}", exc_info=True)
 
     if not pdf_bytes:
-        return HttpResponse("Receipt not found", status=404)
+        return HttpResponse("Receipt could not be generated. Please contact support.", status=500)
 
     # Clean professional receipt reference code (e.g., REC-851050)
     ref_code = f"REC-{(order.id * 1849 + 849201) % 900000 + 100000}"
