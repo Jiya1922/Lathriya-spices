@@ -22,7 +22,7 @@ function getCookie(name) {
     return cookieValue || "";
 }
 
-function updateTotals(subtotal) {
+function updateTotals(subtotal, cartCount) {
     var formatted = parseFloat(subtotal || 0).toFixed(2);
     var subEl = document.getElementById("subtotal");
     if (subEl) subEl.textContent = "\u20B9" + formatted;
@@ -30,11 +30,15 @@ function updateTotals(subtotal) {
     if (totEl) totEl.textContent = "\u20B9" + formatted;
     var badge = document.querySelector(".cart-count");
     if (badge) {
-        var sum = 0;
-        document.querySelectorAll(".qty-input").forEach(function(inp) {
-            sum += parseInt(inp.value || 0);
-        });
-        badge.textContent = sum;
+        if (typeof cartCount !== 'undefined') {
+            badge.textContent = cartCount;
+        } else {
+            var sum = 0;
+            document.querySelectorAll(".qty-input").forEach(function(inp) {
+                sum += parseInt(inp.value || 0);
+            });
+            badge.textContent = sum;
+        }
     }
 }
 
@@ -81,7 +85,7 @@ function removeItem(vid) {
                     location.reload();
                 }
             }, 400);
-            updateTotals(data.subtotal);
+            updateTotals(data.subtotal, data.cart_count);
         }
     });
 }
@@ -97,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function() {
             apiPost("/api/cart/update/", { variant_id: vid, quantity: newQty }, function(data) {
                 if (data.success) {
                     input.value = newQty;
-                    updateTotals(data.subtotal);
+                    updateTotals(data.subtotal, data.cart_count);
                 }
             });
         });
@@ -117,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function() {
             apiPost("/api/cart/update/", { variant_id: vid, quantity: newQty }, function(data) {
                 if (data.success) {
                     input.value = newQty;
-                    updateTotals(data.subtotal);
+                    updateTotals(data.subtotal, data.cart_count);
                 }
             });
         });

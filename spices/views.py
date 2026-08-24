@@ -410,7 +410,8 @@ def remove_from_cart(request):
     except (ProductVariant.DoesNotExist, ValueError):
         return JsonResponse({'error': 'Invalid variant'}, status=400)
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+        logger.error(f"Error in remove_from_cart: {e}", exc_info=True)
+        return JsonResponse({'error': 'An unexpected error occurred while removing item.'}, status=500)
 
 
 def clear_cart(request):
@@ -447,7 +448,8 @@ def clear_cart(request):
 
             return JsonResponse({'success': True, 'subtotal': 0, 'cart_count': 0})
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+        logger.error(f"Error in clear_cart: {e}", exc_info=True)
+        return JsonResponse({'error': 'An unexpected error occurred while clearing cart.'}, status=500)
 
 
 
