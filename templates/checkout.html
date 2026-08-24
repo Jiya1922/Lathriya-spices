@@ -420,8 +420,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 };
 
-                // Fallback for development if Key is placeholder test key
-                if (!window.Razorpay || razorpayKey === "rzp_test_your_key_id") {
+                // Fallback for development/testing if Key is missing, empty, or placeholder test key
+                if (!window.Razorpay || !razorpayKey || razorpayKey === "rzp_test_your_key_id" || razorpayKey.trim() === "") {
                     if (confirm("Razorpay Test Mode: Simulate successful payment for Order #" + dbOrderId + " (Total: ₹" + resData.amount + ")?")) {
                         options.handler({
                             razorpay_order_id: 'rzp_order_mock_123',

@@ -521,25 +521,49 @@ def checkout(request):
 
     if request.method == 'POST':
         try:
-            if not user_profile.is_complete:
+            data = json.loads(request.body) if request.content_type == 'application/json' else request.POST
+            
+            first_name = (data.get('first_name') or request.user.first_name or '').strip()
+            last_name = (data.get('last_name') or request.user.last_name or '').strip()
+            email = (data.get('email') or request.user.email or '').strip()
+            phone = (data.get('phone') or user_profile.phone or '').strip()
+            address = (data.get('address') or user_profile.address or '').strip()
+            state = (data.get('state') or user_profile.state or '').strip()
+            district = (data.get('district') or user_profile.district or '').strip()
+            pincode = (data.get('pincode') or user_profile.pincode or '').strip()
+
+            if not (first_name and phone and address and state and district and pincode):
                 return JsonResponse({
                     'success': False,
                     'profile_incomplete': True,
                     'redirect_url': '/profile/?next=/checkout/',
-                    'error': 'Please complete your profile details (First Name, Phone, Address, State, District, Pincode) before placing an order.'
+                    'error': 'Please provide all required shipping details (First Name, Phone, Address, State, District, Pincode).'
                 }, status=400)
 
-            data = json.loads(request.body) if request.content_type == 'application/json' else request.POST
+            # Auto-save shipping details to user & profile for seamless repeat ordering
+            if first_name and request.user.first_name != first_name:
+                request.user.first_name = first_name
+            if last_name and request.user.last_name != last_name:
+                request.user.last_name = last_name
+            request.user.save()
+
+            user_profile.phone = phone
+            user_profile.address = address
+            user_profile.state = state
+            user_profile.district = district
+            user_profile.pincode = pincode
+            user_profile.save()
+
             order = Order.objects.create(
                 user=request.user,
-                first_name=data.get('first_name', request.user.first_name),
-                last_name=data.get('last_name', request.user.last_name),
-                email=data.get('email', request.user.email),
-                phone=data.get('phone', user_profile.phone),
-                address=data.get('address', user_profile.address),
-                state=data.get('state', user_profile.state),
-                district=data.get('district', user_profile.district),
-                pincode=data.get('pincode', user_profile.pincode),
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                phone=phone,
+                address=address,
+                state=state,
+                district=district,
+                pincode=pincode,
                 total_amount=subtotal,
                 status='PENDING'
             )
@@ -553,7 +577,7 @@ def checkout(request):
                     price=item.variant.price
                 )
 
-            razorpay_key = getattr(settings, 'RAZORPAY_KEY_ID', '')
+            razorpay_key = getattr(settings, 'RAZORPAY_KEY_ID', '') or os.getenv('RAZORPAY_KEY_ID', '').strip()
             return JsonResponse({
                 'success': True,
                 'order_id': order.id,
