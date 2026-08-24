@@ -385,7 +385,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     "currency": "INR",
                     "name": "Lathriya Spices",
                     "description": "Order #" + dbOrderId,
-                    "image": "{% static 'images/home/welcome.png' %}",
+                    "image": "{% static 'images/main_logo.png' %}",
                     "handler": function (response){
                         // 3. Verify Payment on Backend
                         fetch("{% url 'verify_payment' %}", {

@@ -43,7 +43,7 @@ class Category(models.Model):
         if first_product:
             return first_product.get_image_url()
 
-        return "/static/images/home/welcome.png"
+        return "/static/images/main_logo.png"
 
 class Product(models.Model):
     name = models.CharField(max_length=200)
