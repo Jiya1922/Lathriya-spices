@@ -676,16 +676,27 @@
                 width: 100% !important;
                 margin-top: 10px !important;
             }
-            .navbar-brand img {
-                height: 38px !important;
-            }
-            .brand-word-lathriya, .brand-word-spices {
-                font-size: 15px !important;
-                display: inline-block !important;
-            }
             .navbar-brand {
                 margin-right: 0 !important;
-                gap: 4px !important;
+                gap: 8px !important;
+                display: flex !important;
+                align-items: center !important;
+            }
+            .navbar-brand img {
+                height: 42px !important;
+                width: auto !important;
+                display: block !important;
+            }
+            .brand-text-wrapper {
+                display: inline-flex !important;
+                align-items: center !important;
+                line-height: 1 !important;
+            }
+            .brand-word-lathriya, .brand-word-spices {
+                font-size: 18px !important;
+                font-weight: 700 !important;
+                display: inline-block !important;
+                line-height: 1 !important;
             }
         }
 
@@ -724,14 +735,28 @@
                 width: 100% !important;
             }
 
-            /* Responsive Hero Background Image */
+            /* Reduced spacing between Welcome section & Categories / Our Products */
             .welcome {
                 min-height: auto !important;
-                padding: 55px 0 45px !important;
+                padding: 35px 0 25px !important;
                 background: linear-gradient(180deg, rgba(5, 22, 9, 0.94) 0%, rgba(5, 22, 9, 0.85) 70%, rgba(5, 22, 9, 0.96) 100%),
                 url("{% static 'images/home/home_logo.webp' %}") center center / cover no-repeat !important;
                 background-size: cover !important;
                 background-position: center top !important;
+            }
+            .categories {
+                padding: 35px 0 40px !important;
+            }
+            .section-heading {
+                margin-bottom: 24px !important;
+            }
+            .section-heading h2 {
+                font-size: 24px !important;
+                margin-bottom: 6px !important;
+            }
+            .section-heading p {
+                font-size: 13px !important;
+                margin-bottom: 0 !important;
             }
         }
 
