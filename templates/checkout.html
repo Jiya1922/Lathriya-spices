@@ -253,7 +253,6 @@
                             </div>
                         </div>
 
-                        <input type="hidden" id="totalAmount" name="total_amount" value="{{ subtotal }}">
                     </form>
                 </div>
             </div>
@@ -354,8 +353,7 @@ document.addEventListener("DOMContentLoaded", function() {
             address: formData.get("address"),
             state: formData.get("state"),
             district: formData.get("district"),
-            pincode: formData.get("pincode"),
-            total_amount: parseFloat("{{ subtotal }}")
+            pincode: formData.get("pincode")
         };
 
         // 1. Save Order to Database
