@@ -428,9 +428,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (!window.Razorpay || !razorpayKey || razorpayKey === "rzp_test_your_key_id" || razorpayKey.trim() === "") {
                     if (confirm("Razorpay Test Mode: Simulate successful payment for Order #" + dbOrderId + " (Total: ₹" + resData.amount + ")?")) {
                         options.handler({
-                            razorpay_order_id: 'rzp_order_mock_123',
-                            razorpay_payment_id: 'rzp_pay_mock_123',
-                            razorpay_signature: 'rzp_sig_mock_123'
+                            razorpay_order_id: 'rzp_order_mock_' + dbOrderId,
+                            razorpay_payment_id: 'rzp_pay_mock_' + dbOrderId + '_' + Date.now(),
+                            razorpay_signature: 'rzp_sig_mock_' + dbOrderId
                         });
                     }
                 } else {

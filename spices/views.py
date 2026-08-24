@@ -241,6 +241,24 @@ def add_to_cart(request):
                 existing_qty = int(cart_dict.get(str(variant.id), 0))
 
             if is_buy_now:
+                # Release reserved stock of all other items in user's cart
+                if request.user.is_authenticated:
+                    other_items = CartItem.objects.filter(user=request.user).exclude(variant=variant)
+                    for oi in other_items:
+                        oi.variant.stock_quantity += oi.quantity
+                        oi.variant.save()
+                    other_items.delete()
+                else:
+                    for vid, q in list(cart_dict.items()):
+                        if str(vid) != str(variant.id):
+                            try:
+                                v_other = ProductVariant.objects.get(id=vid)
+                                v_other.stock_quantity += int(q)
+                                v_other.save()
+                            except Exception:
+                                pass
+                    cart_dict = {}
+
                 net_qty = quantity - existing_qty
             else:
                 net_qty = quantity
@@ -268,7 +286,6 @@ def add_to_cart(request):
                 save_cart_dict(request, {})
                 total_count = CartItem.objects.filter(user=request.user).aggregate(total=Sum('quantity'))['total'] or 0
             else:
-                cart_dict = get_cart_dict(request)
                 new_q = quantity if is_buy_now else (existing_qty + quantity)
                 cart_dict[str(variant.id)] = new_q
                 save_cart_dict(request, cart_dict)
