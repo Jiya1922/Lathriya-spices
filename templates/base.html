@@ -735,10 +735,10 @@
                 width: 100% !important;
             }
 
-            /* Reduced spacing between Welcome section & Categories / Our Products */
+            /* Hero section: push content further down so it's in viewport without scrolling */
             .welcome {
                 min-height: auto !important;
-                padding: 35px 0 25px !important;
+                padding: 70px 0 35px !important;
                 background: linear-gradient(180deg, rgba(5, 22, 9, 0.94) 0%, rgba(5, 22, 9, 0.85) 70%, rgba(5, 22, 9, 0.96) 100%),
                 url("{% static 'images/home/home_logo.webp' %}") center center / cover no-repeat !important;
                 background-size: cover !important;
@@ -757,6 +757,66 @@
             .section-heading p {
                 font-size: 13px !important;
                 margin-bottom: 0 !important;
+            }
+            /* Cart: 2 items per row on mobile */
+            .cart-item-grid {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 12px !important;
+            }
+            .cart-item-grid .cart-item {
+                flex-direction: column !important;
+                text-align: center !important;
+                padding: 12px !important;
+                margin-bottom: 0 !important;
+                align-items: center !important;
+            }
+            .cart-item-grid .cart-item img {
+                width: 80px !important;
+                height: 80px !important;
+                margin: 0 auto 10px !important;
+            }
+            .cart-item-grid .cart-details h3 {
+                font-size: 13px !important;
+            }
+            .cart-item-grid .cart-details .cart-weight,
+            .cart-item-grid .cart-details .cart-price {
+                font-size: 12px !important;
+            }
+            .cart-item-grid .cart-qty {
+                justify-content: center !important;
+                gap: 6px !important;
+                margin-top: 6px !important;
+            }
+            .cart-item-grid .cart-qty button {
+                width: 26px !important;
+                height: 26px !important;
+                font-size: 10px !important;
+            }
+            .cart-item-grid .cart-qty input {
+                width: 32px !important;
+                font-size: 13px !important;
+            }
+            .cart-item-grid .remove-btn {
+                font-size: 14px !important;
+                padding: 4px !important;
+            }
+
+            /* Profile tabs side by side on mobile */
+            .profile-nav.nav {
+                flex-direction: row !important;
+                flex-wrap: nowrap !important;
+                gap: 8px !important;
+            }
+            .profile-nav .nav-link {
+                flex: 1 !important;
+                text-align: center !important;
+                padding: 10px 8px !important;
+                font-size: 13px !important;
+                justify-content: center !important;
+            }
+            .profile-nav .nav-link i {
+                display: none !important;
             }
         }
 

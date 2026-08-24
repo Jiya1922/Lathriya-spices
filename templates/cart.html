@@ -115,6 +115,7 @@
                         <i class="fa-solid fa-trash-can me-1"></i> Clear Cart
                     </button>
                 </div>
+                <div class="cart-item-grid">
                 {% for item in cart_items %}
                 <div class="cart-item" data-variant-id="{{ item.variant_id }}">
                     <img src="{{ item.image_url }}" alt="{{ item.product_name }}">
@@ -137,6 +138,7 @@
                     </button>
                 </div>
                 {% endfor %}
+                </div>
             </div>
 
             <!-- RIGHT: SUMMARY -->
