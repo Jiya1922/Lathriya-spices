@@ -6,18 +6,69 @@
 {% block css %}
 <style>
     .policy-header {
-        background: #1B5E20;
+        background: linear-gradient(135deg, rgba(10, 38, 12, 0.94) 0%, rgba(27, 94, 32, 0.90) 50%, rgba(46, 125, 50, 0.88) 100%),
+                    url("{% static 'images/home/home_logo.webp' %}") center right / cover no-repeat;
         color: white;
-        padding: 80px 0;
+        padding: 85px 0 70px;
+        position: relative;
+        overflow: hidden;
         text-align: center;
     }
-    .policy-header h1 {
-        font-size: 48px;
-        font-weight: 700;
+    .policy-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(245, 176, 65, 0.18) 0%, rgba(27, 94, 32, 0) 70%);
+        border-radius: 50%;
+        pointer-events: none;
     }
-    .policy-header p {
-        font-size: 18px;
-        margin-top: 15px;
+    .policy-header::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
+        left: -10%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(27, 94, 32, 0.35) 0%, rgba(0, 0, 0, 0) 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+    .policy-header h1 {
+        font-size: 46px;
+        font-weight: 900;
+        font-family: 'Montserrat', sans-serif;
+        line-height: 1.15;
+        margin-bottom: 12px;
+    }
+    .policy-header p.lead-desc {
+        max-width: 680px;
+        margin: 12px auto 0;
+        font-size: 17px;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 400;
+        line-height: 1.6;
+    }
+    .policy-feature-pill {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 40px;
+        padding: 8px 20px;
+        color: white;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
+    .policy-feature-pill:hover {
+        background: rgba(255, 255, 255, 0.18);
+        transform: translateY(-2px);
     }
     .policy-content {
         background: #f8f8f8;
@@ -54,16 +105,39 @@
     }
     @media(max-width:768px){
         .policy-box { padding: 30px; }
-        .policy-header h1 { font-size: 36px; }
+        .policy-header {
+            padding: 60px 0 45px !important;
+            background: linear-gradient(180deg, rgba(5, 22, 9, 0.95) 0%, rgba(5, 22, 9, 0.88) 60%, rgba(5, 22, 9, 0.7) 100%),
+                        url("{% static 'images/home/home_logo.webp' %}") center center / cover no-repeat !important;
+        }
+        .policy-header h1 { font-size: 32px !important; }
+        .policy-header p.lead-desc { font-size: 15px !important; }
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <section class="policy-header">
-    <div class="container text-center">
-        <h1>Privacy Policy</h1>
-        <p>Your privacy is important to us.</p>
+    <div class="container text-center position-relative" style="z-index: 2;">
+        <h1 class="text-white">
+            Privacy <span style="color: #F5B041; text-shadow: 0 4px 20px rgba(245,176,65,0.35);">Policy</span>
+        </h1>
+        <p class="lead-desc">
+            Your privacy and security are paramount. Learn how we protect, handle, and respect your personal information.
+        </p>
+
+        <!-- Quick Feature Badges -->
+        <div class="d-flex align-items-center justify-content-center flex-wrap gap-3 mt-4 pt-2">
+            <div class="policy-feature-pill">
+                <i class="fa-solid fa-shield-halved text-warning"></i> 256-Bit SSL Protection
+            </div>
+            <div class="policy-feature-pill">
+                <i class="fa-solid fa-user-lock text-warning"></i> Zero Third-Party Sharing
+            </div>
+            <div class="policy-feature-pill">
+                <i class="fa-solid fa-lock text-warning"></i> Secure Payment Processing
+            </div>
+        </div>
     </div>
 </section>
 <section class="policy-content">

@@ -187,6 +187,61 @@
             border: 1px solid rgba(0, 0, 0, 0.06);
         }
 
+        .icon-btn.dropdown-toggle::after {
+            display: none !important;
+        }
+
+        /* NAVBAR ACTIONS (SEARCH, PROFILE, CART) & RESPONSIVE ALIGNMENT */
+        .nav-actions-container {
+            border-top: none !important;
+        }
+
+        .nav-search-popup {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 52px;
+            width: 330px;
+            z-index: 1050;
+            border: 1px solid rgba(27, 94, 32, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        @media (max-width: 991px) {
+            .nav-actions-container {
+                border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+                margin-top: 14px !important;
+                padding-top: 14px !important;
+                position: relative;
+            }
+
+            #navSearchContainer {
+                position: static !important;
+            }
+
+            .nav-search-popup {
+                left: 8px !important;
+                right: 8px !important;
+                transform: none !important;
+                width: auto !important;
+                max-width: none !important;
+                top: 58px !important;
+            }
+
+            .navbar .dropdown {
+                position: static !important;
+            }
+
+            .navbar .dropdown-menu {
+                left: 12px !important;
+                right: 12px !important;
+                transform: none !important;
+                width: auto !important;
+                max-width: 320px !important;
+                margin: 8px auto 0 !important;
+            }
+        }
+
         .icon-btn:hover {
             background: #0b380f !important;
             color: #ffffff !important;
@@ -926,7 +981,7 @@
                     </li>
                 </ul>
 
-                <div class="d-flex align-items-center justify-content-center justify-content-lg-end gap-2 mt-3 mt-lg-0 pt-2 pt-lg-0 border-top border-lg-0">
+                <div class="nav-actions-container d-flex align-items-center justify-content-center justify-content-lg-end gap-2">
 
                     <!-- LIVE NAVBAR SEARCH -->
                     <div class="position-relative d-inline-block me-1" id="navSearchContainer">
@@ -934,8 +989,7 @@
                             title="Search Products">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
-                        <div class="nav-search-popup shadow-lg rounded-4 p-3 bg-white" id="navSearchPopup"
-                            style="display:none; position:absolute; right:0; top:50px; width:330px; z-index:1050; border:1px solid rgba(27,94,32,0.15);">
+                        <div class="nav-search-popup shadow-lg rounded-4 p-3 bg-white" id="navSearchPopup">
                             <div class="input-group mb-2">
                                 <span class="input-group-text bg-light border-0"><i
                                         class="fa-solid fa-magnifying-glass text-muted"></i></span>
@@ -1048,9 +1102,10 @@
                     <div class="col-lg-3 col-md-6">
                         <h5>Products</h5>
                         <ul class="list-unstyled">
-                            <li>Cardamom Powder</li>
-                            <li>Black Pepper Powder</li>
-                            <li>Nutmeg Powder</li>
+                            <li><a href="{% url 'shop' %}">Cardamom Powder</a></li>
+                            <li><a href="{% url 'shop' %}">Black Pepper Powder</a></li>
+                            <li><a href="{% url 'shop' %}">Nutmeg Powder</a></li>
+                            <li class="mt-2"><a href="{% url 'shop' %}" class="fw-semibold" style="color: #D4A017 !important;"><i class="fa-solid fa-plus fs-7 me-1"></i>More Products</a></li>
                         </ul>
                     </div>
 
@@ -1066,7 +1121,7 @@
 
                         <div class="social-icons mt-3 d-flex gap-2">
                             <a href="#" class="facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.instagram.com/lathriya_spices/" class="instagram" title="Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
                             <a href="https://wa.me/" class="whatsapp" title="WhatsApp" target="_blank"><i class="fab fa-whatsapp"></i></a>
                         </div>
 
@@ -1105,7 +1160,7 @@
                 <!-- Social Icons -->
                 <div class="social-icons d-flex justify-content-center gap-2 mb-3">
                     <a href="#" class="facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.instagram.com/lathriya_spices/" class="instagram" title="Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
                     <a href="https://wa.me/" class="whatsapp" title="WhatsApp" target="_blank"><i class="fab fa-whatsapp"></i></a>
                 </div>
 
@@ -1290,6 +1345,92 @@
             qtyValEl.textContent = newQty;
         }
 
+        /* LIVE STOCK SYNC ACROSS PAGE */
+        function updateVariantStockOnPage(variantId, remainingStock) {
+            if (variantId === undefined || variantId === null || remainingStock === undefined || remainingStock === null) return;
+            var stock = parseInt(remainingStock);
+            if (isNaN(stock)) return;
+
+            // 1. Update all <select class="card-weight-select"> options matching this variant
+            var allSelects = document.querySelectorAll("select.card-weight-select");
+            allSelects.forEach(function (sel) {
+                for (var i = 0; i < sel.options.length; i++) {
+                    var opt = sel.options[i];
+                    if (String(opt.value) === String(variantId)) {
+                        opt.setAttribute("data-stock", stock);
+                        
+                        var text = opt.textContent;
+                        var idx = text.lastIndexOf("—");
+                        if (idx === -1) idx = text.lastIndexOf("-");
+                        var prefix = idx !== -1 ? text.substring(0, idx).trim() : text;
+                        if (stock <= 0) {
+                            opt.textContent = prefix + " — Out of stock";
+                        } else {
+                            opt.textContent = prefix + " — " + stock + " in stock";
+                        }
+                    }
+                }
+
+                // If this select currently has this variant selected, update the card's quantity box
+                if (String(sel.value) === String(variantId)) {
+                    var card = sel.closest(".category-card, .product-card");
+                    if (card) {
+                        var qtyValEl = card.querySelector(".card-qty-val");
+                        if (qtyValEl) {
+                            var currentQty = parseInt(qtyValEl.textContent || "1");
+                            if (stock <= 0) {
+                                qtyValEl.textContent = "1";
+                            } else if (currentQty > stock) {
+                                qtyValEl.textContent = stock;
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 2. Update weight buttons on product detail page if present
+            var weightBtns = document.querySelectorAll(".weight-btn");
+            weightBtns.forEach(function (btn) {
+                var btnVarId = btn.dataset.variantId || btn.getAttribute("data-variant-id");
+                if (String(btnVarId) === String(variantId)) {
+                    btn.setAttribute("data-stock", stock);
+                    btn.dataset.stock = stock;
+                    
+                    var span = btn.querySelector("span");
+                    if (span) {
+                        if (stock <= 0) {
+                            span.textContent = "(Out of stock)";
+                        } else {
+                            span.textContent = "(" + stock + " left)";
+                        }
+                    }
+
+                    if (btn.classList.contains("active")) {
+                        var badgeContainer = document.getElementById("stockBadgeContainer");
+                        if (badgeContainer) {
+                            if (stock <= 0) {
+                                badgeContainer.innerHTML = '<span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-2 rounded-pill fw-bold fs-7" id="stockBadge"><i class="fa-solid fa-circle-xmark me-1"></i> Out of Stock</span>';
+                            } else if (stock <= 10) {
+                                badgeContainer.innerHTML = '<span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-3 py-2 rounded-pill fw-bold fs-7" id="stockBadge"><i class="fa-solid fa-fire text-danger me-1"></i> Only <span id="stockVal">' + stock + '</span> units left in stock!</span>';
+                            } else {
+                                badgeContainer.innerHTML = '<span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill fw-bold fs-7" id="stockBadge"><i class="fa-solid fa-circle-check me-1"></i> <span id="stockVal">' + stock + '</span> units available in stock</span>';
+                            }
+                        }
+                        var qtyInput = document.getElementById("quantity");
+                        if (qtyInput) {
+                            var currentVal = parseInt(qtyInput.value || "1");
+                            if (stock <= 0) {
+                                qtyInput.value = 1;
+                            } else if (currentVal > stock) {
+                                qtyInput.value = stock;
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        window.updateVariantStockOnPage = updateVariantStockOnPage;
+
         function onCardWeightChange(select) {
             if (window.event) window.event.stopPropagation();
             var card = select.closest(".category-card, .product-card");
@@ -1309,6 +1450,11 @@
             var buyBtn = card.querySelector(".quick-buy-btn");
             if (buyBtn && variantId) {
                 buyBtn.setAttribute("data-variant-id", variantId);
+            }
+
+            var addBtn = card.querySelector(".card-add-to-cart-btn");
+            if (addBtn && variantId) {
+                addBtn.setAttribute("data-variant-id", variantId);
             }
 
             var qtyValEl = card.querySelector(".card-qty-val");
@@ -1491,6 +1637,12 @@
                         return;
                     }
                     if (data.success) {
+                        if (data.variant_id !== undefined && data.remaining_stock !== undefined) {
+                            updateVariantStockOnPage(data.variant_id, data.remaining_stock);
+                        } else if (variantId && data.remaining_stock !== undefined) {
+                            updateVariantStockOnPage(variantId, data.remaining_stock);
+                        }
+
                         var badge = document.querySelector(".cart-count");
                         if (badge) {
                             badge.textContent = data.cart_count;

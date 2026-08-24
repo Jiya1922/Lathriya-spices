@@ -135,6 +135,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     return;
                 }
                 if (data.success) {
+                    if (typeof window.updateVariantStockOnPage === "function" && data.remaining_stock !== undefined) {
+                        window.updateVariantStockOnPage(data.variant_id || targetVariantId, data.remaining_stock);
+                    }
+
                     var badge = document.querySelector(".cart-count");
                     if (badge) {
                         badge.textContent = data.cart_count;

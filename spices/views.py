@@ -295,7 +295,12 @@ def add_to_cart(request):
                 request.session.modified = True
                 total_count = sum(int(q) for q in cart_dict.values())
 
-            return JsonResponse({'success': True, 'cart_count': total_count})
+            return JsonResponse({
+                'success': True,
+                'cart_count': total_count,
+                'variant_id': str(variant.id),
+                'remaining_stock': variant.stock_quantity
+            })
     except (ProductVariant.DoesNotExist, ValueError):
         return JsonResponse({'error': 'Invalid variant'}, status=400)
     except Exception as e:
@@ -370,7 +375,13 @@ def update_cart(request):
                         pass
 
             save_cart_dict(request, cart_dict)
-            return JsonResponse({'success': True, 'subtotal': subtotal, 'cart_count': cart_count})
+            return JsonResponse({
+                'success': True,
+                'subtotal': subtotal,
+                'cart_count': cart_count,
+                'variant_id': str(variant.id),
+                'remaining_stock': variant.stock_quantity
+            })
     except (ProductVariant.DoesNotExist, ValueError):
         return JsonResponse({'error': 'Invalid variant'}, status=400)
     except Exception as e:
@@ -424,7 +435,13 @@ def remove_from_cart(request):
                     except ProductVariant.DoesNotExist:
                         pass
 
-            return JsonResponse({'success': True, 'subtotal': subtotal, 'cart_count': cart_count})
+            return JsonResponse({
+                'success': True,
+                'subtotal': subtotal,
+                'cart_count': cart_count,
+                'variant_id': str(variant.id),
+                'remaining_stock': variant.stock_quantity
+            })
     except (ProductVariant.DoesNotExist, ValueError):
         return JsonResponse({'error': 'Invalid variant'}, status=400)
     except Exception as e:

@@ -6,11 +6,13 @@
 {% block css %}
 <style>
     .contact-header {
-        background: linear-gradient(135deg, #0A260C 0%, #1B5E20 50%, #2E7D32 100%);
+        background: linear-gradient(135deg, rgba(10, 38, 12, 0.94) 0%, rgba(27, 94, 32, 0.90) 50%, rgba(46, 125, 50, 0.88) 100%),
+                    url("{% static 'images/home/home_logo.webp' %}") center right / cover no-repeat;
         color: white;
-        padding: 95px 0 75px;
+        padding: 85px 0 70px;
         position: relative;
         overflow: hidden;
+        text-align: center;
     }
     .contact-header::before {
         content: '';
@@ -19,7 +21,7 @@
         right: -10%;
         width: 500px;
         height: 500px;
-        background: radial-gradient(circle, rgba(245, 176, 65, 0.15) 0%, rgba(27, 94, 32, 0) 70%);
+        background: radial-gradient(circle, rgba(245, 176, 65, 0.18) 0%, rgba(27, 94, 32, 0) 70%);
         border-radius: 50%;
         pointer-events: none;
     }
@@ -30,7 +32,7 @@
         left: -10%;
         width: 400px;
         height: 400px;
-        background: radial-gradient(circle, rgba(27, 94, 32, 0.3) 0%, rgba(0, 0, 0, 0) 70%);
+        background: radial-gradient(circle, rgba(27, 94, 32, 0.35) 0%, rgba(0, 0, 0, 0) 70%);
         border-radius: 50%;
         pointer-events: none;
     }
@@ -38,7 +40,7 @@
         background: rgba(245, 176, 65, 0.15);
         color: #F5B041;
         border: 1px solid rgba(245, 176, 65, 0.3);
-        padding: 8px 20px;
+        padding: 7px 18px;
         border-radius: 30px;
         font-size: 13px;
         font-weight: 700;
@@ -47,18 +49,20 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
+        margin-bottom: 15px;
     }
     .contact-header h1 {
-        font-size: 52px;
+        font-size: 46px;
         font-weight: 900;
         font-family: 'Montserrat', sans-serif;
         line-height: 1.15;
+        margin-bottom: 12px;
     }
     .contact-header p.lead-desc {
         max-width: 680px;
-        margin: 18px auto 0;
-        font-size: 18px;
-        color: rgba(255, 255, 255, 0.88);
+        margin: 12px auto 0;
+        font-size: 17px;
+        color: rgba(255, 255, 255, 0.9);
         font-weight: 400;
         line-height: 1.6;
     }
@@ -132,6 +136,19 @@
     }
     .contact-btn:hover {
         background: #1B5E20;
+    }
+    @media (max-width: 768px) {
+        .contact-header {
+            padding: 60px 0 45px !important;
+            background: linear-gradient(180deg, rgba(5, 22, 9, 0.95) 0%, rgba(5, 22, 9, 0.88) 60%, rgba(5, 22, 9, 0.7) 100%),
+                        url("{% static 'images/home/home_logo.webp' %}") center center / cover no-repeat !important;
+        }
+        .contact-header h1 {
+            font-size: 32px !important;
+        }
+        .contact-header p.lead-desc {
+            font-size: 15px !important;
+        }
     }
 </style>
 {% endblock %}
