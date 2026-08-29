@@ -217,26 +217,14 @@
                                 <label>State <span class="text-danger">*</span></label>
                                 <select class="form-select" id="state" name="state" required>
                                     <option value="">Select State</option>
-                                    <option value="Kerala" {% if profile.state == 'Kerala' or not profile.state %}selected{% endif %}>Kerala</option>
-                                    <option value="Tamil Nadu" {% if profile.state == 'Tamil Nadu' %}selected{% endif %}>Tamil Nadu</option>
-                                    <option value="Karnataka" {% if profile.state == 'Karnataka' %}selected{% endif %}>Karnataka</option>
-                                    <option value="Andhra Pradesh" {% if profile.state == 'Andhra Pradesh' %}selected{% endif %}>Andhra Pradesh</option>
-                                    <option value="Telangana" {% if profile.state == 'Telangana' %}selected{% endif %}>Telangana</option>
-                                    <option value="Maharashtra" {% if profile.state == 'Maharashtra' %}selected{% endif %}>Maharashtra</option>
-                                    <option value="Delhi" {% if profile.state == 'Delhi' %}selected{% endif %}>Delhi</option>
-                                    <option value="Other" {% if profile.state == 'Other' %}selected{% endif %}>Other</option>
                                 </select>
                             </div>
 
                             <div class="col-md-4 mb-3">
                                 <label>District <span class="text-danger">*</span></label>
-                                <input type="text"
-                                       class="form-control"
-                                       id="district"
-                                       name="district"
-                                       value="{{ profile.district|default:'' }}"
-                                       placeholder="District"
-                                       required>
+                                <select class="form-select" id="district" name="district" required>
+                                    <option value="">Select District</option>
+                                </select>
                             </div>
 
                             <div class="col-md-4 mb-3">
@@ -326,11 +314,19 @@
 {% endblock %}
 
 {% block js %}
+<script src="{% static 'js/india-locations.js' %}"></script>
 <!-- Razorpay Checkout SDK -->
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+    initLocationSelector(
+        "state",
+        "district",
+        "{{ profile.state|default:'Kerala'|escapejs }}",
+        "{{ profile.district|default:''|escapejs }}"
+    );
+
     const payBtn = document.getElementById("payBtn");
     const checkoutForm = document.getElementById("checkoutForm");
 
