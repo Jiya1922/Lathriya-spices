@@ -63,7 +63,7 @@ class ProductAdmin(admin.ModelAdmin):
     }
     fieldsets = (
         ('General Info', {
-            'fields': ('name', 'slug', 'category', 'is_featured', 'stock_quantity')
+            'fields': ('name', 'slug', 'category', 'price_notice', 'is_featured', 'stock_quantity')
         }),
         ('Product Information & Tabs', {
             'fields': ('description', 'benefits', 'ingredients', 'storage_info')

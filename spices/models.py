@@ -57,6 +57,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to='posters/', blank=True, null=True)
     image_side = models.ImageField(upload_to='posters/', blank=True, null=True, help_text="Side view of the product")
     image_package = models.ImageField(upload_to='posters/', blank=True, null=True, help_text="Packaging view of the product")
+    price_notice = models.CharField(max_length=255, default="Price may vary based on market price", blank=True, null=True, help_text="Notice message shown on product card (e.g. Price may vary based on market price)")
     is_featured = models.BooleanField(default=False, db_index=True)
     stock_quantity = models.PositiveIntegerField(default=50, help_text="Total available stock quantity (Admin editable)")
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)

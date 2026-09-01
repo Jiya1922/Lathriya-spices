@@ -129,7 +129,8 @@
                             <h4>{{ product.name }}</h4>
                         </a>
                         <p>{{ product.description|truncatewords:8 }}</p>
-                        <div class="fw-bold text-success fs-5 mb-2 card-price-display">₹{% if product.default_variant %}{{ product.default_variant.price|floatformat:2 }}{% else %}{{ product.starting_price|floatformat:2 }}{% endif %}</div>
+                        <div class="fw-bold text-success fs-5 mb-1 card-price-display">₹{% if product.default_variant %}{{ product.default_variant.price|floatformat:2 }}{% else %}{{ product.starting_price|floatformat:2 }}{% endif %}</div>
+                        <small class="d-block text-muted mt-1 fst-italic" style="font-size: 0.76rem; letter-spacing: 0.2px;"><i class="fa-solid fa-circle-info me-1 text-success opacity-75"></i>{{ product.price_notice|default:"Price may vary based on market price" }}</small>
                     </div>
                     <div class="d-flex gap-2 justify-content-center mt-3 flex-wrap align-items-center">
                         <button type="button"

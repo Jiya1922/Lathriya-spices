@@ -589,7 +589,8 @@
 
                 <!-- Dynamic Price -->
                 <h2 id="price">₹{{ product.starting_price|floatformat:2 }}</h2>
-                <p class="tax-text">Inclusive of all taxes</p>
+                <p class="tax-text mb-1">Inclusive of all taxes</p>
+                <small class="d-block text-muted fst-italic mb-2" style="font-size: 0.8rem; letter-spacing: 0.2px;"><i class="fa-solid fa-circle-info me-1 text-success opacity-75"></i>{{ product.price_notice|default:"Price may vary based on market price" }}</small>
 
                 <hr>
                 <h5>Select Weight</h5>

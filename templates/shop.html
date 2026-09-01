@@ -321,7 +321,8 @@
                                     <span>{{ product.avg_rating }} ({{ product.review_count }})</span>
                                     {% endif %}
                         </div>
-                        <p class="weight card-price-display">₹{% if product.default_variant %}{{ product.default_variant.price|floatformat:2 }}{% else %}{{ product.starting_price|floatformat:2 }}{% endif %}</p>
+                        <p class="weight card-price-display mb-1">₹{% if product.default_variant %}{{ product.default_variant.price|floatformat:2 }}{% else %}{{ product.starting_price|floatformat:2 }}{% endif %}</p>
+                        <small class="d-block text-muted mb-2 fst-italic" style="font-size: 0.76rem; letter-spacing: 0.2px;"><i class="fa-solid fa-circle-info me-1 text-success opacity-75"></i>{{ product.price_notice|default:"Price may vary based on market price" }}</small>
                         <p class="description">{{ product.description|truncatewords:15 }}</p>
                     </div>
                     <div class="d-flex gap-2 justify-content-center mt-3 flex-wrap align-items-center">
